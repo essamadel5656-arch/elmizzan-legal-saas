@@ -1,0 +1,418 @@
+/* ============================================
+   clients.css — أنماط خاصة بصفحة العملاء
+   ============================================ */
+
+/* --------------------------------------------
+   شارات العملاء — أنواع وحالات إضافية
+   -------------------------------------------- */
+.badge.badge-blue   { color: #38bdf8; background: rgba(56,189,248,.13); border-color: currentColor; }
+.badge.badge-purple { color: #a78bfa; background: rgba(167,139,250,.13); border-color: currentColor; }
+.badge.vip          { color: #f59e0b; background: rgba(245,158,11,.13); border-color: currentColor; }
+
+/* --------------------------------------------
+   خلية اسم العميل: صورة صغيرة + نص
+   -------------------------------------------- */
+.client-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* أفاتار صغير في الجدول */
+.client-avatar-sm {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  background: var(--color-hover);
+  color: var(--color-text);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+  border: 1px solid var(--color-text);
+}
+
+/* عدد القضايا: رقم دائري صغير */
+.case-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--color-hover);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 0 6px;
+}
+
+/* --------------------------------------------
+   Modal: الـ Overlay والصندوق
+   -------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(7, 15, 26, .75);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn .2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.modal-box {
+  background: var(--color-card);
+  border: 1px solid var(--color-hover);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 720px;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  animation: slideUp .25s ease;
+  overflow: hidden;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* منع التمرير على الـ body عند فتح الـ Modal */
+body.modal-open { overflow: hidden; }
+
+/* --------------------------------------------
+   رأس الـ Modal
+   -------------------------------------------- */
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px 16px;
+  border-bottom: 1px solid var(--color-hover);
+  flex-shrink: 0;
+}
+
+.modal-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* أفاتار كبير في الـ Modal */
+.modal-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  background: var(--color-text);
+  color: var(--color-card);
+  display: grid;
+  place-items: center;
+  font-weight: 700;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.modal-title-wrap h2 {
+  font-size: 19px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.modal-meta {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.modal-close {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-hover);
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background .15s ease, transform .15s ease;
+  color: var(--color-text);
+  flex-shrink: 0;
+}
+
+.modal-close:hover {
+  background: var(--color-hover);
+  transform: scale(1.1);
+}
+
+/* --------------------------------------------
+   تبويبات الـ Modal
+   -------------------------------------------- */
+.modal-tabs {
+  display: flex;
+  gap: 2px;
+  padding: 12px 24px 0;
+  border-bottom: 1px solid var(--color-hover);
+  flex-shrink: 0;
+}
+
+.tab-btn {
+  padding: 9px 16px;
+  border-radius: 8px 8px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: none;
+  border: none;
+  color: var(--color-text);
+  opacity: .6;
+  transition: opacity .15s ease, background .15s ease;
+  position: relative;
+}
+
+.tab-btn:hover {
+  opacity: 1;
+  background: var(--color-hover);
+}
+
+.tab-btn.active {
+  opacity: 1;
+  background: var(--color-hover);
+}
+
+.tab-btn.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: var(--color-text);
+  border-radius: 2px 2px 0 0;
+}
+
+/* --------------------------------------------
+   محتوى الـ Modal
+   -------------------------------------------- */
+.modal-body {
+  padding: 24px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.tab-panel.hidden { display: none; }
+
+/* شبكة البيانات الأساسية */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.info-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-hover);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.info-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  opacity: .7;
+}
+
+.info-val {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* --------------------------------------------
+   بطاقة قضية داخل الـ Modal
+   -------------------------------------------- */
+.cases-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.case-card {
+  background: var(--color-bg);
+  border: 1px solid var(--color-hover);
+  border-radius: 10px;
+  padding: 14px;
+  transition: background .15s ease;
+}
+
+.case-card:hover {
+  background: var(--color-hover);
+}
+
+.case-card-name {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.case-card-meta {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------
+   Timeline: سجل التعاملات
+   -------------------------------------------- */
+.timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+/* الخط الرأسي */
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 19px;
+  width: 2px;
+  background: var(--color-hover);
+}
+
+.timeline-item {
+  display: flex;
+  gap: 14px;
+  padding: 0 0 18px;
+  position: relative;
+}
+
+/* الدائرة / الأيقونة */
+.timeline-dot {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  background: var(--color-bg);
+  border: 2px solid var(--color-hover);
+  display: grid;
+  place-items: center;
+  font-size: 16px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-content {
+  flex: 1;
+  background: var(--color-bg);
+  border: 1px solid var(--color-hover);
+  border-radius: 10px;
+  padding: 12px 14px;
+  transition: background .15s ease;
+}
+
+.timeline-content:hover {
+  background: var(--color-hover);
+}
+
+.timeline-label {
+  font-weight: 700;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.timeline-detail {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.timeline-date {
+  font-size: 11px;
+}
+
+/* --------------------------------------------
+   قسم الملاحظات
+   -------------------------------------------- */
+.notes-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.notes-box {
+  background: var(--color-bg);
+  border: 1px solid var(--color-hover);
+  border-radius: 10px;
+  padding: 16px;
+  font-size: 14px;
+  line-height: 1.8;
+  white-space: pre-wrap;
+  min-height: 100px;
+}
+
+/* حالة فارغة داخل الـ Modal */
+.empty-inline {
+  text-align: center;
+  padding: 30px;
+  font-size: 14px;
+}
+
+/* --------------------------------------------
+   عنوان قسم في الفورم
+   -------------------------------------------- */
+.form-section-title {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-hover);
+  color: var(--color-text);
+}
+
+/* --------------------------------------------
+   تحسينات الجدول: محاذاة رؤوس RTL
+   -------------------------------------------- */
+.table thead th {
+  text-align: right;
+}
+
+/* --------------------------------------------
+   Responsive: تكيّف الـ Modal مع الشاشات الصغيرة
+   -------------------------------------------- */
+@media (max-width: 640px) {
+  .modal-box {
+    max-height: 95vh;
+    border-radius: 14px;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-tabs {
+    overflow-x: auto;
+    padding-bottom: 0;
+  }
+
+  .tab-btn {
+    white-space: nowrap;
+  }
+
+  .timeline::before {
+    right: 17px;
+  }
+}

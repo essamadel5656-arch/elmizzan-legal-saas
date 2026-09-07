@@ -1,0 +1,571 @@
+إضافة موعد جديد
+سجل موعداً جديداً لجلسة قضائية أو اجتماع مع موكل
+رجوع للقضية
+{{-- القضية — صف كامل (ثابتة، مش قابلة للتعديل) --}}
+القضية
+{{-- التاريخ والوقت جنب بعض --}}
+التاريخ
+الوقت
+{{-- الملاحظات --}}
+ملاحظات أو تفاصيل الجلسة
+{{-- أزرار التحكم --}}
+إلغاء
+حفظ الموعد
+جاري الحفظ...
+اكتب أي ملاحظات خاصة بالجلسة أو المطلوب تجهيزه...
+/* ===== الحاوية والترويسة ===== */
+        .create-page-container { padding: 2rem; max-width: 950px; margin: 0 auto; }
+
+        .dashboard-header {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;
+        }
+        .header-info h1 { font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .header-info p { color: var(--text-secondary); font-size: 0.95rem; margin: 0; }
+
+        /* ===== البانل والكروت ===== */
+        .form-card {
+            background: #ffffff; border: 1px solid var(--border-color);
+            border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm); transition: all 0.3s ease;
+        }
+        .form-card:hover { border-color: var(--gold-accent); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+
+        .form-card-title {
+            font-size: 1.1rem; font-weight: 800; color: var(--sidebar-bg);
+            margin-bottom: 1.5rem; padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--primary-bg); display: flex;
+            align-items: center; justify-content: space-between;
+        }
+        .title-with-icon { display: flex; align-items: center; gap: 0.75rem; }
+        .title-with-icon i { color: var(--gold-accent); font-size: 1.2rem; }
+
+        /* ===== تقسيم الفورم ===== */
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group.full { grid-column: 1 / -1; }
+
+        .form-label { display: block; margin-bottom: 0.6rem; font-weight: 700; color: var(--text-primary); font-size: 0.95rem; }
+        .form-label .text-danger { color: var(--danger-color); margin-right: 4px; }
+
+        .form-control {
+            width: 100%; padding: 0.9rem 1rem; border: 1px solid var(--border-color);
+            border-radius: 8px; background-color: var(--primary-bg); font-family: inherit;
+            font-size: 0.95rem; transition: all 0.2s; color: var(--text-primary);
+        }
+        .form-control:focus { outline: none; border-color: var(--gold-accent); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); background-color: #ffffff; }
+
+        textarea.form-control { resize: vertical; min-height: 100px; }
+
+        /* ===== تنسيق حقول رفع الملفات ===== */
+        input[type="file"].form-control { padding: 0.5rem; background-color: #ffffff; cursor: pointer; }
+        input[type="file"]::file-selector-button {
+            background-color: rgba(30, 41, 59, 0.05); color: var(--sidebar-bg);
+            border: 1px solid rgba(30, 41, 59, 0.1); padding: 0.4rem 1rem;
+            border-radius: 6px; cursor: pointer; font-weight: 700; margin-left: 1rem;
+            transition: all 0.2s; font-family: inherit;
+        }
+        input[type="file"]::file-selector-button:hover { background-color: var(--sidebar-bg); color: #ffffff; }
+
+        /* ===== التنبيهات والأخطاء ===== */
+        .alert-box { padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; font-weight: 600; display: flex; align-items: flex-start; gap: 0.75rem; border: 1px solid transparent; }
+        .alert-danger { background: rgba(239, 68, 68, 0.05); border-color: var(--danger-color); color: var(--danger-color); }
+        .alert-danger ul { margin: 0.5rem 0 0 0; padding-right: 1.5rem; }
+        .error-msg { font-size: 0.85rem; color: var(--danger-color); margin-top: 4px; display: block; font-weight: 600; }
+
+        /* ===== أزرار التحكم ===== */
+        .form-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; border-top: 1px dashed var(--border-color); padding-top: 1.5rem; }
+
+        .btn-cancel {
+            padding: 12px 24px; background-color: transparent; color: var(--text-secondary);
+            border: 1px solid var(--border-color); border-radius: 8px; font-weight: 700;
+            cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
+        }
+        .btn-cancel:hover { background-color: var(--primary-bg); color: var(--text-primary); border-color: var(--text-secondary); }
+
+        .btn-save {
+            padding: 12px 32px; background-color: var(--sidebar-bg); color: #ffffff;
+            border: none; border-radius: 8px; font-weight: 700; cursor: pointer;
+            transition: 0.3s; display: inline-flex; align-items: center; gap: 0.5rem; font-family: inherit; font-size: 1rem;
+        }
+        .btn-save:hover { background-color: var(--gold-accent); color: var(--sidebar-bg); box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); transform: translateY(-2px); }
+        .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        @media (max-width: 768px) {
+            .create-page-container { padding: 1rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-actions { flex-direction: column-reverse; }
+            .btn-cancel, .btn-save { width: 100%; justify-content: center; }
+        }
+إضافة محامي جديد
+إنشاء حساب محامي جديد في مكتب المحاماة وإرسال بيانات الدخول تلقائياً
+رجوع للقائمة
+برجاء تصحيح الأخطاء التالية للتمكن من الحفظ:
+البيانات الأساسية والاتصال
+اسم المحامي
+رقم الموبايل
+البريد الإلكتروني
+العنوان
+البيانات المهنية
+التخصص
+رقم القيد
+الدرجة
+نقض
+استئناف
+ابتدائي
+جدول عام
+نبذة مختصرة
+بيانات الدخول للحساب
+كلمة المرور
+تأكيد كلمة المرور
+المرفقات والصور
+صورة الكارنيه
+جاري رفع الكارنيه...
+الصورة الشخصية (اختياري)
+جاري رفع الصورة...
+صورة البطاقة الشخصية (اختياري)
+جاري رفع البطاقة...
+إضافة المحامي
+جاري الحفظ والإرسال...
+أدخل اسم المحامي بالكامل
+أدخل العنوان بالتفصيل
+مثال: مدني، جنائي، شركات...
+رقم القيد بنقابة المحامين
+نبذة مختصرة عن خبرات المحامي (20 حرف على الأقل)
+من 8 إلى 20 حرف أو رقم
+أعد إدخال كلمة المرور
+جدول_عام
+/* ===== الحاوية والترويسة ===== */
+        .create-page-container { padding: 2rem; max-width: 950px; margin: 0 auto; }
+        
+        .dashboard-header { 
+            display: flex; justify-content: space-between; align-items: flex-start; 
+            margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;
+        }
+        .header-info h1 { font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .header-info p { color: var(--text-secondary); font-size: 0.95rem; margin: 0; }
+
+        /* ===== البانل والكروت ===== */
+        .form-card { 
+            background: #ffffff; border: 1px solid var(--border-color); 
+            border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem; 
+            box-shadow: var(--shadow-sm); transition: all 0.3s ease;
+        }
+        .form-card:hover { border-color: var(--gold-accent); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        
+        .form-card-title { 
+            font-size: 1.1rem; font-weight: 800; color: var(--sidebar-bg); 
+            margin-bottom: 1.5rem; padding-bottom: 0.75rem; 
+            border-bottom: 2px solid var(--primary-bg); display: flex; 
+            align-items: center; justify-content: space-between;
+        }
+        .title-with-icon { display: flex; align-items: center; gap: 0.75rem; }
+        .title-with-icon i { color: var(--gold-accent); font-size: 1.2rem; }
+
+        /* ===== تقسيم الفورم ===== */
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        .form-group { margin-bottom: 1rem; }
+        .form-group.full { grid-column: 1 / -1; }
+        
+        .form-label { display: block; margin-bottom: 0.6rem; font-weight: 700; color: var(--text-primary); font-size: 0.95rem; }
+        .form-label .text-danger { color: var(--danger-color); margin-right: 4px; }
+
+        .form-control { 
+            width: 100%; padding: 0.9rem 1rem; border: 1px solid var(--border-color); 
+            border-radius: 8px; background-color: var(--primary-bg); font-family: inherit; 
+            font-size: 0.95rem; transition: all 0.2s; color: var(--text-primary);
+        }
+        .form-control:focus { outline: none; border-color: var(--gold-accent); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); background-color: #ffffff; }
+        
+        textarea.form-control { resize: vertical; min-height: 100px; }
+
+        .form-control[readonly] {
+            background-color: #f1f5f9;
+            cursor: not-allowed;
+            color: var(--text-secondary);
+            border-color: var(--border-color);
+            border-style: dashed;
+        }
+        .field-locked-note {
+            display: flex; align-items: center; gap: 0.4rem;
+            margin-top: 0.5rem; font-size: 0.8rem; color: var(--text-secondary);
+            font-weight: 600;
+        }
+        .field-locked-note i { color: var(--gold-accent); }
+
+        .current-file-link {
+            display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.6rem;
+            font-size: 0.85rem; font-weight: 600; color: var(--text-secondary);
+            background: var(--primary-bg); padding: 0.3rem 0.8rem; border-radius: 6px; border: 1px solid var(--border-color);
+        }
+        .current-file-link a { color: var(--sidebar-bg); text-decoration: none; font-weight: 700; }
+        .current-file-link a:hover { color: var(--gold-accent); text-decoration: underline; }
+
+        .alert-box { padding: 1rem 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; font-weight: 600; display: flex; align-items: flex-start; gap: 0.75rem; border: 1px solid transparent; }
+        .alert-danger { background: rgba(239, 68, 68, 0.05); border-color: var(--danger-color); color: var(--danger-color); }
+        .alert-danger ul { margin: 0.5rem 0 0 0; padding-right: 1.5rem; }
+        .error-msg { font-size: 0.85rem; color: var(--danger-color); margin-top: 4px; display: block; font-weight: 600; }
+
+        .form-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; border-top: 1px dashed var(--border-color); padding-top: 1.5rem; }
+        
+        .btn-cancel { 
+            padding: 12px 24px; background-color: transparent; color: var(--text-secondary); 
+            border: 1px solid var(--border-color); border-radius: 8px; font-weight: 700; 
+            cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
+        }
+        .btn-cancel:hover { background-color: var(--primary-bg); color: var(--text-primary); border-color: var(--text-secondary); }
+        
+        .btn-save { 
+            padding: 12px 32px; background-color: var(--sidebar-bg); color: #ffffff; 
+            border: none; border-radius: 8px; font-weight: 700; cursor: pointer; 
+            transition: 0.3s; display: inline-flex; align-items: center; gap: 0.5rem; font-family: inherit; font-size: 1rem;
+        }
+        .btn-save:hover { background-color: var(--gold-accent); color: var(--sidebar-bg); box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); transform: translateY(-2px); }
+        .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        @media (max-width: 768px) {
+            .create-page-container { padding: 1rem; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-actions { flex-direction: column-reverse; }
+            .btn-cancel, .btn-save { width: 100%; justify-content: center; }
+        }
+تعديل بيانات المحامي
+تحديث ملف:
+رجوع للملف
+{{-- 1. البيانات الأساسية --}}
+تعديل البريد متاح للمسؤول فقط
+{{-- 2. البيانات المهنية --}}
+تعديل التخصص متاح للمسؤول فقط
+تعديل رقم القيد متاح للمسؤول فقط
+{{-- 3. تعديل كلمة المرور للأدمن فقط --}}
+            @if(auth()->user()->role === 'admin')
+تعيين كلمة مرور جديدة (اختياري)
+كلمة المرور الجديدة
+@endif
+
+            {{-- 4. المستندات والصور --}}
+مرفوع حالياً:
+bar_card_image) }}" target="_blank">معاينة
+الصورة الشخصية
+profile_image) }}" target="_blank">معاينة
+صورة البطاقة الشخصية
+national_id_image) }}" target="_blank">معاينة
+حفظ التعديلات
+اتركها فارغة إن لم ترغب بتغييرها
+أعد كتابة كلمة المرور
+/* ===== الحاوية والترويسة ===== */
+        .create-page-container { padding: 2rem; max-width: 900px; margin: 0 auto; }
+        
+        .dashboard-header { 
+            display: flex; justify-content: space-between; align-items: flex-start; 
+            margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;
+        }
+        .header-info h1 { font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .header-info p { color: var(--text-secondary); font-size: 0.95rem; margin: 0; }
+
+        /* ===== البانل والكروت ===== */
+        .form-card { 
+            background: #ffffff; border: 1px solid var(--border-color); 
+            border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem; 
+            box-shadow: var(--shadow-sm); transition: all 0.3s ease;
+        }
+        .form-card:hover { border-color: var(--gold-accent); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        
+        .form-card-title { 
+            font-size: 1.1rem; font-weight: 800; color: var(--sidebar-bg); 
+            margin-bottom: 1.5rem; padding-bottom: 0.75rem; 
+            border-bottom: 2px solid var(--primary-bg); display: flex; 
+            align-items: center; justify-content: space-between;
+        }
+        .title-with-icon { display: flex; align-items: center; gap: 0.75rem; }
+        .title-with-icon i { color: var(--gold-accent); font-size: 1.2rem; }
+
+        /* ===== تقسيم الفورم ===== */
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+        
+        .form-group { margin-bottom: 1rem; }
+        .form-group.full { grid-column: 1 / -1; }
+        .form-label { display: block; margin-bottom: 0.6rem; font-weight: 700; color: var(--text-primary); font-size: 0.9rem; }
+        
+        .form-control { 
+            width: 100%; padding: 0.9rem 1rem; border: 1px solid var(--border-color); 
+            border-radius: 8px; background-color: #ffffff; font-family: inherit; 
+            font-size: 0.95rem; transition: all 0.2s;
+        }
+        .form-control:focus { outline: none; border-color: var(--gold-accent); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); }
+        
+        textarea.form-control { resize: vertical; min-height: 100px; }
+
+        .error-msg { font-size: 0.8rem; color: var(--danger-color); display: block; margin-top: 4px; font-weight: 600; }
+
+        /* ===== أزرار التحكم ===== */
+        .form-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 1.5rem; }
+        
+        .btn-cancel { 
+            padding: 12px 24px; background-color: transparent; color: var(--text-secondary); 
+            border: 1px solid var(--border-color); border-radius: 8px; font-weight: 600; 
+            cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
+        }
+        .btn-cancel:hover { background-color: var(--primary-bg); color: var(--danger-color); border-color: var(--danger-color); }
+        
+        .btn-save { 
+            padding: 12px 32px; background-color: var(--sidebar-bg); color: #ffffff; 
+            border: none; border-radius: 8px; font-weight: 700; cursor: pointer; 
+            transition: 0.3s; display: inline-flex; align-items: center; gap: 0.5rem;
+        }
+        .btn-save:hover { background-color: var(--gold-accent); color: var(--sidebar-bg); box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); }
+        .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* ===== الأخطاء ===== */
+        .error-box { background: rgba(239, 68, 68, 0.05); border: 1px solid var(--danger-color); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; }
+        .error-box strong { color: var(--danger-color); font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
+        .error-box ul { color: var(--danger-color); margin: 0; padding-right: 1.5rem; font-weight: 600; }
+إضافة عميل جديد
+تسجيل بيانات عميل جديد في قاعدة بيانات المكتب
+يرجى مراجعة الأخطاء التالية:
+البيانات الشخصية وبيانات التواصل
+اسم العميل الكامل
+الرقم القومي / الهوية
+رقم الهاتف الأساسي
+العنوان التفصيلي
+ملاحظات إدارية (اختياري)
+حفظ بيانات العميل
+أدخل اسم العميل ثلاثي أو رباعي...
+14 رقم
+المحافظة، المدينة، الشارع، رقم العقار...
+أي تفاصيل خاصة بطريقة التواصل أو ملخص عام...
+/* ===== الحاوية والترويسة ===== */
+        .create-page-container { padding: 2rem; max-width: 800px; margin: 0 auto; }
+        
+        .dashboard-header { 
+            display: flex; justify-content: space-between; align-items: flex-start; 
+            margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;
+        }
+        .header-info h1 { font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .header-info p { color: var(--text-secondary); font-size: 0.95rem; margin: 0; }
+
+        /* ===== البانل ===== */
+        .form-card { 
+            background: #ffffff; border: 1px solid var(--border-color); 
+            border-radius: 12px; padding: 2.5rem 2rem; box-shadow: var(--shadow-sm); 
+            transition: all 0.3s ease;
+        }
+        .form-card:hover { border-color: var(--gold-accent); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+
+        /* ===== تقسيم الفورم ===== */
+        .form-grid { 
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
+            gap: 1.5rem; 
+        }
+        
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group.full { grid-column: 1 / -1; }
+        
+        .form-label { display: block; margin-bottom: 0.6rem; font-weight: 700; color: var(--text-primary); font-size: 0.95rem; }
+        
+        .form-control { 
+            width: 100%; padding: 0.9rem 1rem; border: 1px solid var(--border-color); 
+            border-radius: 8px; background-color: var(--primary-bg); font-family: inherit; 
+            font-size: 0.95rem; transition: all 0.2s; color: var(--text-primary);
+        }
+        .form-control:focus { 
+            outline: none; border-color: var(--gold-accent); 
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); background-color: #ffffff;
+        }
+
+        .error-msg { font-size: 0.85rem; color: var(--danger-color); display: flex; align-items: center; gap: 0.4rem; margin-top: 6px; font-weight: 600; }
+
+        /* ===== أزرار التحكم ===== */
+        .form-actions { 
+            display: flex; gap: 1rem; justify-content: flex-end; 
+            margin-top: 2rem; border-top: 1px dashed var(--border-color); padding-top: 1.5rem; 
+        }
+        
+        .btn-cancel { 
+            padding: 12px 24px; background-color: transparent; color: var(--text-secondary); 
+            border: 1px solid var(--border-color); border-radius: 8px; font-weight: 600; 
+            cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
+        }
+        .btn-cancel:hover { background-color: var(--primary-bg); color: var(--text-primary); border-color: var(--text-secondary); }
+        
+        .btn-save { 
+            padding: 12px 32px; background-color: var(--sidebar-bg); color: #ffffff; 
+            border: none; border-radius: 8px; font-weight: 700; cursor: pointer; 
+            transition: 0.3s; display: inline-flex; align-items: center; gap: 0.5rem; font-family: inherit; font-size: 1rem;
+        }
+        .btn-save:hover { background-color: var(--gold-accent); color: var(--sidebar-bg); box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); transform: translateY(-2px); }
+        .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        @media (max-width: 768px) {
+            .create-page-container { padding: 1rem; }
+            .form-card { padding: 1.5rem; }
+            .form-actions { flex-direction: column-reverse; }
+            .btn-cancel, .btn-save { width: 100%; justify-content: center; }
+        }
+إضافة محكمة جديدة
+إعداد بيانات محكمة جديدة وربطها بجهة التقاضي
+{{-- اسم المحكمة --}}
+اسم المحكمة
+{{-- جهة التقاضي --}}
+جهة التقاضي التابعة لها
+-- اختر جهة التقاضي --
+حفظ المحكمة
+مثال: محكمة استئناف مسقط
+تعديل المحكمة
+تحديث بيانات المحكمة:
+حفظ التعديل
+💳 تسجيل دفعة
+القضية رقم:
+دفع نقدي بالمكتب
+حدد موعداً وادفع بشكل شخصي
+تحويل بنكي / إلكتروني
+أرسل إيصال التحويل للتأكيد
+💰 المبلغ (ج.م.)
+🏢 تفاصيل موعد الدفع بالمكتب
+📅 تاريخ الحضور للمكتب
+ℹ️ سيتم إنشاء موعد تلقائياً في تقويم المكتب وإشعار المحامي المسؤول عنك.
+🏦 بيانات التحويل
+🏛 اسم البنك
+🔢 رقم IBAN
+this.textContent='✓')">نسخ
+📱 محفظة إلكترونية
+🔢 رقم مرجع العملية / رقم التحويل
+📸 صورة إيصال التحويل (اختياري)
+📝 ملاحظات (اختياري)
+{{ $mode === 'in_person' ? '📅 تأكيد الموعد وتسجيل الدفعة' : '📤 إرسال إيصال التحويل' }}
+⏳ جاري المعالجة...
+← العودة للبوابة
+أدخل الرقم المرجعي للعملية
+أي ملاحظة إضافية...
+/* ===== الحاوية والترويسة ===== */
+        .create-page-container { padding: 2rem; max-width: 800px; margin: 0 auto; }
+        
+        .dashboard-header { 
+            display: flex; justify-content: space-between; align-items: flex-start; 
+            margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;
+        }
+        .header-info h1 { font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .header-info p { color: var(--text-secondary); font-size: 0.95rem; margin: 0; }
+
+        /* ===== البانل الملموم ===== */
+        .form-wrapper { display: flex; justify-content: center; }
+        .form-card { 
+            background: #ffffff; border: 1px solid var(--border-color); 
+            border-radius: 12px; padding: 2.5rem 2rem; width: 100%; max-width: 600px;
+            box-shadow: var(--shadow-sm); transition: all 0.3s ease;
+        }
+        .form-card:hover { border-color: var(--gold-accent); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+
+        /* ===== الفورم ===== */
+        .form-group { margin-bottom: 1.5rem; }
+        .form-label { display: block; margin-bottom: 0.8rem; font-weight: 700; color: var(--text-primary); font-size: 1rem; }
+        
+        .form-control { 
+            width: 100%; padding: 1rem 1.2rem; border: 1px solid var(--border-color); 
+            border-radius: 8px; background-color: var(--primary-bg); font-family: inherit; 
+            font-size: 1rem; transition: all 0.2s; color: var(--text-primary);
+        }
+        .form-control:focus { 
+            outline: none; border-color: var(--gold-accent); 
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); background-color: #ffffff;
+        }
+        .form-control::placeholder { color: var(--text-secondary); opacity: 0.7; }
+
+        /* ===== التنبيهات والأخطاء ===== */
+        .error-msg { font-size: 0.85rem; color: var(--danger-color); display: flex; align-items: center; gap: 0.4rem; margin-top: 8px; font-weight: 600; }
+        
+        /* ===== أزرار التحكم ===== */
+        .form-actions { 
+            display: flex; gap: 1rem; margin-top: 2rem; border-top: 1px dashed var(--border-color); padding-top: 1.5rem; 
+        }
+        
+        .btn-cancel { 
+            flex: 1; padding: 12px; background-color: transparent; color: var(--text-secondary); 
+            border: 1px solid var(--border-color); border-radius: 8px; font-weight: 700; 
+            cursor: pointer; transition: 0.2s; display: inline-flex; justify-content: center; align-items: center; gap: 0.5rem; text-decoration: none;
+        }
+        .btn-cancel:hover { background-color: var(--primary-bg); color: var(--text-primary); border-color: var(--text-secondary); }
+        
+        .btn-save { 
+            flex: 1; padding: 12px; background-color: var(--sidebar-bg); color: #ffffff; 
+            border: none; border-radius: 8px; font-weight: 700; cursor: pointer; 
+            transition: 0.3s; display: inline-flex; justify-content: center; align-items: center; gap: 0.5rem; font-family: inherit; font-size: 1rem;
+        }
+        .btn-save:hover { background-color: var(--gold-accent); color: var(--sidebar-bg); box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); transform: translateY(-2px); }
+        .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        @media (max-width: 768px) {
+            .create-page-container { padding: 1rem; }
+            .form-card { padding: 1.5rem; }
+            .form-actions { flex-direction: column-reverse; }
+            .btn-cancel, .btn-save { width: 100%; }
+        }
+إضافة جهة تقاضي
+تسجيل نوع أو جهة قضاء جديدة (مثل: القضاء العادي، الإداري، التجاري...)
+اسم نوع القضاء أو الجهة
+حفظ الجهة
+مثال: القضاء الإداري
+/* ===== الحاوية والترويسة ===== */
+        .create-page-container { padding: 2rem; max-width: 800px; margin: 0 auto; }
+        
+        .dashboard-header { 
+            display: flex; justify-content: space-between; align-items: flex-start; 
+            margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;
+        }
+        .header-info h1 { font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; }
+        .header-info p { color: var(--text-secondary); font-size: 0.95rem; margin: 0; }
+
+        /* ===== البانل الملموم ===== */
+        .form-wrapper { display: flex; justify-content: center; }
+        .form-card { 
+            background: #ffffff; border: 1px solid var(--border-color); 
+            border-radius: 12px; padding: 2.5rem 2rem; width: 100%; max-width: 600px;
+            box-shadow: var(--shadow-sm); transition: all 0.3s ease;
+        }
+        .form-card:hover { border-color: var(--gold-accent); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+
+        /* ===== الفورم ===== */
+        .form-group { margin-bottom: 1.5rem; }
+        .form-label { display: block; margin-bottom: 0.8rem; font-weight: 700; color: var(--text-primary); font-size: 1rem; }
+        
+        .form-control { 
+            width: 100%; padding: 1rem 1.2rem; border: 1px solid var(--border-color); 
+            border-radius: 8px; background-color: var(--primary-bg); font-family: inherit; 
+            font-size: 1rem; transition: all 0.2s; color: var(--text-primary);
+        }
+        .form-control:focus { 
+            outline: none; border-color: var(--gold-accent); 
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); background-color: #ffffff;
+        }
+
+        /* ===== التنبيهات والأخطاء ===== */
+        .error-msg { font-size: 0.85rem; color: var(--danger-color); display: flex; align-items: center; gap: 0.4rem; margin-top: 8px; font-weight: 600; }
+
+        /* ===== أزرار التحكم ===== */
+        .form-actions { 
+            display: flex; gap: 1rem; margin-top: 2rem; border-top: 1px dashed var(--border-color); padding-top: 1.5rem; 
+        }
+        
+        .btn-cancel { 
+            flex: 1; padding: 12px; background-color: transparent; color: var(--text-secondary); 
+            border: 1px solid var(--border-color); border-radius: 8px; font-weight: 700; 
+            cursor: pointer; transition: 0.2s; display: inline-flex; justify-content: center; align-items: center; gap: 0.5rem; text-decoration: none;
+        }
+        .btn-cancel:hover { background-color: var(--primary-bg); color: var(--text-primary); border-color: var(--text-secondary); }
+        
+        .btn-save { 
+            flex: 1; padding: 12px; background-color: var(--sidebar-bg); color: #ffffff; 
+            border: none; border-radius: 8px; font-weight: 700; cursor: pointer; 
+            transition: 0.3s; display: inline-flex; justify-content: center; align-items: center; gap: 0.5rem; font-family: inherit; font-size: 1rem;
+        }
+        .btn-save:hover { background-color: var(--gold-accent); color: var(--sidebar-bg); box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); transform: translateY(-2px); }
+        .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        @media (max-width: 768px) {
+            .create-page-container { padding: 1rem; }
+            .form-card { padding: 1.5rem; }
+            .form-actions { flex-direction: column-reverse; }
+            .btn-cancel, .btn-save { width: 100%; }
+        }
+تعديل جهة تقاضي
+تحديث اسم جهة التقاضي:

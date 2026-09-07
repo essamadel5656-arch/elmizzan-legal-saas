@@ -1,0 +1,77 @@
+/* ─── FONTS ─────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+/* ===== CSS Variables (ثيم الموقع كله) ===== */
+:root {
+    --color-bg:         #f8fafc;
+    --color-card:       #ffffff;
+    --color-border:     #e2e8f0;
+    --color-navy:       #1e293b;
+    --color-gold:       #d4af37;
+    --color-gold-light: #e8c49a;
+    --color-text:       #0f172a;
+    --color-success:    #2ecc71;
+    --color-warning:    #f39c12;
+    --color-danger:     #e74c3c;
+    --color-appeal:     #9b59b6;
+    --font-primary:     'Cairo', 'Tajawal', sans-serif;
+}
+
+:root:lang(en),
+:root:lang(es) {
+    --font-primary: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--primary-bg, var(--color-bg));
+    color: var(--text-primary, var(--color-text));
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+a {
+    color: var(--color-gold);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+a:hover {
+    color: var(--color-gold-light);
+}
+
+button {
+    font-family: var(--font-primary);
+    cursor: pointer;
+}
+
+/* Dark Mode Enhancements */
+[data-theme="dark"], .dark {
+    --card-bg: #1e293b;
+    --bg-primary: #0f172a;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --border-color: #334155;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --card-bg: #1e293b;
+        --bg-primary: #0f172a;
+        --text-primary: #f8fafc;
+        --text-secondary: #94a3b8;
+        --border-color: #334155;
+    }
+}
+
+.card {
+    background-color: var(--card-bg, #ffffff);
+    color: var(--text-primary, #0f172a);
+    border: 1px solid var(--border-color, #e2e8f0);
+}
