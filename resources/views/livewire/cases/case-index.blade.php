@@ -168,44 +168,49 @@
                         </div>
                     </div>
 
-                    <!-- Body: Grid of Meta Details -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
-                        <!-- EXACT ARABIC LABELS MUST BE USED -->
-                        <div class="flex flex-col">
-                            <span class="text-muted">{{ __('نوع القضية') }}</span>
-                            <span class="font-medium">{{ __($case->jurisdiction->name ?? ($case->court->jurisdiction->name ?? '-')) }}</span>
+                    <!-- Highlighted Top Metadata (The "Important Stuff") -->
+                    <div class="grid grid-cols-2 gap-3 bg-slate-50 dark:bg-slate-900/50 p-3 rounded-xl border border-slate-200 dark:border-slate-700/50">
+                        <div class="flex flex-col items-start text-start">
+                            <span class="text-xs text-slate-500">{{ __('نوع القضية') }}</span>
+                            <span class="font-bold text-slate-900 dark:text-slate-100">{{ __($case->jurisdiction->name ?? ($case->court->jurisdiction->name ?? '-')) }}</span>
                         </div>
-                        <div class="flex flex-col">
-                            <span class="text-muted">{{ __('المحكمة') }}</span>
-                            <span class="font-medium">{{ __($case->court->name ?? '-') }}</span>
+                        <div class="flex flex-col items-start text-start">
+                            <span class="text-xs text-slate-500">{{ __('المحامي الرئيسي') }}</span>
+                            <span class="font-bold text-slate-900 dark:text-slate-100">{{ $leadLawyer->name ?? '-' }}</span>
                         </div>
-                        <div class="flex flex-col">
-                            <span class="text-muted">{{ __('درجة التقاضي') }}</span>
-                            <span class="font-medium">{{ __($case->courtLevel->name ?? '-') }}</span>
+                    </div>
+
+                    <!-- Secondary Metadata Grid -->
+                    <div class="grid grid-cols-2 gap-4 text-sm mt-1">
+                        <div class="flex flex-col items-start text-start">
+                            <span class="text-xs text-slate-500">{{ __('المحكمة') }}</span>
+                            <span class="font-bold text-slate-700 dark:text-slate-300">{{ __($case->court->name ?? '-') }}</span>
                         </div>
-                        <div class="flex flex-col">
-                            <span class="text-muted">{{ __('المحامي الرئيسي') }}</span>
-                            <span class="font-medium">{{ $leadLawyer->name ?? '-' }}</span>
+                        <div class="flex flex-col items-start text-start">
+                            <span class="text-xs text-slate-500">{{ __('درجة التقاضي') }}</span>
+                            <span class="font-bold text-slate-700 dark:text-slate-300">{{ __($case->courtLevel->name ?? '-') }}</span>
                         </div>
-                        <div class="flex flex-col">
-                            <span class="text-muted">{{ __('الخصم') }}</span>
-                            <span class="font-medium">{{ $case->rival_name ?? '-' }}</span>
+                        <div class="flex flex-col items-start text-start col-span-2">
+                            <span class="text-xs text-slate-500">{{ __('الخصم') }}</span>
+                            <span class="font-bold text-slate-700 dark:text-slate-300">{{ $case->rival_name ?? '-' }}</span>
                         </div>
                     </div>
 
                     <!-- Footer: Actions -->
-                    <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-200 dark:border-slate-800">
-                        <a href="{{ route('cases.edit', $case) }}" wire:navigate class="btn-action-edit" title="{{ __('تعديل') }}">
+                    <div class="flex items-center justify-end gap-2 pt-4 border-t border-slate-200 dark:border-slate-800">
+                        <a href="{{ route('cases.show', $case) }}" wire:navigate class="text-sm font-bold text-amber-600 hover:text-amber-500 ml-auto flex items-center gap-1.5 transition-colors">
+                            <i class="fas fa-folder-open"></i> {{ __('تفاصيل القضية') }}
+                        </a>
+                        
+                        <a href="{{ route('cases.edit', $case) }}" wire:navigate class="btn-action btn-action-edit" title="{{ __('تعديل') }}">
                             <i class="fas fa-edit"></i>
                         </a>
+                        
                         @can('delete', $case)
-                            <button type="button" wire:click="confirmDelete({{ $case->id }})" class="btn-action-delete" title="{{ __('حذف') }}">
+                            <button type="button" wire:click="confirmDelete({{ $case->id }})" class="btn-action btn-action-delete" title="{{ __('حذف') }}">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         @endcan
-                        <a href="{{ route('cases.show', $case) }}" wire:navigate class="text-sm text-gold hover:text-gold-light flex items-center gap-1 mr-auto">
-                            <i class="fas fa-folder-open"></i> {{ __('تفاصيل القضية') }}
-                        </a>
                     </div>
                 </div>
             @endforeach
