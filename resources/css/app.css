@@ -1,43 +1,80 @@
 /* ════════════════════════════════════════════════════════════════════
-   EL-MIZZAN — CENTRALIZED DESIGN SYSTEM
-   resources/css/app.css
-   v2 — i18n update: dynamic AR/EN font stack + strict logical properties
+   EL-MIZZAN — CENTRALIZED DESIGN SYSTEM
+   resources/css/app.css
 
-   Single source of truth for every view (Dashboard, Cases, Clients,
-   Lawyers, Settings...). No page should ship its own <style> tag —
-   compose UI from the tokens and component classes defined here.
+   Single source of truth for every view (Dashboard, Cases, Clients,
+   Lawyers, Settings...). No page should ship its own <style> tag —
+   compose UI from the tokens and component classes defined here.
 
-   THEME MODEL
-   -----------
-   Dark is the default enterprise look. The base :root tokens below
-   ARE the dark palette. Light mode is the explicit override, applied
-   with [data-theme="light"] (set by Livewire/Alpine on <html>) or a
-   .light class. A prefers-color-scheme fallback is included only for
-   first-time visitors who have not yet chosen a theme — an explicit
-   data-theme attribute always wins because it is more specific.
+   TWO INDEPENDENT AXES
+   ---------------------
+   Language/direction and color theme are orthogonal systems — every
+   combination must work: Arabic+Dark, Arabic+Light, English+Dark,
+   English+Light. They're kept in separate sections below on purpose.
 
-   LANGUAGE / DIRECTION MODEL
-   ---------------------------
-   Language is driven by <html lang="ar" dir="rtl"> or <html lang="en"
-   dir="ltr">, set server-side by Laravel (app()->getLocale()). The
-   font stack swaps off that attribute — never off a manual class —
-   so any Blade/Livewire view is correct the moment the html tag is
-   rendered. Every spacing/position rule in this file uses CSS logical
-   properties (inline/block), so the exact same markup mirrors
-   correctly in both directions with zero per-language overrides.
-   ════════════════════════════════════════════════════════════════════ */
+   THEME MODEL: Dark is the default enterprise look. The base :root
+   tokens ARE the dark palette. Light is the explicit override via
+   [data-theme="light"] / .light (set by Livewire/Alpine on <html>).
 
-/* ─── FONTS ─────────────────────────────────────────────────────────────
-   Both families are requested in a single Google Fonts URL (one
-   connection, one round trip) and use &display=swap so text renders
-   in a fallback font immediately and swaps in once loaded — no
-   invisible-text flash. @import still costs one extra round trip
-   before the browser discovers it, so for production it's best to
-   hoist the equivalent <link rel="preconnect"> +
-   <link rel="stylesheet"> tags into the <head> ahead of this
-   stylesheet; @import is kept here so this file stays fully
-   self-contained. ────────────────────────────────────────────────── */
+   LANGUAGE MODEL: font family AND text direction are both driven by
+   the <html> element's dir/lang attributes, so setting EITHER
+   dir="rtl" OR lang="ar" (not necessarily both) is enough to get a
+   fully correct Arabic page — never just a font swap sitting on top
+   of a mismatched LTR layout.
+   ════════════════════════════════════════════════════════════════════ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* ─── FONTS ─────────────────────────────────────────────────────────
+   One combined request for both families (fewer round trips than two
+   separate @imports) with display=swap so text renders in a fallback
+   font immediately and swaps in once the webfont arrives — no
+   invisible-text flash while it loads.
+
+   Note: @import is still a render-blocking fetch at the CSS-file
+   level per spec — that part can't be fixed from inside a
+   stylesheet. For a genuinely non-blocking load, replace this line
+   with a <link rel="preconnect"> + <link rel="stylesheet"> pair in
+   the Blade layout's <head> instead, so the browser fetches the font
+   in parallel with app.css rather than through it. */
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+/* ─── i18n: LANGUAGE-DRIVEN FONT + DIRECTION ─────────────────────────
+   :root IS <html>, so :root[dir="ltr"] === html[dir="ltr"]. Arabic is
+   the implicit default (see base :root below), so it doesn't need its
+   own explicit dir="rtl"/lang="ar" rule — only the English/Latin
+   override does.
+
+   `[lang|="en"]` (not `[lang="en"]`) matches "en" AND hyphenated
+   regional subtags like "en-US" / "en-GB", same matching behavior as
+   the :lang() pseudo-class. An exact [lang="en"] would silently miss
+   "en-US", which Laravel's app locale commonly produces. */
+:root {
+    --font-primary: 'Cairo', 'Tajawal', sans-serif;
+    /* Arabic-first default */
+}
+
+:root[dir="ltr"],
+:root[lang|="en"],
+:root[lang|="es"] {
+    --font-primary: 'Plus Jakarta Sans', system-ui, sans-serif;
+}
+
+/* If only `lang` is set with no explicit `dir`, derive direction from
+   it. Without this, an Arabic page missing dir="rtl" would get the
+   Cairo font but still flow left-to-right — a font swap sitting on a
+   broken layout. Where `dir` IS present, this is skipped entirely;
+   the browser already maps that attribute to `direction` itself. */
+:root[lang|="ar"]:not([dir]) {
+    direction: rtl;
+    unicode-bidi: isolate;
+}
+
+:root[lang|="en"]:not([dir]),
+:root[lang|="es"]:not([dir]) {
+    direction: ltr;
+    unicode-bidi: isolate;
+}
 
 /* ─── DESIGN TOKENS ─────────────────────────────────────────────────── */
 :root {
@@ -73,26 +110,8 @@
     --shadow-lift: 0 8px 20px rgba(0, 0, 0, 0.45);
 }
 
-/* ─── DYNAMIC FONT STACK BY LANGUAGE ────────────────────────────────────
-   Arabic is the default typeface across the app. English (or any
-   explicit LTR document) swaps to a Latin grotesque. Both the `dir`
-   and `lang` attributes are matched independently, since either one
-   alone is enough to know the document's language in practice. */
-:root,
-html[dir="rtl"],
-html[lang="ar"] {
-    --font-primary: 'Cairo', 'Tajawal', sans-serif;
-}
-
-html[dir="ltr"],
-html[lang="en"] {
-    --font-primary: 'Plus Jakarta Sans', system-ui, sans-serif;
-}
-
 /* Respect system preference ONLY before the user has picked a theme.
-   Anything under [data-theme] below takes precedence automatically
-   because attribute selectors + this media query are equal specificity
-   and the explicit override rules are declared later in the file. */
+   [data-theme] below always wins once Livewire/Alpine sets it. */
 @media (prefers-color-scheme: light) {
     :root:not([data-theme]) {
         --bg-app: #f8fafc;
@@ -125,8 +144,8 @@ html[lang="en"] {
     --shadow-lift: 0 10px 24px rgba(15, 23, 42, 0.12);
 }
 
-/* Explicit DARK override — for when a saved preference must beat an
-   OS set to light mode; restates the base tokens for clarity/safety */
+/* Explicit DARK override — restates the base tokens so a saved
+   preference can beat an OS set to light mode */
 :root[data-theme="dark"],
 .dark {
     --bg-app: #0b1329;
@@ -161,8 +180,24 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     min-height: 100vh;
-    text-align: start;
     transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Bidirectional default: text follows document direction, not a
+   hardcoded side, so the same markup works in RTL (ar) and LTR (en/es) */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.panel,
+.custom-table th,
+.custom-table td,
+.app-input,
+.app-select {
+    text-align: start;
 }
 
 a {
@@ -197,13 +232,12 @@ a:focus-visible,
 }
 
 /* ─── SURFACE: .panel ───────────────────────────────────────────────
-   Universal card/container used for every content block. */
+   Universal card/container used for every content block. */
 .panel {
     background-color: var(--bg-panel);
     border: 1px solid var(--border-color);
     border-radius: 14px;
     box-shadow: var(--shadow-soft);
-    text-align: start;
     padding-block: 1.5rem;
     padding-inline: 1.5rem;
     transition: background-color 0.25s ease, border-color 0.25s ease;
@@ -224,10 +258,7 @@ a:focus-visible,
 }
 
 /* ─── BUTTON: .btn-add-new ──────────────────────────────────────────
-   Universal "create" action across Cases/Clients/Lawyers/Settings.
-   The icon-circle is pinned to the START side with a real margin
-   (not a flex `gap`), exactly as specced, so it survives even if the
-   button's internal layout changes later. */
+   Universal "create" action across Cases/Clients/Lawyers/Settings. */
 .btn-add-new {
     display: inline-flex;
     align-items: center;
@@ -259,17 +290,18 @@ a:focus-visible,
     justify-content: center;
     width: 1.75rem;
     height: 1.75rem;
+    margin-inline-end: 0.5rem;
+    /* 8px — icon always sits on the START side, RTL or LTR */
     border-radius: 50%;
     background-color: var(--color-gold);
     color: #1e1608;
     /* fixed dark ink — stays readable on gold in both themes */
-    margin-inline-end: 8px;
     flex-shrink: 0;
 }
 
 /* ─── ROW ACTIONS: .btn-action-edit / .btn-action-delete ────────────
-   Fixed semantic colors — identical in light and dark on purpose,
-   so a user never has to relearn "which color means delete". */
+   Fixed semantic colors — identical in light and dark on purpose,
+   so a user never has to relearn "which color means delete". */
 .btn-action {
     display: inline-flex;
     align-items: center;
@@ -302,10 +334,7 @@ a:focus-visible,
 }
 
 /* ─── TABLE: .custom-table ──────────────────────────────────────────
-   Full table skeleton with theme-aware borders and hover states.
-   Every column aligns to `start` (right in RTL, left in LTR) except
-   the actions column, which is intentionally always centered — mark
-   it with `.col-actions` on both the <th> and its <td>s. */
+   Full table skeleton with theme-aware borders and hover states. */
 .custom-table {
     width: 100%;
     border-collapse: collapse;
@@ -313,7 +342,6 @@ a:focus-visible,
 }
 
 .custom-table thead th {
-    text-align: start;
     color: var(--text-secondary);
     font-weight: 600;
     font-size: 0.8125rem;
@@ -324,7 +352,6 @@ a:focus-visible,
 }
 
 .custom-table tbody td {
-    text-align: start;
     padding-block: 0.875rem;
     padding-inline: 1rem;
     border-block-end: 1px solid var(--border-color);
@@ -344,22 +371,27 @@ a:focus-visible,
     border-block-end: none;
 }
 
-/* Actions column — deliberately centered in every language */
-.custom-table th.col-actions,
-.custom-table td.col-actions {
+/* Actions column stays centered regardless of direction. Defaults to
+   the LAST column (the convention used across Cases/Clients/Lawyers
+   tables) so existing markup needs no changes; add .col-actions
+   explicitly on any table where Actions isn't structurally last. */
+.custom-table th:last-child,
+.custom-table td:last-child,
+.custom-table .col-actions {
     text-align: center;
 }
 
 .table-actions {
-    display: flex;
+    display: inline-flex;
+    /* inline, not block-flex, so the td's
+                              text-align: center above actually centers it */
     align-items: center;
-    justify-content: center;
     gap: 0.5rem;
 }
 
 /* ─── BADGE: .badge-item ────────────────────────────────────────────
-   Neutral pill for tags, courts, categories — with room for a
-   leading micro-icon. */
+   Neutral pill for tags, courts, categories — with room for a
+   leading micro-icon. */
 .badge-item {
     display: inline-flex;
     align-items: center;
@@ -382,7 +414,7 @@ a:focus-visible,
 }
 
 /* Status-flavored badges reuse the semantic tokens as text/border
-   accents, keeping the same neutral background for consistency */
+   accents, keeping the same neutral background for consistency */
 .badge-success {
     color: var(--color-success);
     border-color: color-mix(in srgb, var(--color-success) 40%, var(--border-color));
@@ -403,29 +435,12 @@ a:focus-visible,
     border-color: color-mix(in srgb, var(--color-appeal) 40%, var(--border-color));
 }
 
-/* ─── FORM CONTROLS: .app-input / .app-select ────────────────────────
-   Text always starts at the logical start edge. Optional leading/
-   trailing icons (search glyph, dropdown chevron, currency symbol...)
-   are built with a `.field-wrap` positioning context so they use
-   `inset-inline-start` / `inset-inline-end` — real logical properties,
-   not a dir-conditional left/right swap — and therefore flip for free.
-
-   Markup pattern:
-     <div class="field-wrap">
-       <span class="field-icon"><svg>...</svg></span>
-       <input class="app-input has-icon-start">
-     </div>
-     <div class="field-wrap">
-       <select class="app-select"></select>
-       <span class="select-arrow"><svg>...</svg></span>
-     </div>
-*/
+/* ─── FORM CONTROLS: .app-input / .app-select ──────────────────────── */
 .app-input,
 .app-select {
     width: 100%;
     font-family: var(--font-primary);
     font-size: 0.9375rem;
-    text-align: start;
     color: var(--text-primary);
     background-color: var(--bg-input);
     border: 1px solid var(--border-color);
@@ -451,35 +466,12 @@ a:focus-visible,
     box-shadow: var(--focus-ring);
 }
 
-/* Positioning context for input/select icons */
-.field-wrap {
-    position: relative;
-    width: 100%;
-}
-
-.field-wrap .field-icon {
-    position: absolute;
-    inset-inline-start: 0.875rem;
-    inset-block: 0;
-    display: flex;
-    align-items: center;
-    color: var(--text-secondary);
-    pointer-events: none;
-}
-
-.field-wrap .field-icon svg {
-    width: 1rem;
-    height: 1rem;
-}
-
-/* Reserve room for a leading icon (search glyph, currency symbol...) */
-.app-input.has-icon-start {
-    padding-inline-start: 2.5rem;
-}
-
-/* Native <select> chrome removed so our own chevron can be positioned
-   with a real logical property; the browser's built-in arrow is
-   physical-only and can't flip for RTL. */
+/* Native select arrows can't be repositioned in place, and background
+   -position has no reliable logical (inline-end) keyword across
+   browsers yet — so instead of a [dir="rtl"] override with a
+   hardcoded physical value, the native arrow is removed and replaced
+   with a real element positioned via inset-inline-end (see the
+   .select-wrap pattern just below). */
 .app-select {
     appearance: none;
     -webkit-appearance: none;
@@ -487,19 +479,49 @@ a:focus-visible,
     padding-inline-end: 2.25rem;
 }
 
-.field-wrap .select-arrow {
+/* ─── COMPOSED PATTERN: icon/arrow inside a form control ─────────────
+   One contract for both cases — wrap the control, position the
+   icon/arrow with inset-inline-start (leading) or inset-inline-end
+   (trailing). Whichever side that resolves to flips automatically
+   with dir; nothing else in these rules needs to change per language.
+   Bring your own SVG, same convention as .btn-action-edit/-delete.
+
+   <div class="select-wrap">
+     <select class="app-select">...</select>
+     <svg class="select-arrow">...</svg>
+   </div>
+
+   <div class="input-icon-wrap">
+     <svg class="input-icon">...</svg>
+     <input class="app-input" placeholder="...">
+   </div>
+*/
+.select-wrap,
+.input-icon-wrap {
+    position: relative;
+}
+
+.input-icon-wrap .app-input {
+    padding-inline-start: 2.5rem;
+}
+
+.select-arrow,
+.input-icon {
     position: absolute;
-    inset-inline-end: 0.875rem;
-    inset-block: 0;
-    display: flex;
-    align-items: center;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 14px;
+    height: 14px;
     color: var(--text-secondary);
     pointer-events: none;
 }
 
-.field-wrap .select-arrow svg {
-    width: 0.875rem;
-    height: 0.875rem;
+.select-arrow {
+    inset-inline-end: 0.85rem;
+}
+
+.input-icon {
+    inset-inline-start: 0.85rem;
 }
 
 /* ─── RESPONSIVE ────────────────────────────────────────────────────── */
@@ -535,10 +557,6 @@ a:focus-visible,
         display: flex;
         justify-content: space-between;
         gap: 1rem;
-    }
-
-    .custom-table td.col-actions {
-        justify-content: center;
     }
 }
 
