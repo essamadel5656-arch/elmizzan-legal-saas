@@ -69,9 +69,9 @@
                         @endif
                         <div style="font-size:.78rem;color:var(--text-secondary);margin-top:.2rem;">القضية: {{ $docReq->case?->case_number }}</div>
                     </div>
-                    <a href="{{ route('client-portal.upload', $docReq->id) }}" wire:navigate
+                    <a href="{{ route('client-portal.upload', $docReq->{{ __('id) }}" wire:navigate
                        style="background:#dc2626;color:#fff;padding:.5rem 1.1rem;border-radius:8px;font-size:.85rem;font-weight:700;text-decoration:none;white-space:nowrap;">
-                        📎 رفع الآن
+                        📎 رفع الآن') }}
                     </a>
                 </div>
             @endforeach
@@ -79,13 +79,13 @@
     @endif
 
     {{-- Cases Overview --}}
-    <div class="portal-section-title">📁 قضاياي</div>
+    <div class="portal-section-title">{{ __('📁 قضاياي') }}</div>
     <div class="portal-grid" style="margin-bottom:2rem;">
         @forelse($cases as $case)
             <div class="portal-card">
                 <div class="portal-card-header">
                     <div>
-                        <div class="portal-card-title">رقم القضية</div>
+                        <div class="portal-card-title">{{ __('رقم القضية') }}</div>
                         <div style="font-size:1.1rem;font-weight:800;color:var(--text-primary);">{{ $case['case_number'] }}</div>
                     </div>
                     <span class="case-status-pill status-{{ $case['status'] ?? 'default' }}" style="margin-top:.2rem;">
@@ -97,23 +97,23 @@
                 </div>
                 @if($case['next_hearing'])
                     <div style="background:rgba(212,175,55,.08);border:1px solid rgba(212,175,55,.2);border-radius:8px;padding:.5rem .85rem;font-size:.83rem;margin-bottom:.85rem;">
-                        📅 الجلسة القادمة: <strong>{{ $case['next_hearing'] }}</strong>
+                        {{ __('📅 الجلسة القادمة:') }} <strong>{{ $case['next_hearing'] }}</strong>
                     </div>
                 @endif
                 {{-- Fee balance (client-visible portion only) --}}
                 @if($case['agreed_fee'])
                     <div style="margin-top:.5rem;">
                         <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:.35rem;">
-                            <span style="color:var(--text-secondary);">الأتعاب المتفق عليها</span>
+                            <span style="color:var(--text-secondary);">{{ __('الأتعاب المتفق عليها') }}</span>
                             <span style="font-weight:700;color:var(--text-primary);">{{ number_format($case['agreed_fee']) }}</span>
                         </div>
                         <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:.35rem;">
-                            <span style="color:#15803d;">✅ المدفوع</span>
+                            <span style="color:#15803d;">{{ __('✅ المدفوع') }}</span>
                             <span style="color:#15803d;font-weight:700;">{{ number_format($case['paid']) }}</span>
                         </div>
                         @if($case['remaining'] > 0)
                             <div style="display:flex;justify-content:space-between;font-size:.82rem;margin-bottom:.5rem;">
-                                <span style="color:#dc2626;">💳 المتبقي</span>
+                                <span style="color:#dc2626;">{{ __('💳 المتبقي') }}</span>
                                 <span style="color:#dc2626;font-weight:700;">{{ number_format($case['remaining']) }}</span>
                             </div>
                         @endif
@@ -125,7 +125,7 @@
             </div>
         @empty
             <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--text-secondary);">
-                📂 لا توجد قضايا مرتبطة بحسابك حالياً.
+                {{ __('📂 لا توجد قضايا مرتبطة بحسابك حالياً.') }}
             </div>
         @endforelse
     </div>
@@ -133,7 +133,7 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
         {{-- Upcoming Hearings --}}
         <div class="portal-card" style="height:fit-content;">
-            <div class="portal-section-title">📅 الجلسات القادمة</div>
+            <div class="portal-section-title">{{ __('📅 الجلسات القادمة') }}</div>
             @forelse($upcomingHearings as $h)
                 <div class="hearing-item">
                     <div class="hearing-date">{{ \Carbon\Carbon::parse($h['date'])->format('j\nM') }}</div>
@@ -144,17 +144,17 @@
                     </div>
                 </div>
             @empty
-                <div style="text-align:center;padding:1.5rem;color:var(--text-secondary);font-size:.9rem;">لا توجد جلسات قادمة.</div>
+                <div style="text-align:center;padding:1.5rem;color:var(--text-secondary);font-size:.9rem;">{{ __('لا توجد جلسات قادمة.') }}</div>
             @endforelse
         </div>
 
         {{-- Payment History --}}
         <div class="portal-card" style="height:fit-content;">
-            <div class="portal-section-title">💳 سجل المدفوعات</div>
+            <div class="portal-section-title">{{ __('💳 سجل المدفوعات') }}</div>
             @forelse($payments as $p)
                 <div class="payment-row">
                     <div>
-                        <div style="font-weight:700;font-size:.9rem;">{{ number_format($p->amount) }} ج.م.</div>
+                        <div style="font-weight:700;font-size:.9rem;">{{ number_format($p->{{ __('amount) }} ج.م.') }}</div>
                         <div style="font-size:.78rem;color:var(--text-secondary);">{{ $p->case?->case_number }} · {{ $p->payment_date?->format('d/m/Y') ?? 'غير محدد' }}</div>
                     </div>
                     <span style="padding:.2rem .65rem;border-radius:20px;font-size:.78rem;font-weight:700;
@@ -164,7 +164,7 @@
                     </span>
                 </div>
             @empty
-                <div style="text-align:center;padding:1.5rem;color:var(--text-secondary);font-size:.9rem;">لا توجد مدفوعات مسجلة.</div>
+                <div style="text-align:center;padding:1.5rem;color:var(--text-secondary);font-size:.9rem;">{{ __('لا توجد مدفوعات مسجلة.') }}</div>
             @endforelse
         </div>
     </div>

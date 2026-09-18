@@ -80,16 +80,16 @@
     {{-- ترويسة الصفحة --}}
     <div class="dashboard-header">
         <div class="header-info">
-            <h1><i class="fas fa-user-shield" style="color: var(--gold-accent);"></i> ملف العميل: <span style="color: var(--sidebar-bg);">{{ $client->name }}</span></h1>
+            <h1><i class="fas fa-user-shield" style="color: var(--gold-accent);"></i> {{ __('ملف العميل:') }} <span style="color: var(--sidebar-bg);">{{ $client->name }}</span></h1>
             <div class="meta-info" style="margin-top: 0.8rem;">
-                <div>معرّف النظام للعميل: <strong>#{{ $client->id }}</strong></div>
-                <div>تاريخ التسجيل: <strong>{{ $client->created_at ? $client->created_at->format('Y-m-d') : 'غير مسجل' }}</strong></div>
+                <div>{{ __('معرّف النظام للعميل:') }} <strong>#{{ $client->id }}</strong></div>
+                <div>{{ __('تاريخ التسجيل:') }} <strong>{{ $client->created_at ? $client->created_at->format('Y-m-d') : 'غير مسجل' }}</strong></div>
             </div>
         </div>
         
         <div class="header-actions">
             <a href="{{ route('clients.index') }}" class="btn-cancel">
-                <i class="fas fa-arrow-right"></i> العودة للقائمة
+                <i class="fas fa-arrow-right"></i> {{ __('العودة للقائمة') }}
             </a>
         </div>
     </div>
@@ -97,50 +97,50 @@
     {{-- 1. بيانات الاتصال والهوية --}}
     <div class="show-card">
         <div class="show-card-title">
-            <i class="fas fa-address-card"></i> بيانات الاتصال والهوية الشخصية
+            <i class="fas fa-address-card"></i> {{ __('بيانات الاتصال والهوية الشخصية') }}
         </div>
         
         <div class="info-grid">
             <div class="info-item">
-                <span class="info-label"><i class="fas fa-phone-alt"></i> رقم الهاتف المحمول</span>
+                <span class="info-label"><i class="fas fa-phone-alt"></i> {{ __('رقم الهاتف المحمول') }}</span>
                 <span class="info-value">
                     @if($client->phone)
                         <a href="tel:{{ $client->phone }}" class="info-value-link" style="direction: ltr;">{{ $client->phone }}</a>
                     @else
-                        <span class="empty">— غير مسجل —</span>
+                        <span class="empty">{{ __('— غير مسجل —') }}</span>
                     @endif
                 </span>
             </div>
 
             <div class="info-item">
-                <span class="info-label"><i class="fas fa-envelope"></i> البريد الإلكتروني</span>
+                <span class="info-label"><i class="fas fa-envelope"></i> {{ __('البريد الإلكتروني') }}</span>
                 <span class="info-value">
                     @if($client->email)
                         <a href="mailto:{{ $client->email }}" class="info-value-link">{{ $client->email }}</a>
                     @else
-                        <span class="empty">— غير مسجل —</span>
+                        <span class="empty">{{ __('— غير مسجل —') }}</span>
                     @endif
                 </span>
             </div>
 
             <div class="info-item">
-                <span class="info-label"><i class="fas fa-id-card"></i> الرقم القومي / السجل التجاري</span>
+                <span class="info-label"><i class="fas fa-id-card"></i> {{ __('الرقم القومي / السجل التجاري') }}</span>
                 <span class="info-value">
                     @if($client->nid)
                         {{ $client->nid }}
                     @else
-                        <span class="empty">— غير مسجل —</span>
+                        <span class="empty">{{ __('— غير مسجل —') }}</span>
                     @endif
                 </span>
             </div>
 
             <div class="info-item">
-                <span class="info-label"><i class="fas fa-map-marker-alt"></i> العنوان الحالي التفصيلي</span>
+                <span class="info-label"><i class="fas fa-map-marker-alt"></i> {{ __('العنوان الحالي التفصيلي') }}</span>
                 <span class="info-value">
                     @if($client->address)
                         {{ $client->address }}
                     @else
-                        <span class="empty">— غير مسجل —</span>
+                        <span class="empty">{{ __('— غير مسجل —') }}</span>
                     @endif
                 </span>
             </div>
@@ -150,12 +150,12 @@
     {{-- 2. الملاحظات الإدارية الملحقة للعميل --}}
     <div class="show-card">
         <div class="show-card-title">
-            <i class="fas fa-sticky-note"></i> تقرير وملاحظات المكتب الداخلي
+            <i class="fas fa-sticky-note"></i> {{ __('تقرير وملاحظات المكتب الداخلي') }}
         </div>
         
         <div class="info-grid">
             <div class="info-item full">
-                <span class="info-value textarea-val">@if($client->note){{ $client->note }}@else<span class="empty">لا توجد ملاحظات إدارية مضافة لملف هذا العميل حتى الآن.</span>@endif</span>
+                <span class="info-value textarea-val">@if($client->note){{ $client->note }}@else<span class="empty">{{ __('لا توجد ملاحظات إدارية مضافة لملف هذا العميل حتى الآن.') }}</span>@endif</span>
             </div>
         </div>
     </div>

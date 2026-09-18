@@ -99,21 +99,21 @@
         <div class="header-info">
             <h1>
                 <i class="fas fa-file-signature" style="color: var(--gold-accent); margin-left: 8px;"></i>
-                تعديل المستند
+                {{ __('تعديل المستند') }}
             </h1>
             <p>
-                تعديل بيانات المستند المرتبط بالقضية رقم:
+                {{ __('تعديل بيانات المستند المرتبط بالقضية رقم:') }}
                 <strong style="color: var(--sidebar-bg);">{{ $document->case->case_number ?? '#' . $document->case_id }}</strong>
             </p>
         </div>
         <a href="{{ route('document.show', $document->id) }}" class="btn-cancel">
-            <i class="fas fa-arrow-right"></i> رجوع للمستند
+            <i class="fas fa-arrow-right"></i> {{ __('رجوع للمستند') }}
         </a>
     </div>
 
     @if($errors->any())
         <div class="error-box">
-            <strong><i class="fas fa-exclamation-triangle"></i> يرجى مراجعة الأخطاء التالية:</strong>
+            <strong><i class="fas fa-exclamation-triangle"></i> {{ __('يرجى مراجعة الأخطاء التالية:') }}</strong>
             <ul>
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -131,11 +131,11 @@
 
                 {{-- نوع المستند --}}
                 <div class="form-group">
-                    <label class="form-label">نوع المستند <span style="color: var(--danger-color);">*</span></label>
+                    <label class="form-label">{{ __('نوع المستند') }} <span style="color: var(--danger-color);">*</span></label>
                     <select name="document_type" class="form-control" required>
-                        <option value="contract"   {{ old('document_type', $document->document_type) == 'contract'   ? 'selected' : '' }}>عقد</option>
-                        <option value="report"     {{ old('document_type', $document->document_type) == 'report'     ? 'selected' : '' }}>تقرير</option>
-                        <option value="attachment" {{ old('document_type', $document->document_type) == 'attachment' ? 'selected' : '' }}>مرفق</option>
+                        <option value="contract"   {{ old('document_type', $document->{{ __('document_type) == \'contract\'   ? \'selected\' : \'\' }}>عقد') }}</option>
+                        <option value="report"     {{ old('document_type', $document->{{ __('document_type) == \'report\'     ? \'selected\' : \'\' }}>تقرير') }}</option>
+                        <option value="attachment" {{ old('document_type', $document->{{ __('document_type) == \'attachment\' ? \'selected\' : \'\' }}>مرفق') }}</option>
                     </select>
                     @error('document_type')
                         <div class="error-msg"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
@@ -144,7 +144,7 @@
 
                 {{-- عنوان المستند --}}
                 <div class="form-group">
-                    <label class="form-label">عنوان المستند <span style="color: var(--danger-color);">*</span></label>
+                    <label class="form-label">{{ __('عنوان المستند') }} <span style="color: var(--danger-color);">*</span></label>
                     <input type="text" name="title" class="form-control" value="{{ old('title', $document->title) }}" required>
                     @error('title')
                         <div class="error-msg"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
@@ -153,8 +153,8 @@
 
                 {{-- الوصف (أخذ العرض بالكامل) --}}
                 <div class="form-group full">
-                    <label class="form-label">الوصف</label>
-                    <textarea name="description" class="form-control" rows="3" placeholder="وصف مختصر للمستند (اختياري)...">{{ old('description', $document->description) }}</textarea>
+                    <label class="form-label">{{ __('الوصف') }}</label>
+                    <textarea name="description" class="form-control" rows="3" placeholder="{{ __('وصف مختصر للمستند (اختياري)...') }}">{{ old('description', $document->description) }}</textarea>
                     @error('description')
                         <div class="error-msg"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
                     @enderror
@@ -162,7 +162,7 @@
 
                 {{-- الملف (أخذ العرض بالكامل) --}}
                 <div class="form-group full">
-                    <label class="form-label">الملف المرفق <span style="color: var(--text-secondary); font-weight: 500; margin-right: 5px;">(ارفع ملف جديد فقط إذا أردت استبدال الملف الحالي)</span></label>
+                    <label class="form-label">{{ __('الملف المرفق') }} <span style="color: var(--text-secondary); font-weight: 500; margin-right: 5px;">{{ __('(ارفع ملف جديد فقط إذا أردت استبدال الملف الحالي)') }}</span></label>
 
                     {{-- الملف الحالي --}}
                     @if($document->file_path)
@@ -180,7 +180,7 @@
                         <div class="current-file-box">
                             <i class="fas {{ $style['icon'] }}" style="color: {{ $style['color'] }};"></i>
                             <div>
-                                <div class="current-file-label">الملف المرفوع حالياً بالنظام</div>
+                                <div class="current-file-label">{{ __('الملف المرفوع حالياً بالنظام') }}</div>
                                 <div class="current-file-name" dir="ltr" style="text-align: right;">{{ $document->title }}.{{ $ext }}</div>
                             </div>
                         </div>
@@ -189,7 +189,7 @@
                     <div class="upload-box" id="uploadBox">
                         <div id="uploadDefault">
                             <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                            <p style="color: var(--text-primary); font-weight: 700; margin-bottom: 0.3rem;">اضغط هنا لاختيار ملف جديد لاستبدال القديم</p>
+                            <p style="color: var(--text-primary); font-weight: 700; margin-bottom: 0.3rem;">{{ __('اضغط هنا لاختيار ملف جديد لاستبدال القديم') }}</p>
                             <p style="color: var(--text-secondary); font-size: 0.85rem;">PDF, DOC, DOCX, XLS, XLSX</p>
                         </div>
                         <div id="uploadPreview" style="display: none; flex-direction: column; align-items: center; gap: 0.6rem;"></div>
@@ -205,10 +205,10 @@
             {{-- أزرار التحكم --}}
             <div class="form-actions">
                 <a href="{{ route('document.show', $document->id) }}" class="btn-cancel">
-                    <i class="fas fa-times"></i> التراجع
+                    <i class="fas fa-times"></i> {{ __('التراجع') }}
                 </a>
                 <button type="submit" class="btn-save">
-                    <i class="fas fa-save"></i> تحديث المستند
+                    <i class="fas fa-save"></i> {{ __('تحديث المستند') }}
                 </button>
             </div>
         </form>
@@ -246,10 +246,10 @@ document.addEventListener('DOMContentLoaded', function () {
             <i class="fas ${icon}" style="font-size:3.5rem; color:${color}; margin-bottom: 0.5rem;"></i>
             <p style="color:var(--success-color); font-weight:700; margin:0;">
                 <i class="fas fa-check-circle"></i>
-                تم اختيار الملف الجديد: <span style="color:var(--text-primary);" dir="ltr">${file.name}</span> (${sizeMB} MB)
+                {{ __('تم اختيار الملف الجديد:') }} <span style="color:var(--text-primary);" dir="ltr">${file.name}</span> (${sizeMB} MB)
             </p>
             <span class="remove-file-btn" style="color:var(--danger-color); cursor:pointer; font-weight:700; text-decoration:underline; font-size:0.9rem; margin-top: 0.5rem;">
-                <i class="fas fa-trash-alt"></i> التراجع واستخدام الملف القديم
+                <i class="fas fa-trash-alt"></i> {{ __('التراجع واستخدام الملف القديم') }}
             </span>
         `;
     });

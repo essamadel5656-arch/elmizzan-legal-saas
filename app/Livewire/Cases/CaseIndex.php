@@ -23,6 +23,10 @@ class CaseIndex extends Component
 
     public ?int $confirmingDeleteId = null;
 
+    public bool $isMediaViewerOpen = false;
+    public array $mediaGallery = [];
+    public int $currentMediaIndex = 0;
+
     protected $queryString = [
         'search'             => ['except' => ''],
         'statusFilter'       => ['except' => ''],
@@ -90,14 +94,91 @@ class CaseIndex extends Component
         $case->delete();
 
         $this->confirmingDeleteId = null;
-        session()->flash('success', 'تم حذف القضية رقم ' . $caseNumber . ' بنجاح.');
+        session()->flash('success', __('تم حذف القضية رقم :number بنجاح.', ['number' => $caseNumber]));
+    }
+
+    public function openMediaViewer(int $caseId): void
+    {
+        $case = LegalCase::with('documents')->find($caseId);
+        if (!$case) return;
+
+        $this->mediaGallery = [];
+
+        if ($case->case_file && Storage::disk('public')->exists($case->case_file)) {
+            $this->mediaGallery[] = [
+                'id' => 'main_file',
+                'url' => asset('storage/' . $case->case_file),
+                'path' => $case->case_file,
+                'type' => $this->getFileType($case->case_file),
+                'title' => __('ملف القضية الرئيسي'),
+            ];
+        }
+
+        foreach ($case->documents as $doc) {
+            if ($doc->file_path && Storage::disk('public')->exists($doc->file_path)) {
+                $this->mediaGallery[] = [
+                    'id' => $doc->id,
+                    'url' => asset('storage/' . $doc->file_path),
+                    'path' => $doc->file_path,
+                    'type' => $this->getFileType($doc->file_path),
+                    'title' => $doc->title ?? __('مستند إضافي'),
+                ];
+            }
+        }
+
+        if (count($this->mediaGallery) > 0) {
+            $this->currentMediaIndex = 0;
+            $this->isMediaViewerOpen = true;
+        }
+    }
+
+    private function getFileType($path): string
+    {
+        $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'])) {
+            return 'image';
+        }
+        if ($ext === 'pdf') {
+            return 'pdf';
+        }
+        if (in_array($ext, ['doc', 'docx'])) {
+            return 'word';
+        }
+        return 'other';
+    }
+
+    public function nextMedia(): void
+    {
+        if ($this->currentMediaIndex < count($this->mediaGallery) - 1) {
+            $this->currentMediaIndex++;
+        }
+    }
+
+    public function prevMedia(): void
+    {
+        if ($this->currentMediaIndex > 0) {
+            $this->currentMediaIndex--;
+        }
+    }
+
+    public function closeMediaViewer(): void
+    {
+        $this->isMediaViewerOpen = false;
+        $this->mediaGallery = [];
     }
 
     public function render()
     {
         $user = auth()->user();
 
-        $query = LegalCase::with(['court', 'jurisdiction', 'courtLevel', 'clients', 'lawyers'])
+        // Eager Loading Blueprint for render()
+        $query = LegalCase::with([
+            'court.jurisdiction',
+            'courtLevel',
+            'clients',
+            'documents',
+            'lawyers' => fn($q) => $q->select('lawyers.id', 'lawyers.name')->withPivot('role'),
+        ])
             // Scoped for lawyers
             ->when($user && $user->role === 'lawyer', function ($q) use ($user) {
                 $lawyerId = $user->lawyer_id;
@@ -159,6 +240,6 @@ class CaseIndex extends Component
             'cases'         => $cases,
             'jurisdictions' => $jurisdictions,
             'courts'        => $courts,
-        ])->title('إدارة القضايا | ' . firm_name());
+        ])->title(__('إدارة القضايا') . ' | ' . firm_name());
     }
 }

@@ -74,11 +74,11 @@
 
         <div class="dashboard-header">
             <div class="header-info">
-                <h1><i class="fas fa-landmark" style="color: var(--gold-accent); margin-left: 8px;"></i> إضافة محكمة جديدة</h1>
+                <h1><i class="fas fa-landmark" style="color: var(--gold-accent); margin-left: 8px;"></i> {{ __('إضافة محكمة جديدة') }}</h1>
                 <p>{{ __('إعداد بيانات محكمة جديدة وربطها بجهة التقاضي') }}</p>
             </div>
             <a href="{{ route('courts.index') }}" wire:navigate class="btn-cancel">
-                <i class="fas fa-arrow-right"></i> رجوع للقائمة
+                <i class="fas fa-arrow-right"></i> {{ __('رجوع للقائمة') }}
             </a>
         </div>
 
@@ -88,7 +88,7 @@
                 <div class="form-grid">
                     {{-- اسم المحكمة --}}
                     <div class="form-group full">
-                        <label for="courtName" class="form-label">اسم المحكمة <span style="color: var(--danger-color);">*</span></label>
+                        <label for="courtName" class="form-label">{{ __('اسم المحكمة') }} <span style="color: var(--danger-color);">*</span></label>
                         <input type="text" id="courtName" wire:model="name" class="form-control" placeholder="{{ __('مثال: محكمة استئناف مسقط') }}" required>
                         @error('name')
                             <div class="error-msg"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
@@ -97,7 +97,7 @@
 
                     {{-- جهة التقاضي --}}
                     <div class="form-group full">
-                        <label for="jurisdiction_id" class="form-label">جهة التقاضي التابعة لها <span style="color: var(--danger-color);">*</span></label>
+                        <label for="jurisdiction_id" class="form-label">{{ __('جهة التقاضي التابعة لها') }} <span style="color: var(--danger-color);">*</span></label>
                         <select id="jurisdiction_id" wire:model="jurisdiction_id" class="form-control" required>
                             <option value="">{{ __('-- اختر جهة التقاضي --') }}</option>
                             @foreach($jurisdictions as $jurisdiction)
@@ -114,11 +114,11 @@
 
                 <div class="form-actions">
                     <a href="{{ route('courts.index') }}" wire:navigate class="btn-cancel">
-                        <i class="fas fa-times"></i> إلغاء
+                        <i class="fas fa-times"></i> {{ __('إلغاء') }}
                     </a>
                     <button type="submit" class="btn-save" wire:loading.attr="disabled">
-                        <span wire:loading.remove wire:target="save"><i class="fas fa-save"></i> حفظ المحكمة</span>
-                        <span wire:loading wire:target="save"><i class="fas fa-spinner fa-spin"></i> جاري الحفظ...</span>
+                        <span wire:loading.remove wire:target="save"><i class="fas fa-save"></i> {{ __('حفظ المحكمة') }}</span>
+                        <span wire:loading wire:target="save"><i class="fas fa-spinner fa-spin"></i> {{ __('جاري الحفظ...') }}</span>
                     </button>
                 </div>
 

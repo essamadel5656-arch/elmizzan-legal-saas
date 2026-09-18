@@ -1,57 +1,25 @@
-/* ════════════════════════════════════════════════════════════════════
-   EL-MIZZAN — CENTRALIZED DESIGN SYSTEM
-   resources/css/app.css
+/* ═══════════════════════════════════════════════════════════════════
+   EL-MIZZAN DESIGN SYSTEM — resources/css/app.css
+   2x2 matrix: Dark(default)/Light × Arabic RTL(default)/English LTR.
+   Processed by Tailwind (Vite/PostCSS) — @tailwind directives require
+   the build step; this file is not valid standalone CSS as-is.
+   ═══════════════════════════════════════════════════════════════════ */
 
-   Single source of truth for every view (Dashboard, Cases, Clients,
-   Lawyers, Settings...). No page should ship its own <style> tag —
-   compose UI from the tokens and component classes defined here.
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
-   TWO INDEPENDENT AXES
-   ---------------------
-   Language/direction and color theme are orthogonal systems — every
-   combination must work: Arabic+Dark, Arabic+Light, English+Dark,
-   English+Light. They're kept in separate sections below on purpose.
-
-   THEME MODEL: Dark is the default enterprise look. The base :root
-   tokens ARE the dark palette. Light is the explicit override via
-   [data-theme="light"] / .light (set by Livewire/Alpine on <html>).
-
-   LANGUAGE MODEL: font family AND text direction are both driven by
-   the <html> element's dir/lang attributes, so setting EITHER
-   dir="rtl" OR lang="ar" (not necessarily both) is enough to get a
-   fully correct Arabic page — never just a font swap sitting on top
-   of a mismatched LTR layout.
-   ════════════════════════════════════════════════════════════════════ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* ─── FONTS ─────────────────────────────────────────────────────────
-   One combined request for both families (fewer round trips than two
-   separate @imports) with display=swap so text renders in a fallback
-   font immediately and swaps in once the webfont arrives — no
-   invisible-text flash while it loads.
 
-   Note: @import is still a render-blocking fetch at the CSS-file
-   level per spec — that part can't be fixed from inside a
-   stylesheet. For a genuinely non-blocking load, replace this line
-   with a <link rel="preconnect"> + <link rel="stylesheet"> pair in
-   the Blade layout's <head> instead, so the browser fetches the font
-   in parallel with app.css rather than through it. */
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+/* Unlayered on purpose: Tailwind's output lives in cascade layers, so
+   everything below beats any @tailwind utility class regardless of
+   specificity — this is what keeps .panel/.app-input/label immune to
+   stray text-slate-*/
+dark: utilities left in Blade markup. */
 
-/* ─── i18n: LANGUAGE-DRIVEN FONT + DIRECTION ─────────────────────────
-   :root IS <html>, so :root[dir="ltr"] === html[dir="ltr"]. Arabic is
-   the implicit default (see base :root below), so it doesn't need its
-   own explicit dir="rtl"/lang="ar" rule — only the English/Latin
-   override does.
-
-   `[lang|="en"]` (not `[lang="en"]`) matches "en" AND hyphenated
-   regional subtags like "en-US" / "en-GB", same matching behavior as
-   the :lang() pseudo-class. An exact [lang="en"] would silently miss
-   "en-US", which Laravel's app locale commonly produces. */
+/* ── i18n: font + direction from <html dir>/<html lang> ── */
 :root {
     --font-primary: 'Cairo', 'Tajawal', sans-serif;
-    /* Arabic-first default */
 }
 
 :root[dir="ltr"],
@@ -60,11 +28,6 @@
     --font-primary: 'Plus Jakarta Sans', system-ui, sans-serif;
 }
 
-/* If only `lang` is set with no explicit `dir`, derive direction from
-   it. Without this, an Arabic page missing dir="rtl" would get the
-   Cairo font but still flow left-to-right — a font swap sitting on a
-   broken layout. Where `dir` IS present, this is skipped entirely;
-   the browser already maps that attribute to `direction` itself. */
 :root[lang|="ar"]:not([dir]) {
     direction: rtl;
     unicode-bidi: isolate;
@@ -76,115 +39,98 @@
     unicode-bidi: isolate;
 }
 
-/* ─── DESIGN TOKENS ─────────────────────────────────────────────────── */
+/* ── Design tokens — dark is the default surface ── */
 :root {
-    /* Brand accents (identical in both themes) */
     --color-gold: #d4af37;
     --color-gold-light: #e8c49a;
-
-    /* Semantic status colors (identical in both themes) */
     --color-success: #2ecc71;
     --color-warning: #f39c12;
     --color-danger: #e74c3c;
     --color-appeal: #9b59b6;
-
-    /* Row-action colors — always green/red regardless of theme */
+    --color-info: #0ea5e9;
     --color-edit: #059669;
     --color-edit-hover: #047857;
     --color-delete: #dc2626;
     --color-delete-hover: #b91c1c;
 
-    /* Surface & text tokens — DARK is the base/default value */
-    --bg-app: #0b1329;
-    --bg-panel: #131d35;
-    --border-color: #1e293b;
-    --row-hover: #17233f;
-    --text-primary: #ffffff;
-    --text-secondary: #94a3b8;
-    --bg-input: #0c1427;
-    --bg-badge: #0c1427;
+    --bg-app: #0f172a;
+    --bg-panel: #1e293b;
+    --bg-subtle: #0f172a;
+    --border-color: #334155;
+    --row-hover: #293548;
+    --text-primary: #f8fafc;
+    --text-secondary: #e2e8f0;
+    --bg-input: #0f172a;
+    --bg-badge: #0f172a;
 
-    /* Focus ring + shadow tuned for a dark surface by default */
-    --focus-ring: 0 0 0 3px rgba(212, 175, 55, 0.35);
-    --shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.35);
-    --shadow-lift: 0 8px 20px rgba(0, 0, 0, 0.45);
+    --focus-ring: 0 0 0 3px rgba(212, 175, 55, .35);
+    --shadow-soft: 0 4px 14px rgba(0, 0, 0, .35);
+    --shadow-lift: 0 8px 20px rgba(0, 0, 0, .45);
+    color-scheme: dark;
 }
 
-/* Respect system preference ONLY before the user has picked a theme.
-   [data-theme] below always wins once Livewire/Alpine sets it. */
 @media (prefers-color-scheme: light) {
     :root:not([data-theme]) {
-        --bg-app: #f8fafc;
+        --bg-app: #e8ecf2;
         --bg-panel: #ffffff;
+        --bg-subtle: #f1f5f9;
         --border-color: #e2e8f0;
         --row-hover: #f1f5f9;
         --text-primary: #0f172a;
         --text-secondary: #64748b;
         --bg-input: #ffffff;
         --bg-badge: #f1f5f9;
-        --focus-ring: 0 0 0 3px rgba(212, 175, 55, 0.25);
-        --shadow-soft: 0 1px 3px rgba(15, 23, 42, 0.08);
-        --shadow-lift: 0 10px 24px rgba(15, 23, 42, 0.12);
+        --focus-ring: 0 0 0 3px rgba(212, 175, 55, .25);
+        --shadow-soft: 0 1px 3px rgba(15, 23, 42, .08);
+        --shadow-lift: 0 10px 24px rgba(15, 23, 42, .12);
+        color-scheme: light;
     }
 }
 
-/* Explicit LIGHT override — wins over everything above */
 :root[data-theme="light"],
 .light {
-    --bg-app: #f8fafc;
+    --bg-app: #e8ecf2;
     --bg-panel: #ffffff;
+    --bg-subtle: #f1f5f9;
     --border-color: #e2e8f0;
     --row-hover: #f1f5f9;
     --text-primary: #0f172a;
     --text-secondary: #64748b;
     --bg-input: #ffffff;
     --bg-badge: #f1f5f9;
-    --focus-ring: 0 0 0 3px rgba(212, 175, 55, 0.25);
-    --shadow-soft: 0 1px 3px rgba(15, 23, 42, 0.08);
-    --shadow-lift: 0 10px 24px rgba(15, 23, 42, 0.12);
+    --focus-ring: 0 0 0 3px rgba(212, 175, 55, .25);
+    --shadow-soft: 0 1px 3px rgba(15, 23, 42, .08);
+    --shadow-lift: 0 10px 24px rgba(15, 23, 42, .12);
+    color-scheme: light;
 }
 
-/* Explicit DARK override — restates the base tokens so a saved
-   preference can beat an OS set to light mode */
 :root[data-theme="dark"],
 .dark {
-    --bg-app: #0b1329;
-    --bg-panel: #131d35;
-    --border-color: #1e293b;
-    --row-hover: #17233f;
-    --text-primary: #ffffff;
-    --text-secondary: #94a3b8;
-    --bg-input: #0c1427;
-    --bg-badge: #0c1427;
-    --focus-ring: 0 0 0 3px rgba(212, 175, 55, 0.35);
-    --shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.35);
-    --shadow-lift: 0 8px 20px rgba(0, 0, 0, 0.45);
+    --bg-app: #0f172a;
+    --bg-panel: #1e293b;
+    --bg-subtle: #0f172a;
+    --border-color: #334155;
+    --row-hover: #293548;
+    --text-primary: #f8fafc;
+    --text-secondary: #e2e8f0;
+    --bg-input: #0f172a;
+    --bg-badge: #0f172a;
+    --focus-ring: 0 0 0 3px rgba(212, 175, 55, .35);
+    --shadow-soft: 0 4px 14px rgba(0, 0, 0, .35);
+    --shadow-lift: 0 8px 20px rgba(0, 0, 0, .45);
+    color-scheme: dark;
 }
 
-/* ─── RESET ─────────────────────────────────────────────────────────── */
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html {
-    color-scheme: light dark;
-}
-
+/* ── Base elements ── */
 body {
     font-family: var(--font-primary);
     background-color: var(--bg-app);
     color: var(--text-primary);
     line-height: 1.6;
     min-height: 100vh;
-    transition: background-color 0.25s ease, color 0.25s ease;
+    transition: background-color .25s ease, color .25s ease;
 }
 
-/* Bidirectional default: text follows document direction, not a
-   hardcoded side, so the same markup works in RTL (ar) and LTR (en/es) */
 body,
 h1,
 h2,
@@ -203,7 +149,7 @@ h6,
 a {
     color: var(--color-gold);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color .2s ease;
 }
 
 a:hover {
@@ -218,6 +164,14 @@ button {
     color: inherit;
 }
 
+label {
+    display: block;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: .875rem;
+    margin-block-end: .375rem;
+}
+
 button:focus-visible,
 a:focus-visible,
 .app-input:focus-visible,
@@ -226,21 +180,29 @@ a:focus-visible,
     box-shadow: var(--focus-ring);
 }
 
-/* Muted text utility, used across cards/tables for secondary copy */
 .text-muted {
     color: var(--text-secondary);
 }
 
-/* ─── SURFACE: .panel ───────────────────────────────────────────────
-   Universal card/container used for every content block. */
+/* ── .panel ── */
 .panel {
     background-color: var(--bg-panel);
+    color: var(--text-primary);
     border: 1px solid var(--border-color);
     border-radius: 14px;
     box-shadow: var(--shadow-soft);
     padding-block: 1.5rem;
     padding-inline: 1.5rem;
-    transition: background-color 0.25s ease, border-color 0.25s ease;
+    transition: background-color .25s ease, border-color .25s ease;
+}
+
+.panel-subtle {
+    background-color: var(--bg-subtle);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding-inline: 1rem;
+    padding-block: .875rem;
 }
 
 .panel-header {
@@ -257,21 +219,20 @@ a:focus-visible,
     color: var(--text-primary);
 }
 
-/* ─── BUTTON: .btn-add-new ──────────────────────────────────────────
-   Universal "create" action across Cases/Clients/Lawyers/Settings. */
+/* ── .btn-add-new ── */
 .btn-add-new {
     display: inline-flex;
     align-items: center;
-    padding-inline-start: 0.5rem;
+    padding-inline-start: .5rem;
     padding-inline-end: 1.25rem;
-    padding-block: 0.5rem;
+    padding-block: .5rem;
     border-radius: 999px;
     background-color: var(--bg-panel);
     border: 1px solid var(--color-gold);
     color: var(--text-primary);
     font-weight: 600;
-    font-size: 0.9375rem;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    font-size: .9375rem;
+    transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
 }
 
 .btn-add-new:hover {
@@ -290,18 +251,34 @@ a:focus-visible,
     justify-content: center;
     width: 1.75rem;
     height: 1.75rem;
-    margin-inline-end: 0.5rem;
-    /* 8px — icon always sits on the START side, RTL or LTR */
+    margin-inline-end: .5rem;
     border-radius: 50%;
     background-color: var(--color-gold);
     color: #1e1608;
-    /* fixed dark ink — stays readable on gold in both themes */
     flex-shrink: 0;
 }
 
-/* ─── ROW ACTIONS: .btn-action-edit / .btn-action-delete ────────────
-   Fixed semantic colors — identical in light and dark on purpose,
-   so a user never has to relearn "which color means delete". */
+/* ── .btn-secondary (modal/cancel) ── */
+.btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 1.25rem;
+    padding-block: .5rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    background-color: transparent;
+    color: var(--text-primary);
+    font-weight: 600;
+    transition: background-color .2s ease, border-color .2s ease;
+}
+
+.btn-secondary:hover {
+    background-color: var(--row-hover);
+    border-color: color-mix(in srgb, var(--color-gold) 30%, var(--border-color));
+}
+
+/* ── .btn-action-edit / .btn-action-delete — fixed colors, both themes ── */
 .btn-action {
     display: inline-flex;
     align-items: center;
@@ -310,11 +287,11 @@ a:focus-visible,
     height: 2rem;
     border-radius: 8px;
     color: #ffffff;
-    transition: background-color 0.2s ease, transform 0.15s ease;
+    transition: background-color .2s ease, transform .15s ease;
 }
 
 .btn-action:active {
-    transform: scale(0.94);
+    transform: scale(.94);
 }
 
 .btn-action-edit {
@@ -333,34 +310,33 @@ a:focus-visible,
     background-color: var(--color-delete-hover);
 }
 
-/* ─── TABLE: .custom-table ──────────────────────────────────────────
-   Full table skeleton with theme-aware borders and hover states. */
+/* ── .custom-table ── */
 .custom-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.9375rem;
+    font-size: .9375rem;
+    color: var(--text-primary);
 }
 
 .custom-table thead th {
     color: var(--text-secondary);
     font-weight: 600;
-    font-size: 0.8125rem;
-    padding-block: 0.75rem;
+    font-size: .8125rem;
+    padding-block: .75rem;
     padding-inline: 1rem;
     border-block-end: 1px solid var(--border-color);
     white-space: nowrap;
 }
 
 .custom-table tbody td {
-    padding-block: 0.875rem;
+    padding-block: .875rem;
     padding-inline: 1rem;
     border-block-end: 1px solid var(--border-color);
-    color: var(--text-primary);
     vertical-align: middle;
 }
 
 .custom-table tbody tr {
-    transition: background-color 0.15s ease;
+    transition: background-color .15s ease;
 }
 
 .custom-table tbody tr:hover {
@@ -371,10 +347,6 @@ a:focus-visible,
     border-block-end: none;
 }
 
-/* Actions column stays centered regardless of direction. Defaults to
-   the LAST column (the convention used across Cases/Clients/Lawyers
-   tables) so existing markup needs no changes; add .col-actions
-   explicitly on any table where Actions isn't structurally last. */
 .custom-table th:last-child,
 .custom-table td:last-child,
 .custom-table .col-actions {
@@ -383,38 +355,32 @@ a:focus-visible,
 
 .table-actions {
     display: inline-flex;
-    /* inline, not block-flex, so the td's
-                              text-align: center above actually centers it */
     align-items: center;
-    gap: 0.5rem;
+    gap: .5rem;
 }
 
-/* ─── BADGE: .badge-item ────────────────────────────────────────────
-   Neutral pill for tags, courts, categories — with room for a
-   leading micro-icon. */
+/* ── .badge-item ── */
 .badge-item {
     display: inline-flex;
     align-items: center;
-    gap: 0.375rem;
-    padding-inline: 0.625rem;
-    padding-block: 0.3125rem;
+    gap: .375rem;
+    padding-inline: .625rem;
+    padding-block: .3125rem;
     border-radius: 999px;
     background-color: var(--bg-badge);
     border: 1px solid var(--border-color);
     color: var(--text-secondary);
-    font-size: 0.8125rem;
+    font-size: .8125rem;
     font-weight: 500;
-    transition: background-color 0.2s ease, border-color 0.2s ease;
+    transition: background-color .2s ease, border-color .2s ease;
 }
 
 .badge-item svg {
-    width: 0.875rem;
-    height: 0.875rem;
+    width: .875rem;
+    height: .875rem;
     flex-shrink: 0;
 }
 
-/* Status-flavored badges reuse the semantic tokens as text/border
-   accents, keeping the same neutral background for consistency */
 .badge-success {
     color: var(--color-success);
     border-color: color-mix(in srgb, var(--color-success) 40%, var(--border-color));
@@ -435,19 +401,34 @@ a:focus-visible,
     border-color: color-mix(in srgb, var(--color-appeal) 40%, var(--border-color));
 }
 
-/* ─── FORM CONTROLS: .app-input / .app-select ──────────────────────── */
+.badge-info {
+    color: var(--color-info);
+    border-color: color-mix(in srgb, var(--color-info) 40%, var(--border-color));
+}
+
+.badge-primary {
+    color: var(--color-gold);
+    border-color: color-mix(in srgb, var(--color-gold) 40%, var(--border-color));
+}
+
+.badge-secondary {
+    color: var(--text-secondary);
+    border-color: var(--border-color);
+}
+
+/* ── .app-input / .app-select ── */
 .app-input,
 .app-select {
     width: 100%;
     font-family: var(--font-primary);
-    font-size: 0.9375rem;
+    font-size: .9375rem;
     color: var(--text-primary);
     background-color: var(--bg-input);
     border: 1px solid var(--border-color);
     border-radius: 10px;
-    padding-inline: 0.875rem;
-    padding-block: 0.625rem;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    padding-inline: .875rem;
+    padding-block: .625rem;
+    transition: border-color .2s ease, box-shadow .2s ease, background-color .2s ease;
 }
 
 .app-input::placeholder {
@@ -466,12 +447,6 @@ a:focus-visible,
     box-shadow: var(--focus-ring);
 }
 
-/* Native select arrows can't be repositioned in place, and background
-   -position has no reliable logical (inline-end) keyword across
-   browsers yet — so instead of a [dir="rtl"] override with a
-   hardcoded physical value, the native arrow is removed and replaced
-   with a real element positioned via inset-inline-end (see the
-   .select-wrap pattern just below). */
 .app-select {
     appearance: none;
     -webkit-appearance: none;
@@ -479,23 +454,7 @@ a:focus-visible,
     padding-inline-end: 2.25rem;
 }
 
-/* ─── COMPOSED PATTERN: icon/arrow inside a form control ─────────────
-   One contract for both cases — wrap the control, position the
-   icon/arrow with inset-inline-start (leading) or inset-inline-end
-   (trailing). Whichever side that resolves to flips automatically
-   with dir; nothing else in these rules needs to change per language.
-   Bring your own SVG, same convention as .btn-action-edit/-delete.
-
-   <div class="select-wrap">
-     <select class="app-select">...</select>
-     <svg class="select-arrow">...</svg>
-   </div>
-
-   <div class="input-icon-wrap">
-     <svg class="input-icon">...</svg>
-     <input class="app-input" placeholder="...">
-   </div>
-*/
+/* Bring-your-own-svg icon pattern; inset-inline-* flips with dir */
 .select-wrap,
 .input-icon-wrap {
     position: relative;
@@ -517,14 +476,274 @@ a:focus-visible,
 }
 
 .select-arrow {
-    inset-inline-end: 0.85rem;
+    inset-inline-end: .85rem;
 }
 
 .input-icon {
-    inset-inline-start: 0.85rem;
+    inset-inline-start: .85rem;
 }
 
-/* ─── RESPONSIVE ────────────────────────────────────────────────────── */
+/* ── .field (form layout spacing) ── */
+.field {
+    margin-block-end: 1.25rem;
+}
+
+/* ── .btn-primary (solid submit/confirm) ── */
+.btn-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+    padding-inline: 1.5rem;
+    padding-block: .625rem;
+    border-radius: 12px;
+    border: 1px solid var(--color-gold);
+    background-color: var(--color-gold);
+    color: #1e1608;
+    font-weight: 700;
+    transition: background-color .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--color-gold-light);
+    box-shadow: var(--shadow-lift);
+    transform: translateY(-1px);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+/* ── Stat cards: use with .panel, e.g. class="panel stat-card" ── */
+.stat-card {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.stat-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 12px;
+    flex-shrink: 0;
+    background-color: color-mix(in srgb, var(--color-gold) 15%, var(--bg-panel));
+    color: var(--color-gold);
+}
+
+.stat-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.stat-icon-info {
+    background-color: color-mix(in srgb, var(--color-info) 15%, var(--bg-panel));
+    color: var(--color-info);
+}
+
+.stat-icon-success {
+    background-color: color-mix(in srgb, var(--color-success) 15%, var(--bg-panel));
+    color: var(--color-success);
+}
+
+.stat-icon-warning {
+    background-color: color-mix(in srgb, var(--color-warning) 15%, var(--bg-panel));
+    color: var(--color-warning);
+}
+
+.stat-value {
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+
+.stat-label {
+    font-size: .8125rem;
+    color: var(--text-secondary);
+    margin-block-end: .375rem;
+}
+
+.stat-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+    font-size: .8125rem;
+    font-weight: 600;
+    margin-block-start: .5rem;
+}
+
+.stat-trend svg {
+    width: 14px;
+    height: 14px;
+}
+
+.stat-trend-up {
+    color: var(--color-success);
+}
+
+.stat-trend-down {
+    color: var(--color-danger);
+}
+
+/* ── Pagination ── */
+.pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-block-start: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.pagination-info {
+    font-size: .8125rem;
+    color: var(--text-secondary);
+}
+
+.pagination-controls {
+    display: inline-flex;
+    align-items: center;
+    gap: .375rem;
+}
+
+.pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2rem;
+    height: 2rem;
+    padding-inline: .5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: transparent;
+    color: var(--text-secondary);
+    font-size: .8125rem;
+    font-weight: 600;
+    transition: background-color .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.pagination-btn:hover {
+    background-color: var(--row-hover);
+    color: var(--text-primary);
+}
+
+.pagination-btn.active {
+    background-color: var(--color-gold);
+    border-color: var(--color-gold);
+    color: #1e1608;
+}
+
+.pagination-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+/* ── Activity timeline ── */
+.timeline-item {
+    position: relative;
+    padding-inline-start: 1.75rem;
+    padding-block-end: 1.25rem;
+    border-inline-start: 2px solid var(--border-color);
+}
+
+.timeline-item:last-child {
+    padding-block-end: 0;
+    border-color: transparent;
+}
+
+.timeline-dot {
+    position: absolute;
+    inset-inline-start: -7px;
+    top: .15rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--color-gold);
+    border: 2px solid var(--bg-panel);
+}
+
+.timeline-date {
+    font-size: .75rem;
+    color: var(--text-secondary);
+    margin-block-end: .125rem;
+}
+
+.timeline-text {
+    font-size: .875rem;
+    color: var(--text-primary);
+}
+
+/* ── File attachment chip ── */
+.file-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .5rem .75rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-subtle);
+    color: var(--text-primary);
+    font-size: .8125rem;
+    font-weight: 500;
+}
+
+.file-chip svg {
+    width: 16px;
+    height: 16px;
+    color: var(--color-gold);
+    flex-shrink: 0;
+}
+
+/* ── Key/value info row (sidebar quick-info panels) ── */
+.info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    padding-block: .625rem;
+    border-block-end: 1px solid var(--border-color);
+}
+
+.info-row:last-child {
+    border-block-end: none;
+}
+
+.info-row-label {
+    font-size: .8125rem;
+    color: var(--text-secondary);
+}
+
+.info-row-value {
+    font-size: .875rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    text-align: end;
+}
+
+/* ── Countdown (e.g. next hearing) ── */
+.countdown {
+    display: flex;
+    align-items: baseline;
+    gap: .375rem;
+}
+
+.countdown-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-gold);
+    line-height: 1;
+}
+
+.countdown-unit {
+    font-size: .8125rem;
+    color: var(--text-secondary);
+}
+
+/* ── Responsive ── */
 @media (max-width: 640px) {
     .panel {
         padding-inline: 1rem;
@@ -534,7 +753,6 @@ a:focus-visible,
 
     .custom-table thead {
         display: none;
-        /* stack the table on small screens */
     }
 
     .custom-table,
@@ -548,8 +766,8 @@ a:focus-visible,
     .custom-table tbody tr {
         border: 1px solid var(--border-color);
         border-radius: 10px;
-        margin-block-end: 0.75rem;
-        padding: 0.5rem;
+        margin-block-end: .75rem;
+        padding: .5rem;
     }
 
     .custom-table tbody td {
@@ -560,13 +778,12 @@ a:focus-visible,
     }
 }
 
-/* ─── ACCESSIBILITY ─────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
 
     *,
     *::before,
     *::after {
-        transition-duration: 0.001ms !important;
-        animation-duration: 0.001ms !important;
+        transition-duration: .001ms !important;
+        animation-duration: .001ms !important;
     }
 }

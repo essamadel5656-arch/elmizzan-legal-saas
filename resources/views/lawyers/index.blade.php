@@ -133,35 +133,35 @@
     
     <div class="dashboard-header">
         <div class="header-info">
-            <h1 class="welcome-title"><i class="fas fa-users-cog" style="color: var(--gold-accent); margin-left: 8px;"></i> قائمة المحامين</h1>
-            <p class="date-text">عرض وتتبع وإدارة بيانات جميع المحامين العاملين بالمكتب</p>
+            <h1 class="welcome-title"><i class="fas fa-users-cog" style="color: var(--gold-accent); margin-left: 8px;"></i> {{ __('قائمة المحامين') }}</h1>
+            <p class="date-text">{{ __('عرض وتتبع وإدارة بيانات جميع المحامين العاملين بالمكتب') }}</p>
         </div>
         
         <a href="{{ route('lawyers.create') }}" class="btn-add-new">
             <span class="icon-circle">
                 <i class="fas fa-user-plus"></i>
             </span>
-            <span>إضافة محامي جديد</span>
+            <span>{{ __('إضافة محامي جديد') }}</span>
         </a>
     </div>
 
     <div class="search-filter-section">
         
         <div class="filter-group">
-            <label for="degree-filter"><i class="fas fa-balance-scale"></i> درجة المحامي</label>
+            <label for="degree-filter"><i class="fas fa-balance-scale"></i> {{ __('درجة المحامي') }}</label>
             <select id="degree-filter">
-                <option value="">الكل</option>
-                <option value="نقض">نقض</option>
-                <option value="استئناف">استئناف</option>
-                <option value="ابتدائي">ابتدائي</option>
-                <option value="جدول عام">جدول عام</option>
+                <option value="">{{ __('الكل') }}</option>
+                <option value="{{ __('نقض') }}">{{ __('نقض') }}</option>
+                <option value="{{ __('استئناف') }}">{{ __('استئناف') }}</option>
+                <option value="{{ __('ابتدائي') }}">{{ __('ابتدائي') }}</option>
+                <option value="{{ __('جدول عام') }}">{{ __('جدول عام') }}</option>
             </select>
         </div>
 
         <div class="filter-group">
-            <label for="specialization-filter"><i class="fas fa-briefcase"></i> التخصص</label>
+            <label for="specialization-filter"><i class="fas fa-briefcase"></i> {{ __('التخصص') }}</label>
             <select id="specialization-filter">
-                <option value="">الكل</option>
+                <option value="">{{ __('الكل') }}</option>
                 @php
                     $specializations = $lawyers->pluck('specialization')->unique()->filter()->sort()->values();
                 @endphp
@@ -172,14 +172,14 @@
         </div>
 
         <div class="search-form-group">
-            <label for="searchInput"><i class="fas fa-search"></i> البحث بالاسم أو المعرف</label>
+            <label for="searchInput"><i class="fas fa-search"></i> {{ __('البحث بالاسم أو المعرف') }}</label>
             <form action="{{ route('lawyers.index') }}" method="GET" class="search-input-wrapper">
-                <input type="text" id="searchInput" name="search" placeholder="اكتب للبحث..." value="{{ request('search') }}">
-                <button type="submit" class="btn-search" title="بحث">
+                <input type="text" id="searchInput" name="search" placeholder="{{ __('اكتب للبحث...') }}" value="{{ request('search') }}">
+                <button type="submit" class="btn-search" title="{{ __('بحث') }}">
                     <i class="fas fa-search"></i>
                 </button>
                 @if(request('search'))
-                    <a href="{{ route('lawyers.index') }}" class="btn-clear" title="إلغاء البحث">
+                    <a href="{{ route('lawyers.index') }}" class="btn-clear" title="{{ __('إلغاء البحث') }}">
                         <i class="fas fa-times"></i>
                     </a>
                 @endif
@@ -194,10 +194,10 @@
                     <thead>
                         <tr>
                             <th style="width: 10%;">ID</th>
-                            <th style="width: 30%;">اسم المحامي</th>
-                            <th style="width: 20%;">الدرجة</th>
-                            <th style="width: 25%;">التخصص</th>
-                            <th style="width: 15%; text-align: center;">الإجراءات</th>
+                            <th style="width: 30%;">{{ __('اسم المحامي') }}</th>
+                            <th style="width: 20%;">{{ __('الدرجة') }}</th>
+                            <th style="width: 25%;">{{ __('التخصص') }}</th>
+                            <th style="width: 15%; text-align: center;">{{ __('الإجراءات') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -231,12 +231,12 @@
                                 
                                 <td style="text-align: center;">
                                     <div style="display: flex; justify-content: center; gap: 0.4rem;">
-                                        <a href="{{ route('lawyers.show', $lawyer->id) }}" class="btn-action btn-action-view" title="عرض الملف">
+                                        <a href="{{ route('lawyers.show', $lawyer->{{ __('id) }}" class="btn-action btn-action-view" title="{{ __('عرض الملف') }}">') }}
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         
                                         @if(Route::has('lawyers.edit'))
-                                        <a href="{{ route('lawyers.edit', $lawyer->id) }}" class="btn-action btn-action-edit" title="تعديل البيانات">
+                                        <a href="{{ route('lawyers.edit', $lawyer->{{ __('id) }}" class="btn-action btn-action-edit" title="{{ __('تعديل البيانات') }}">') }}
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         @endif
@@ -244,7 +244,7 @@
                                         <form action="{{ route('lawyers.destroy', $lawyer->id) }}" method="POST" style="margin: 0; display: inline-block;" onsubmit="return confirm('هل أنت متأكد من حذف هذا المحامي نهائياً؟');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn-action btn-action-delete" title="حذف المحامي">
+                                            <button type="submit" class="btn-action btn-action-delete" title="{{ __('حذف المحامي') }}">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
@@ -258,7 +258,7 @@
 
             <div id="jsNoResults" style="display: none; text-align: center; padding: 3rem 1rem;">
                 <i class="fas fa-filter" style="font-size: 3rem; color: var(--border-color); margin-bottom: 1rem;"></i>
-                <p style="color: var(--text-secondary); font-weight: 600; font-size: 1rem;">لا يوجد محامين يطابقون الفلاتر المحددة.</p>
+                <p style="color: var(--text-secondary); font-weight: 600; font-size: 1rem;">{{ __('لا يوجد محامين يطابقون الفلاتر المحددة.') }}</p>
             </div>
 
         @else
@@ -275,14 +275,14 @@
                 
                 @if(request('search'))
                     <a href="{{ route('lawyers.index') }}" class="btn-clear" style="padding: 10px 20px;">
-                        <i class="fas fa-redo"></i> العودة للقائمة
+                        <i class="fas fa-redo"></i> {{ __('العودة للقائمة') }}
                     </a>
                 @else
                     <a href="{{ route('lawyers.create') }}" class="btn-add-new">
                         <span class="icon-circle">
                             <i class="fas fa-plus"></i>
                         </span>
-                        <span>إضافة المحامي الأول</span>
+                        <span>{{ __('إضافة المحامي الأول') }}</span>
                     </a>
                 @endif
             </div>

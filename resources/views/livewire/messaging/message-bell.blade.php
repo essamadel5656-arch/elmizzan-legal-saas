@@ -3,7 +3,7 @@
     <button class="notif-bell" wire:click="toggleDropdown" @click.outside="$wire.closeDropdown()">
         <i class="fas fa-comments"></i>
         @if($unreadCount > 0)
-            <span class="notif-badge">{{ $unreadCount > 99 ? '99+' : $unreadCount }}</span>
+            <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">{{ $unreadCount > 99 ? '99+' : $unreadCount }}</span>
         @endif
     </button>
 
@@ -11,10 +11,10 @@
     @if($open)
         <div class="msg-dropdown" style="position: absolute; left: 0; top: 120%; width: 320px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; box-shadow: var(--shadow-md); z-index: 1050; overflow: hidden;">
             <div style="display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem; border-bottom: 1px solid var(--border-color); background: var(--primary-bg);">
-                <h6 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">الرسائل الداخلية</h6>
+                <h6 style="margin: 0; font-size: 0.95rem; font-weight: 700; color: var(--text-primary);">{{ __('الرسائل الداخلية') }}</h6>
                 @if($unreadCount > 0)
                     <button wire:click="markAllAsRead" style="background: none; border: none; color: var(--gold-accent); font-size: 0.8rem; cursor: pointer; font-weight: 600;">
-                        تحديد الكل كمقروء
+                        {{ __('تحديد الكل كمقروء') }}
                     </button>
                 @endif
             </div>
@@ -45,14 +45,14 @@
                 @empty
                     <div style="padding: 2rem 1rem; text-align: center; color: var(--text-secondary); font-size: 0.9rem;">
                         <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.5;"></i>
-                        <p style="margin: 0;">لا توجد رسائل جديدة.</p>
+                        <p style="margin: 0;">{{ __('لا توجد رسائل جديدة.') }}</p>
                     </div>
                 @endforelse
             </div>
 
             <div style="padding: 0.75rem; text-align: center; border-top: 1px solid var(--border-color); background: var(--primary-bg);">
                 <a href="{{ route('workspace.chat') }}" wire:navigate style="color: var(--gold-accent); text-decoration: none; font-size: 0.85rem; font-weight: 700;">
-                    عرض جميع الرسائل <i class="fas fa-arrow-left" style="font-size: 0.75rem; margin-right: 0.25rem;"></i>
+                    {{ __('عرض جميع الرسائل') }} <i class="fas fa-arrow-left" style="font-size: 0.75rem; margin-right: 0.25rem;"></i>
                 </a>
             </div>
         </div>

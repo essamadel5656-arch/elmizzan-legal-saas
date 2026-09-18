@@ -1,297 +1,173 @@
 @extends('layouts.app')
 
-@section('title', 'إدارة القضايا | ' . $appName)
-
-@push('styles')
-<style>
-    /* ===== الحاوية والترويسة ===== */
-    .cases-page-container { padding: 2rem; }
-    
-    .dashboard-header { 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        flex-wrap: wrap; 
-        gap: 1rem; 
-        margin-bottom: 2rem; 
-    }
-    
-    .welcome-title { font-size: 1.5rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; }
-    .date-text { color: var(--text-secondary); font-size: 0.95rem; }
-
-    /* ===== زر الإضافة الرئيسي (الموحد في السيستم) ===== */
-    .btn-add-new {
-        display: inline-flex;
-        align-items: center;
-        gap: 12px;
-        background-color: var(--sidebar-bg);
-        color: #ffffff;
-        padding: 6px 24px 6px 8px;
-        border-radius: 50px;
-        text-decoration: none;
-        font-weight: 700;
-        font-size: 0.95rem;
-        transition: all 0.3s ease;
-        box-shadow: 0 4px 12px rgba(30, 41, 59, 0.15);
-        border: 2px solid var(--sidebar-bg);
-    }
-    .btn-add-new .icon-circle {
-        background-color: var(--gold-accent);
-        color: var(--sidebar-bg);
-        width: 34px; height: 34px;
-        border-radius: 50%;
-        display: flex; align-items: center; justify-content: center;
-        font-size: 1rem;
-        transition: transform 0.3s ease;
-    }
-    .btn-add-new:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(30, 41, 59, 0.25);
-        background-color: #ffffff;
-        color: var(--sidebar-bg);
-    }
-    .btn-add-new:hover .icon-circle {
-        transform: rotate(90deg);
-        background-color: var(--sidebar-bg);
-        color: var(--gold-accent);
-    }
-
-    /* ===== قسم البحث والفلترة ===== */
-    .search-filter-section { 
-        display: flex; align-items: flex-end; flex-wrap: wrap; gap: 1rem; 
-        background: #ffffff; border: 1px solid var(--border-color); 
-        border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; 
-        box-shadow: var(--shadow-sm);
-    }
-    .search-group { display: flex; flex-direction: column; gap: 0.5rem; flex: 1; min-width: 250px; }
-    .search-group label { font-size: 0.85rem; font-weight: 600; color: var(--text-primary); }
-    
-    .search-input-wrapper { position: relative; display: flex; align-items: center; }
-    .search-input-wrapper input { 
-        width: 100%; padding: 0.8rem 1rem; padding-left: 90px; 
-        background: var(--primary-bg); border: 1px solid var(--border-color); 
-        border-radius: 8px; color: var(--text-primary); font-size: 0.9rem; 
-        font-family: inherit; transition: all 0.2s ease; 
-    }
-    .search-input-wrapper input:focus { 
-        outline: none; border-color: var(--gold-accent); 
-        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); background: #ffffff;
-    }
-    
-    .search-icons { position: absolute; left: 0; display: flex; align-items: center; height: 100%; }
-    .search-icon-btn { 
-        display: flex; align-items: center; justify-content: center; 
-        width: 40px; height: 100%; background: none; border: none; 
-        cursor: pointer; transition: all 0.2s ease; font-size: 1rem; 
-    }
-    .search-icon-btn.do-search { color: var(--sidebar-bg); }
-    .search-icon-btn.do-search:hover { color: var(--gold-accent); }
-    .search-icon-btn.do-clear { color: var(--text-secondary); border-right: 1px solid var(--border-color); }
-    .search-icon-btn.do-clear:hover { color: var(--danger-color); }
-    
-    .btn-clear-filters { 
-        display: inline-flex; align-items: center; gap: 0.5rem; 
-        padding: 0.8rem 1.4rem; background: transparent; 
-        border: 1px solid var(--border-color); border-radius: 8px; 
-        color: var(--text-secondary); font-size: 0.9rem; cursor: pointer; 
-        transition: all 0.2s ease; white-space: nowrap; font-weight: 600;
-    }
-    .btn-clear-filters:hover { background-color: var(--primary-bg); color: var(--text-primary); }
-
-    .cases-count { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 1.5rem; font-weight: 600; }
-    .cases-count span { color: var(--sidebar-bg); font-weight: 800; font-size: 1.1rem; }
-
-    /* ===== كروت القضايا (Grid) ===== */
-    .cases-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; }
-    
-    .case-card { 
-        background: #ffffff; border: 1px solid var(--border-color); 
-        border-radius: 12px; padding: 1.5rem; display: flex; 
-        flex-direction: column; gap: 1rem; transition: all 0.3s ease; 
-        position: relative; overflow: hidden; box-shadow: var(--shadow-sm);
-        animation: slideIn 0.4s ease-out;
-    }
-    .case-card::before { 
-        content: ''; position: absolute; top: 0; right: 0; left: 0; height: 4px; 
-        background: var(--gold-accent); transform: scaleX(0); transition: transform 0.3s ease; 
-    }
-    .case-card:hover { border-color: var(--gold-accent); box-shadow: 0 8px 20px rgba(0,0,0,0.08); transform: translateY(-4px); }
-    .case-card:hover::before { transform: scaleX(1); }
-    
-    .case-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 0.75rem; border-bottom: 1px solid var(--primary-bg); padding-bottom: 1rem; }
-    .case-client-info { display: flex; flex-direction: column; gap: 0.2rem; }
-    .case-client-name { font-size: 1.1rem; font-weight: 800; color: var(--text-primary); display: flex; align-items: center; gap: 0.4rem; }
-    .case-client-name i { color: var(--gold-accent); font-size: 0.9rem; }
-    .case-number { font-size: 0.85rem; color: var(--text-secondary); font-weight: 600; direction: ltr; text-align: right; background: var(--primary-bg); padding: 2px 8px; border-radius: 4px; display: inline-block; width: fit-content;}
-    
-    /* شارات الحالة (Badges) */
-    .case-status-badge { flex-shrink: 0; padding: 0.35rem 0.85rem; border-radius: 20px; font-size: 0.75rem; font-weight: 700; white-space: nowrap; }
-    .case-status-badge.مفتوحة     { background: rgba(21,128,61,0.1);  color: var(--success-color); }
-    .case-status-badge.مؤجلة      { background: rgba(212,175,55,0.15); color: #9a7b21; }
-    .case-status-badge.مغلقة      { background: rgba(220,38,38,0.1);  color: var(--danger-color); }
-    .case-status-badge.حكم\ نهائي { background: rgba(37,99,235,0.1);  color: #2563eb; }
-    
-    /* تفاصيل القضية داخل الكارت */
-    .case-details { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; background: var(--primary-bg); border-radius: 8px; padding: 1rem; border: 1px solid var(--border-color); }
-    .case-detail-row { display: flex; flex-direction: column; gap: 0.2rem; }
-    .case-detail-label { font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
-    .case-detail-value { font-size: 0.85rem; color: var(--text-primary); font-weight: 700; }
-    
-    /* أزرار الإجراءات في الكارت */
-    .case-card-actions { display: grid; grid-template-columns: 1fr auto auto; gap: 0.5rem; margin-top: auto; padding-top: 1rem; }
-    
-    .btn-action { 
-        display: inline-flex; align-items: center; justify-content: center; gap: 0.4rem; 
-        padding: 0.6rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; 
-        cursor: pointer; transition: all 0.2s ease; text-decoration: none; border: 1px solid transparent;
-    }
-    
-    .btn-action-view { background: rgba(30, 41, 59, 0.05); color: var(--sidebar-bg); border-color: rgba(30, 41, 59, 0.1); }
-    .btn-action-view:hover { background: var(--sidebar-bg); color: #ffffff; }
-    
-    .btn-action-edit { background: rgba(212, 175, 55, 0.1); color: #9a7b21; border-color: rgba(212, 175, 55, 0.2); }
-    .btn-action-edit:hover { background: var(--gold-accent); color: #ffffff; border-color: var(--gold-accent); }
-    
-    .btn-action-delete { background: rgba(239, 68, 68, 0.1); color: var(--danger-color); border-color: rgba(239, 68, 68, 0.2); }
-    .btn-action-delete:hover { background: var(--danger-color); color: #ffffff; border-color: var(--danger-color); }
-
-    /* ===== الـ Empty State ===== */
-    .empty-state-container { text-align: center; padding: 5rem 1rem; background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; }
-    .empty-state-icon-wrapper { width: 90px; height: 90px; background-color: rgba(30, 41, 59, 0.03); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: inset 0 0 20px rgba(0,0,0,0.02); }
-    .empty-state-icon-wrapper i { font-size: 3.5rem; color: var(--border-color); }
-
-    @keyframes slideIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* Responsive */
-    @media (max-width: 900px) { 
-        .cases-page-container { padding: 1rem; } 
-        .cases-grid { grid-template-columns: 1fr; } 
-        .search-filter-section { flex-direction: column; } 
-        .search-group { min-width: unset; width: 100%; } 
-    }
-</style>
-@endpush
+@section('title', __('إدارة القضايا') . ' | ' . $appName)
 
 @section('content')
-<div class="cases-page-container">
+<div class="p-6" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 
-    <div class="dashboard-header">
-        <div>
-            <h1 class="welcome-title">إدارة القضايا</h1>
-            <p class="date-text">عرض وتتبع جميع القضايا الموكلة للمكتب</p>
+    <!-- Header -->
+    <div class="panel mb-6">
+        <div class="panel-header mb-8 flex justify-between items-start flex-wrap gap-4">
+            <div>
+                <div class="panel-title flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    {{ __('إدارة القضايا') }}
+                </div>
+                <p class="text-muted mt-2">{{ __('عرض وتتبع جميع القضايا الموكلة للمكتب') }}</p>
+            </div>
+            
+            <a href="{{ route('cases.create') }}" class="btn-add-new flex items-center gap-2">
+                <span class="icon-circle flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                </span>
+                <span>{{ __('قضية جديدة') }}</span>
+            </a>
         </div>
-        
-        <a href="{{ route('cases.create') }}" class="btn-add-new">
-            <span class="icon-circle">
-                <i class="fas fa-plus"></i>
-            </span>
-            <span>إضافة قضية جديدة</span>
-        </a>
     </div>
 
-    <div class="search-filter-section">
-        <div class="search-group" style="flex: 2;">
-            <label for="searchInput">ابحث باسم العميل أو الرقم القومي أو رقم القضية</label>
-            <div class="search-input-wrapper">
-                <input type="text" id="searchInput" placeholder="اكتب للبحث..." autocomplete="off">
-                <div class="search-icons">
-                    <button class="search-icon-btn do-search" onclick="applyFilters()" title="بحث">
-                        <i class="fas fa-search"></i>
-                    </button>
-                    <button class="search-icon-btn do-clear" onclick="clearSearch()" title="مسح البحث">
-                        <i class="fas fa-times"></i>
-                    </button>
+    <!-- Filters Section -->
+    <div class="panel mb-6">
+        <form method="GET" action="{{ route('cases.index') }}" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
+            
+            <div class="field lg:col-span-2">
+                <label for="search" class="mb-2 block">{{ __('ابحث باسم العميل أو الرقم القومي أو رقم القضية') }}</label>
+                <input type="text" name="search" id="search" value="{{ request('search') }}" class="app-input" placeholder="{{ __('اكتب للبحث...') }}">
+            </div>
+
+            <div class="field">
+                <label for="court_id" class="mb-2 block">{{ __('المحكمة') }}</label>
+                <div class="select-wrap">
+                    <select name="court_id" id="court_id" class="app-select">
+                        <option value="">{{ __('الكل') }}</option>
+                        @foreach(\App\Models\Court::all() as $court)
+                            <option value="{{ $court->id }}" {{ request('court_id') == $court->id ? 'selected' : '' }}>
+                                {{ $court->name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
             </div>
-        </div>
 
-        <button class="btn-clear-filters" onclick="clearFilters()">
-            <i class="fas fa-redo"></i> تفريغ الفلاتر
-        </button>
+            <div class="field">
+                <label for="court_level_id" class="mb-2 block">{{ __('درجة التقاضي') }}</label>
+                <div class="select-wrap">
+                    <select name="court_level_id" id="court_level_id" class="app-select">
+                        <option value="">{{ __('الكل') }}</option>
+                        @foreach(\App\Models\CourtLevel::all() as $level)
+                            <option value="{{ $level->id }}" {{ request('court_level_id') == $level->id ? 'selected' : '' }}>
+                                {{ $level->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
+            <div class="field lg:col-span-4 flex gap-2 w-full mt-2">
+                <button type="submit" class="btn-secondary flex-1 flex items-center justify-center gap-2" title="{{ __('بحث') }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <span>{{ __('بحث') }}</span>
+                </button>
+                <a href="{{ route('cases.index') }}" class="btn-secondary flex items-center justify-center px-6" title="{{ __('تفريغ الفلاتر') }}">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </a>
+            </div>
+
+        </form>
     </div>
 
-    <div class="cases-count">
-        إجمالي القضايا: <span id="casesCount">{{ $cases->count() }}</span>
+    <div class="mb-6 flex justify-between items-center">
+        <div>
+            <span class="text-muted">{{ __('إجمالي القضايا:') }}</span> 
+            <span class="badge-item">{{ method_exists($cases, 'total') ? $cases->total() : $cases->count() }}</span>
+        </div>
     </div>
 
     @if($cases->isEmpty())
-        <div class="empty-state-container">
-            <div class="empty-state-icon-wrapper">
-                <i class="fas fa-briefcase"></i>
+        <div class="panel text-center">
+            <div class="panel-subtle flex items-center justify-center mx-auto mb-6" style="width: 64px; height: 64px; border-radius: 50%;">
+                <svg class="w-8 h-8 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
             </div>
-            <h3 style="color: var(--text-primary); font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 800;">لا توجد قضايا مسجلة</h3>
-            <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 2.5rem;">لم يتم إضافة أي قضايا للنظام حتى الآن. ابدأ بإضافة قضيتك الأولى.</p>
+            <div class="panel-header justify-center mb-2">
+                <div class="panel-title">{{ __('لا توجد قضايا مسجلة') }}</div>
+            </div>
+            <p class="mb-10 text-muted">{{ __('لم يتم إضافة أي قضايا للنظام حتى الآن. ابدأ بإضافة قضيتك الأولى.') }}</p>
             
-            <a href="{{ route('cases.create') }}" class="btn-add-new">
-                <span class="icon-circle">
-                    <i class="fas fa-plus"></i>
+            <a href="{{ route('cases.create') }}" class="btn-add-new flex items-center justify-center gap-2 w-max mx-auto">
+                <span class="icon-circle flex items-center justify-center">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
                 </span>
-                <span>إضافة القضية الأولى</span>
+                <span>{{ __('قضية جديدة') }}</span>
             </a>
         </div>
     @else
-        <div class="cases-grid" id="casesGrid">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             @foreach($cases as $case)
                 @php
                     $client = $case->clients?->first();
                     $leadLawyer = $case->lawyers->where('pivot.role', 'lead')->first() 
                                ?? $case->lawyers->where('pivot.role', 'محامي رئيسي')->first() 
                                ?? $case->lawyers->first();
+                               
+                    $statusClass = 'badge-info'; // Default
+                    if (in_array($case->status, ['مفتوحة', 'متداولة', 'جارية'])) {
+                        $statusClass = 'badge-success';
+                    } elseif (in_array($case->status, ['منتهية', 'محفوظة'])) {
+                        $statusClass = 'badge-danger';
+                    } elseif (in_array($case->status, ['مؤجلة', 'محجوزة للحكم', 'معلقة'])) {
+                        $statusClass = 'badge-warning';
+                    }
                 @endphp
-                <div class="case-card"
-                     data-client="{{ $client->name ?? '' }}"
-                     data-national="{{ $client->nid ?? '' }}"
-                     data-number="{{ $case->case_number }}">
+                <div class="panel flex flex-col gap-4">
 
-                    <div class="case-card-header">
-                        <div class="case-client-info">
-                            <div class="case-client-name">
-                                <i class="fas fa-user-circle"></i>
-                                {{ $client->name ?? 'غير محدد' }}
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="flex flex-col gap-1">
+                            <div class="panel-title flex items-center gap-2">
+                                <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                {{ $client->name ?? __('غير محدد') }}
                             </div>
-                            <div class="case-number"># {{ $case->case_number }}</div>
+                            <div class="badge-item" dir="ltr"># {{ $case->case_number }}</div>
                         </div>
-                        <span class="case-status-badge {{ str_replace(' ', '_', $case->status) }}">{{ $case->status }}</span>
+                        <span class="badge-item {{ $statusClass }}">{{ __($case->status) }}</span>
                     </div>
 
-                    <div class="case-details">
-                        <div class="case-detail-row">
-                            <span class="case-detail-label">نوع الجهة</span>
-                            <span class="case-detail-value">{{ $case->court->jurisdiction->name ?? '-' }}</span>
+                    <div class="panel-subtle p-4 grid grid-cols-2 gap-3">
+                        <div class="flex flex-col gap-1">
+                            <span class="text-muted">{{ __('نوع الجهة') }}</span>
+                            <span>{{ $case->court->jurisdiction->name ?? '-' }}</span>
                         </div>
-                        <div class="case-detail-row">
-                            <span class="case-detail-label">المحكمة</span>
-                            <span class="case-detail-value">{{ $case->court->name ?? '-' }}</span>
+                        <div class="flex flex-col gap-1">
+                            <span class="text-muted">{{ __('المحكمة') }}</span>
+                            <span>{{ $case->court->name ?? '-' }}</span>
                         </div>
-                        <div class="case-detail-row">
-                            <span class="case-detail-label">درجة التقاضي</span>
-                            <span class="case-detail-value">{{ $case->court_level ?? '-' }}</span>
+                        <div class="flex flex-col gap-1">
+                            <span class="text-muted">{{ __('درجة التقاضي') }}</span>
+                            <span>{{ $case->court_level ?? '-' }}</span>
                         </div>
-                        <div class="case-detail-row">
-                            <span class="case-detail-label">المحامي الرئيسي</span>
-                            <span class="case-detail-value">{{ $leadLawyer->name ?? '-' }}</span>
+                        <div class="flex flex-col gap-1">
+                            <span class="text-muted">{{ __('المحامي الرئيسي') }}</span>
+                            <span>{{ $leadLawyer->name ?? '-' }}</span>
                         </div>
-                        <div class="case-detail-row" style="grid-column: span 2;">
-                            <span class="case-detail-label">اسم الخصم</span>
-                            <span class="case-detail-value">{{ $case->rival_name ?? '-' }}</span>
+                        <div class="flex flex-col gap-1 col-span-2">
+                            <span class="text-muted">{{ __('اسم الخصم') }}</span>
+                            <span>{{ $case->rival_name ?? '-' }}</span>
                         </div>
                     </div>
 
-                    <div class="case-card-actions">
-                        <a href="{{ route('cases.show', $case) }}" class="btn-action btn-action-view" title="التفاصيل كاملة">
-                            <i class="fas fa-folder-open"></i>
-                            <span>تفاصيل القضية</span>
+                    <div class="flex items-center gap-2 mt-auto pt-4">
+                        <a href="{{ route('cases.show', $case) }}" class="btn-primary flex items-center justify-center gap-2 w-full" title="{{ __('التفاصيل كاملة') }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"/></svg>
+                            <span>{{ __('تفاصيل القضية') }}</span>
                         </a>
 
-                        <a href="{{ route('cases.edit', $case) }}" class="btn-action btn-action-edit" title="تعديل">
-                            <i class="fas fa-edit"></i>
+                        <a href="{{ route('cases.edit', $case) }}" class="btn-action-edit flex items-center justify-center" title="{{ __('تعديل') }}">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
                         </a>
 
                         <form action="{{ route('cases.destroy', $case->id) }}" method="POST" style="margin: 0; display: contents;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn-action btn-action-delete" title="حذف" onclick="return confirm('هل أنت متأكد من حذف هذه القضية نهائياً؟')">
-                                <i class="fas fa-trash-alt"></i>
+                            <button type="submit" class="btn-action-delete flex items-center justify-center" title="{{ __('حذف') }}" onclick="return confirm('{{ __('هل أنت متأكد من حذف هذه القضية نهائياً؟') }}')">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                             </button>
                         </form>
                     </div>
@@ -299,61 +175,13 @@
                 </div>
             @endforeach
         </div>
+
+        @if(method_exists($cases, 'links'))
+            <div class="mt-6">
+                {{ $cases->links() }}
+            </div>
+        @endif
     @endif
 
 </div>
 @endsection
-
-@push('scripts')
-<script>
-    const cards       = Array.from(document.querySelectorAll('.case-card'));
-    const countEl     = document.getElementById('casesCount');
-    const searchInput = document.getElementById('searchInput');
-
-    function normalize(str) {
-        return (str || '')
-            .toLowerCase()
-            .replace(/أ|إ|آ/g, 'ا')
-            .replace(/ة/g, 'ه')
-            .replace(/ى/g, 'ي')
-            .trim();
-    }
-
-    function applyFilters() {
-        if (!cards.length) return;
-
-        const search = normalize(searchInput.value);
-        let visible  = 0;
-
-        cards.forEach(card => {
-            const clientName = normalize(card.dataset.client);
-            const national   = normalize(card.dataset.national);
-            const caseNum    = normalize(card.dataset.number);
-
-            const match = search === '' ||
-                          clientName.includes(search) ||
-                          national.includes(search) ||
-                          caseNum.includes(search);
-
-            card.style.display = match ? '' : 'none';
-            if (match) visible++;
-        });
-
-        countEl.textContent = visible;
-    }
-
-    function clearSearch() {
-        searchInput.value = '';
-        applyFilters();
-        searchInput.focus();
-    }
-
-    function clearFilters() {
-        clearSearch();
-    }
-
-    if(searchInput) {
-        searchInput.addEventListener('input', applyFilters);
-    }
-</script>
-@endpush

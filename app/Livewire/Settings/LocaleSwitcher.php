@@ -11,14 +11,17 @@ class LocaleSwitcher extends Component
     {
         $supported = ['ar', 'en'];
         if (in_array($locale, $supported, true)) {
-            Session::put('app_locale', $locale);
+            session()->put('app_locale', $locale);
             
             // Optionally tie demo_country with language choice
             if ($country) {
-                Session::put('demo_country', $country);
+                session()->put('demo_country', $country);
             }
             
-            $this->redirect(request()->header('Referer') ?? '/');
+            // Force the session to save before the redirect halts execution
+            session()->save();
+            
+            return $this->redirect(request()->header('Referer') ?? '/');
         }
     }
 

@@ -101,15 +101,15 @@
 
     <div class="dashboard-header">
         <div>
-            <h1 class="welcome-title">إدارة المحاكم</h1>
-            <p class="date-text">إعداد وتكوين المحاكم وجهات التقاضي في النظام</p>
+            <h1 class="welcome-title">{{ __('إدارة المحاكم') }}</h1>
+            <p class="date-text">{{ __('إعداد وتكوين المحاكم وجهات التقاضي في النظام') }}</p>
         </div>
         
         <a href="{{ route('courts.create') }}" class="btn-add-new">
             <span class="icon-circle">
                 <i class="fas fa-plus"></i>
             </span>
-            <span>إضافة محكمة جديدة</span>
+            <span>{{ __('إضافة محكمة جديدة') }}</span>
         </a>
     </div>
 
@@ -119,10 +119,10 @@
                 <table class="custom-table">
                     <thead>
                         <tr>
-                            <th style="width: 10%; text-align: center;">المعرف</th>
-                            <th style="width: 30%;">اسم المحكمة</th>
-                            <th style="width: 25%;">جهة التقاضي</th>
-                            <th style="width: 15%; text-align: center;">إجراءات</th>
+                            <th style="width: 10%; text-align: center;">{{ __('المعرف') }}</th>
+                            <th style="width: 30%;">{{ __('اسم المحكمة') }}</th>
+                            <th style="width: 25%;">{{ __('جهة التقاضي') }}</th>
+                            <th style="width: 15%; text-align: center;">{{ __('إجراءات') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -153,14 +153,14 @@
 
                                 <td style="text-align: center;">
                                     <div style="display: flex; justify-content: center; gap: 0.5rem;">
-                                        <a href="{{ route('courts.edit', $court->id) }}" class="btn-action btn-action-edit" title="تعديل المحكمة">
+                                        <a href="{{ route('courts.edit', $court->{{ __('id) }}" class="btn-action btn-action-edit" title="{{ __('تعديل المحكمة') }}">') }}
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         
                                         <form action="{{ route('courts.destroy', $court->id) }}" method="POST" style="margin: 0; display: inline-block;" onsubmit="return confirm('هل أنت متأكد من حذف هذه المحكمة نهائياً؟');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn-action btn-action-delete" title="حذف المحكمة">
+                                            <button type="submit" class="btn-action btn-action-delete" title="{{ __('حذف المحكمة') }}">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
@@ -176,14 +176,14 @@
                 <div class="empty-state-icon-wrapper">
                     <i class="fas fa-landmark"></i>
                 </div>
-                <h3 style="color: var(--text-primary); font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 800;">لا توجد محاكم مسجلة</h3>
-                <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 2.5rem;">لم يتم إضافة أي محاكم للنظام حتى الآن. قم بإضافة المحاكم لتتمكن من استخدامها عند تسجيل القضايا.</p>
+                <h3 style="color: var(--text-primary); font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 800;">{{ __('لا توجد محاكم مسجلة') }}</h3>
+                <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 2.5rem;">{{ __('لم يتم إضافة أي محاكم للنظام حتى الآن. قم بإضافة المحاكم لتتمكن من استخدامها عند تسجيل القضايا.') }}</p>
                 
                 <a href="{{ route('courts.create') }}" class="btn-add-new">
                     <span class="icon-circle">
                         <i class="fas fa-plus"></i>
                     </span>
-                    <span>إضافة المحكمة الأولى</span>
+                    <span>{{ __('إضافة المحكمة الأولى') }}</span>
                 </a>
             </div>
         @endif

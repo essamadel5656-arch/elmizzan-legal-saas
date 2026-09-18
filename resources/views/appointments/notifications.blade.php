@@ -130,12 +130,12 @@
         <div class="header-info">
             <h1>
                 <i class="fas fa-bell" style="color: var(--gold-accent); margin-left: 8px;"></i>
-                الإشعارات والمواعيد
+                {{ __('الإشعارات والمواعيد') }}
             </h1>
             <p>مواعيد الأسبوع القادم — {{ \Carbon\Carbon::now()->locale('ar')->isoFormat('dddd، D MMMM YYYY') }}</p>
         </div>
         <a href="{{ route('appointments.index') }}" class="btn-view-all">
-            <i class="fas fa-calendar-alt"></i> كل المواعيد
+            <i class="fas fa-calendar-alt"></i> {{ __('كل المواعيد') }}
         </a>
     </div>
 
@@ -143,10 +143,10 @@
         <div class="empty-state-container">
             <i class="fas fa-calendar-check empty-icon"></i>
             <h3 style="color: var(--text-primary); font-size: 1.4rem; font-weight: 800; margin-bottom: 0.5rem;">
-                لا توجد مواعيد قريبة
+                {{ __('لا توجد مواعيد قريبة') }}
             </h3>
             <p style="color: var(--text-secondary); font-size: 1rem;">
-                لا توجد جلسات أو مواعيد مجدولة في الأيام السبعة القادمة.
+                {{ __('لا توجد جلسات أو مواعيد مجدولة في الأيام السبعة القادمة.') }}
             </p>
         </div>
     @else
@@ -235,21 +235,21 @@
                         <div class="card-details">
                             @if($appointment->case?->court?->name)
                                 <div class="detail-row">
-                                    <span class="lbl"><i class="fas fa-landmark"></i> المحكمة:</span>
+                                    <span class="lbl"><i class="fas fa-landmark"></i> {{ __('المحكمة:') }}</span>
                                     <span class="val">{{ $appointment->case->court->name }}</span>
                                 </div>
                             @endif
 
                             @if($appointment->case?->status)
                                 <div class="detail-row">
-                                    <span class="lbl"><i class="fas fa-info-circle"></i> حالة القضية:</span>
+                                    <span class="lbl"><i class="fas fa-info-circle"></i> {{ __('حالة القضية:') }}</span>
                                     <span class="val">{{ $appointment->case->status }}</span>
                                 </div>
                             @endif
 
                             @if($appointment->case?->rival_name)
                                 <div class="detail-row">
-                                    <span class="lbl"><i class="fas fa-user-shield"></i> الخصم:</span>
+                                    <span class="lbl"><i class="fas fa-user-shield"></i> {{ __('الخصم:') }}</span>
                                     <span class="val">{{ $appointment->case->rival_name }}</span>
                                 </div>
                             @endif
@@ -259,7 +259,7 @@
                         @if($appointment->notes)
                             <div class="card-notes">
                                 <div class="notes-label">
-                                    <i class="fas fa-thumbtack"></i> ملاحظات الجلسة
+                                    <i class="fas fa-thumbtack"></i> {{ __('ملاحظات الجلسة') }}
                                 </div>
                                 {{ $appointment->notes }}
                             </div>

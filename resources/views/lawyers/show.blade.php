@@ -135,31 +135,31 @@
 
         <div>
             @if(auth()->user()->role !== 'admin')
-                <a href="/home" class="btn btn-secondary"><i class="fas fa-arrow-right"></i> العودة للرئيسية</a>
+                <a href="/home" class="btn btn-secondary"><i class="fas fa-arrow-right"></i> {{ __('العودة للرئيسية') }}</a>
             @else
-                <a href="{{ route('lawyers.index') }}" class="btn btn-secondary"><i class="fas fa-arrow-right"></i> العودة للقائمة</a>
+                <a href="{{ route('lawyers.index') }}" class="btn btn-secondary"><i class="fas fa-arrow-right"></i> {{ __('العودة للقائمة') }}</a>
             @endif
         </div>
     </div>
 
     {{-- 1. معلومات الاتصال --}}
     <div class="show-card">
-        <div class="show-card-title"><i class="fas fa-address-card"></i> معلومات الاتصال</div>
+        <div class="show-card-title"><i class="fas fa-address-card"></i> {{ __('معلومات الاتصال') }}</div>
         <div class="info-grid">
             <div class="info-item">
-                <span class="info-label"><i class="fas fa-phone-alt"></i> رقم الهاتف</span>
+                <span class="info-label"><i class="fas fa-phone-alt"></i> {{ __('رقم الهاتف') }}</span>
                 <span class="info-value" style="direction: ltr; justify-content: flex-end;">
                     <a href="tel:{{ $lawyers->phone }}" class="info-value-link">{{ $lawyers->phone }}</a>
                 </span>
             </div>
             <div class="info-item">
-                <span class="info-label"><i class="fas fa-envelope"></i> البريد الإلكتروني</span>
+                <span class="info-label"><i class="fas fa-envelope"></i> {{ __('البريد الإلكتروني') }}</span>
                 <span class="info-value">
                     <a href="mailto:{{ $lawyers->email }}" class="info-value-link">{{ $lawyers->email }}</a>
                 </span>
             </div>
             <div class="info-item full">
-                <span class="info-label"><i class="fas fa-map-marker-alt"></i> العنوان</span>
+                <span class="info-label"><i class="fas fa-map-marker-alt"></i> {{ __('العنوان') }}</span>
                 <span class="info-value">{{ $lawyers->address }}</span>
             </div>
         </div>
@@ -167,14 +167,14 @@
 
     {{-- 2. المؤهلات والترخيص --}}
     <div class="show-card">
-        <div class="show-card-title"><i class="fas fa-graduation-cap"></i> الدرجة والترخيص</div>
+        <div class="show-card-title"><i class="fas fa-graduation-cap"></i> {{ __('الدرجة والترخيص') }}</div>
         <div class="info-grid">
             <div class="info-item">
-                <span class="info-label"><i class="fas fa-award"></i> الدرجة</span>
+                <span class="info-label"><i class="fas fa-award"></i> {{ __('الدرجة') }}</span>
                 <span class="info-value">{{ $lawyers->degree }}</span>
             </div>
             <div class="info-item">
-                <span class="info-label"><i class="fas fa-id-badge"></i> رقم القيد / الترخيص</span>
+                <span class="info-label"><i class="fas fa-id-badge"></i> {{ __('رقم القيد / الترخيص') }}</span>
                 <span class="info-value">{{ $lawyers->license_number }}</span>
             </div>
         </div>
@@ -183,7 +183,7 @@
     {{-- 3. النبذة الشخصية (إن وجدت) --}}
     @if($lawyers->bio)
         <div class="show-card">
-            <div class="show-card-title"><i class="fas fa-user-edit"></i> النبذة الشخصية</div>
+            <div class="show-card-title"><i class="fas fa-user-edit"></i> {{ __('النبذة الشخصية') }}</div>
             <div class="info-grid">
                 <div class="info-item full">
                     <span class="info-value textarea-val">{{ $lawyers->bio }}</span>
@@ -195,17 +195,17 @@
     {{-- 4. المستندات المرفوعة --}}
     @if($lawyers->national_id_image || $lawyers->bar_card_image)
         <div class="show-card">
-            <div class="show-card-title"><i class="fas fa-images"></i> المستندات المرفوعة</div>
+            <div class="show-card-title"><i class="fas fa-images"></i> {{ __('المستندات المرفوعة') }}</div>
 
             <div class="documents-grid">
 
                 @if($lawyers->national_id_image)
                     <div class="document-item">
-                        <span class="info-label" style="margin-bottom: 0.3rem;"><i class="fas fa-id-card"></i> صورة الهوية الوطنية</span>
+                        <span class="info-label" style="margin-bottom: 0.3rem;"><i class="fas fa-id-card"></i> {{ __('صورة الهوية الوطنية') }}</span>
                         <a href="{{ \Storage::url($lawyers->national_id_image) }}" target="_blank" class="document-wrapper">
-                            <img src="{{ \Storage::url($lawyers->national_id_image) }}" alt="الهوية الوطنية">
+                            <img src="{{ \Storage::url($lawyers->{{ __('national_id_image) }}" alt="{{ __('الهوية الوطنية') }}">') }}
                             <div class="document-overlay">
-                                <i class="fas fa-search-plus"></i> عرض بالحجم الكامل
+                                <i class="fas fa-search-plus"></i> {{ __('عرض بالحجم الكامل') }}
                             </div>
                         </a>
                     </div>
@@ -213,11 +213,11 @@
 
                 @if($lawyers->bar_card_image)
                     <div class="document-item">
-                        <span class="info-label" style="margin-bottom: 0.3rem;"><i class="fas fa-id-badge"></i> بطاقة الترخيص / كارنيه النقابة</span>
+                        <span class="info-label" style="margin-bottom: 0.3rem;"><i class="fas fa-id-badge"></i> {{ __('بطاقة الترخيص / كارنيه النقابة') }}</span>
                         <a href="{{ \Storage::url($lawyers->bar_card_image) }}" target="_blank" class="document-wrapper">
-                            <img src="{{ \Storage::url($lawyers->bar_card_image) }}" alt="كارنيه النقابة">
+                            <img src="{{ \Storage::url($lawyers->{{ __('bar_card_image) }}" alt="{{ __('كارنيه النقابة') }}">') }}
                             <div class="document-overlay">
-                                <i class="fas fa-search-plus"></i> عرض بالحجم الكامل
+                                <i class="fas fa-search-plus"></i> {{ __('عرض بالحجم الكامل') }}
                             </div>
                         </a>
                     </div>
@@ -231,7 +231,7 @@
     @if(auth()->user()->role === 'admin' || auth()->user()->lawyer_id == $lawyers->id)
         <div class="form-actions">
             <a href="{{ route('lawyers.edit', $lawyers->id) }}" class="btn btn-primary">
-                <i class="fas fa-edit"></i> تعديل البيانات
+                <i class="fas fa-edit"></i> {{ __('تعديل البيانات') }}
             </a>
 
             {{-- زر الحذف للأدمن بس --}}
@@ -240,7 +240,7 @@
                     @csrf
                     @method('DELETE')
                     <button type="submit" class="btn btn-danger" onclick="return confirm('هل أنت متأكد من حذف هذا المحامي نهائياً من النظام؟ لا يمكن التراجع عن هذا الإجراء.');">
-                        <i class="fas fa-trash-alt"></i> حذف المحامي
+                        <i class="fas fa-trash-alt"></i> {{ __('حذف المحامي') }}
                     </button>
                 </form>
             @endif

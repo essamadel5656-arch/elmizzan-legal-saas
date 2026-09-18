@@ -323,20 +323,32 @@
         .user-name { font-weight: 600; font-size: 0.9rem; color: var(--text-primary); }
 
         /* ===== DARK MODE TOGGLE ===== */
-        .theme-toggle {
+        .theme-toggle-pill {
             position: relative;
-            display: inline-flex; align-items: center; justify-content: center;
-            width: 38px; height: 38px; border-radius: 8px;
+            display: inline-flex; align-items: center; justify-content: space-between;
+            width: 64px; height: 32px; border-radius: 9999px;
             background-color: var(--card-bg); border: 1px solid var(--border-color);
-            cursor: pointer; transition: 0.2s; color: var(--text-secondary);
-            box-shadow: var(--shadow-sm);
+            cursor: pointer; transition: 0.3s ease; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+            padding: 0 4px;
         }
-        .theme-toggle:hover { background-color: var(--primary-bg); color: var(--accent-color); transform: translateY(-1px); }
-        .theme-toggle .icon-sun, .theme-toggle .icon-moon { transition: opacity 0.25s, transform 0.3s; position: absolute; }
-        [data-theme="light"] .icon-moon { opacity: 0; transform: rotate(90deg) scale(0.5); }
-        [data-theme="light"] .icon-sun  { opacity: 1; transform: rotate(0deg)   scale(1); }
-        [data-theme="dark"]  .icon-sun  { opacity: 0; transform: rotate(-90deg) scale(0.5); }
-        [data-theme="dark"]  .icon-moon { opacity: 1; transform: rotate(0deg)   scale(1); }
+        .theme-knob {
+            position: absolute; top: 3px; left: 4px;
+            width: 24px; height: 24px; border-radius: 50%;
+            background-color: var(--gold-accent);
+            transition: transform 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+            z-index: 1;
+        }
+        [dir="rtl"] .theme-knob { left: auto; right: 4px; }
+        [data-theme="dark"] .theme-knob { transform: translateX(32px); }
+        [dir="rtl"][data-theme="dark"] .theme-knob { transform: translateX(-32px); }
+        
+        .theme-toggle-pill i {
+            font-size: 0.8rem; z-index: 2; transition: color 0.3s ease;
+        }
+        [data-theme="light"] .icon-moon { color: var(--text-secondary); }
+        [data-theme="light"] .icon-sun  { color: #ffffff; }
+        [data-theme="dark"]  .icon-moon { color: #ffffff; }
+        [data-theme="dark"]  .icon-sun  { color: var(--text-secondary); }
 
         /* ===== NOTIFICATION BELL ===== */
         .notif-bell {
@@ -549,7 +561,7 @@
     @endif
     
     <header class="navbar">
-        <button class="toggle-btn" id="mainToggleBtn" aria-label="تبديل القائمة">
+        <button class="toggle-btn" id="mainToggleBtn" aria-label="{{ __('تبديل القائمة') }}">
             <i class="fas fa-bars"></i>
         </button>
 
@@ -559,9 +571,10 @@
             <livewire:settings.locale-switcher />
 
             {{-- ── Dark / Light Mode Toggle ── --}}
-            <button class="theme-toggle" id="themeToggle" aria-label="تبديل المظهر" title="تبديل الوضع المظلم / الفاتح">
-                <i class="fas fa-sun  icon-sun"  style="font-size:1rem;"></i>
-                <i class="fas fa-moon icon-moon" style="font-size:1rem;"></i>
+            <button class="theme-toggle-pill flex items-center rounded-full p-1 relative transition-all duration-300" id="themeToggle" aria-label="{{ __('تبديل المظهر') }}" title="{{ __('تبديل الوضع المظلم / الفاتح') }}">
+                <div class="theme-knob shadow-sm"></div>
+                <i class="fas fa-sun icon-sun z-10 ms-1.5"></i>
+                <i class="fas fa-moon icon-moon z-10 me-1.5"></i>
             </button>
 
             {{-- ── Notification Bell (Livewire) ── --}}
@@ -588,7 +601,7 @@
                     : '/home';
             @endphp
             <a href="{{ $profileUrl }}" wire:navigate class="navbar-user" style="text-decoration: none;">
-                <img src="{{ $avatarUrl }}" alt="صورة المستخدم" class="user-avatar">
+                <img src="{{ $avatarUrl }}" alt="{{ __('صورة المستخدم') }}" class="user-avatar">
                 <span class="user-name" style="display: inline-flex; align-items: center; gap: 0.45rem;">
                     <span>{{ auth()->user()->name }}</span>
                     @if(session('demo_country'))

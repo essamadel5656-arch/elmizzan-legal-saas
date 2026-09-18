@@ -124,8 +124,8 @@
 
     <div class="dashboard-header">
         <div class="header-info">
-            <h1><i class="fas fa-book-open" style="color: var(--gold-accent);"></i> المكتبة القانونية</h1>
-            <p>اختر نوع العقد أو النموذج، قم بتعبئة البيانات المطلوبة، واطبعه مباشرة</p>
+            <h1><i class="fas fa-book-open" style="color: var(--gold-accent);"></i> {{ __('المكتبة القانونية') }}</h1>
+            <p>{{ __('اختر نوع العقد أو النموذج، قم بتعبئة البيانات المطلوبة، واطبعه مباشرة') }}</p>
         </div>
     </div>
 
@@ -141,12 +141,12 @@
                     <h3 class="contract-name">{{ $name }}</h3>
                     
                     <div class="contract-action">
-                        <span>تعبئة وطباعة</span>
+                        <span>{{ __('تعبئة وطباعة') }}</span>
                         <i class="fas fa-arrow-left"></i>
                     </div>
                     
                     <div class="contract-preview">
-                        اضغط هنا لإدخال أطراف العقد والبيانات المطلوبة لطباعته فوراً.
+                        {{ __('اضغط هنا لإدخال أطراف العقد والبيانات المطلوبة لطباعته فوراً.') }}
                     </div>
                 </div>
 

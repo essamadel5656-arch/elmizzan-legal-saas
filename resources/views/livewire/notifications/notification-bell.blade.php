@@ -1,9 +1,9 @@
 <div class="notif-dropdown-wrapper" style="position: relative;" x-data="{ open: @entangle('open') }" @click.outside="open = false">
     {{-- Bell Trigger Button --}}
-    <button type="button" class="notif-bell" @click="open = !open" title="الإشعارات" aria-label="الإشعارات" style="cursor: pointer;">
+    <button type="button" class="notif-bell" @click="open = !open" title="{{ __('الإشعارات') }}" aria-label="{{ __('الإشعارات') }}" style="cursor: pointer;">
         <i class="fas fa-bell"></i>
         @if($unreadCount > 0)
-            <span class="notif-badge">{{ $unreadCount > 9 ? '9+' : $unreadCount }}</span>
+            <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">{{ $unreadCount > 9 ? '9+' : $unreadCount }}</span>
         @endif
     </button>
 
@@ -21,14 +21,14 @@
         <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.85rem 1rem; border-bottom: 1px solid var(--border-color); background: rgba(0,0,0,0.02);">
             <div style="font-weight: 700; font-size: 0.95rem; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem;">
                 <i class="fas fa-bell" style="color: var(--gold-accent);"></i>
-                <span>الإشعارات</span>
+                <span>{{ __('الإشعارات') }}</span>
                 @if($unreadCount > 0)
                     <span style="font-size: 0.75rem; background: rgba(212,175,55,0.15); color: var(--gold-accent); padding: 2px 8px; border-radius: 20px; font-weight: 700;">{{ $unreadCount }} جديدة</span>
                 @endif
             </div>
             @if($unreadCount > 0)
                 <button type="button" wire:click="markAllAsRead" style="background: none; border: none; font-size: 0.78rem; color: var(--gold-accent); cursor: pointer; font-weight: 600; padding: 2px 6px; border-radius: 4px;">
-                    تعليم الكل كمقروء
+                    {{ __('تعليم الكل كمقروء') }}
                 </button>
             @endif
         </div>
@@ -63,14 +63,14 @@
             @empty
                 <div style="padding: 2rem 1rem; text-align: center; color: var(--text-secondary); font-size: 0.88rem;">
                     <i class="fas fa-bell-slash" style="font-size: 1.8rem; margin-bottom: 0.5rem; opacity: 0.4; display: block;"></i>
-                    لا توجد إشعارات حالياً
+                    {{ __('لا توجد إشعارات حالياً') }}
                 </div>
             @endforelse
         </div>
 
         <div style="padding: 0.65rem; border-top: 1px solid var(--border-color); text-align: center; background: rgba(0,0,0,0.02);">
             <a href="{{ route('notifications.index') }}" wire:navigate @click="open = false" style="font-size: 0.82rem; color: var(--text-primary); font-weight: 600; text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 0.4rem;">
-                <span>عرض جميع الإشعارات</span>
+                <span>{{ __('عرض جميع الإشعارات') }}</span>
                 <i class="fas fa-arrow-left" style="font-size: 0.75rem;"></i>
             </a>
         </div>

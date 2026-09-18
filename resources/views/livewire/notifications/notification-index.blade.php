@@ -138,7 +138,7 @@
             @if($unreadCount > 0)
                 <button type="button" wire:click="markAllAsRead" class="btn-mark-all" wire:loading.attr="disabled">
                     <i class="fas fa-check-double"></i>
-                    <span>تعليم الكل كمقروء</span>
+                    <span>{{ __('تعليم الكل كمقروء') }}</span>
                 </button>
             @endif
         </div>
@@ -146,13 +146,13 @@
         {{-- Filter Tabs --}}
         <div class="notif-tabs">
             <button type="button" wire:click="$set('filter', 'all')" class="notif-tab {{ $filter === 'all' ? 'active' : '' }}">
-                الكل
+                {{ __('الكل') }}
             </button>
             <button type="button" wire:click="$set('filter', 'unread')" class="notif-tab {{ $filter === 'unread' ? 'active' : '' }}">
                 غير مقروء ({{ $unreadCount }})
             </button>
             <button type="button" wire:click="$set('filter', 'read')" class="notif-tab {{ $filter === 'read' ? 'active' : '' }}">
-                مقروء
+                {{ __('مقروء') }}
             </button>
         </div>
 
@@ -169,8 +169,8 @@
         @if($notifications->isEmpty())
             <div class="notif-empty">
                 <i class="fas fa-bell-slash"></i>
-                <p style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">لا توجد إشعارات</p>
-                <p style="font-size:0.9rem;">ستظهر هنا إشعارات القضايا والجلسات</p>
+                <p style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">{{ __('لا توجد إشعارات') }}</p>
+                <p style="font-size:0.9rem;">{{ __('ستظهر هنا إشعارات القضايا والجلسات') }}</p>
             </div>
         @else
             <div class="notif-list">
@@ -209,7 +209,7 @@
                                 @endif
                                 <span><i class="fas fa-clock" style="margin-left:3px;"></i> {{ $timeAgo }}</span>
                                 @if($isUnread)
-                                    <span style="color:var(--gold-accent); font-weight:700;">● غير مقروء</span>
+                                    <span style="color:var(--gold-accent); font-weight:700;">{{ __('● غير مقروء') }}</span>
                                 @endif
                             </span>
                         </span>

@@ -37,10 +37,10 @@
             </label>
             <select id="degree-filter" wire:model.live="degree" class="w-full bg-slate-50 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-xl focus:ring-2 focus:ring-amber-500/40 focus:border-amber-500 transition-all text-sm px-4 py-3">
                 <option value="">{{ __('All') }}</option>
-                <option value="نقض">{{ __('Cassation') }}</option>
-                <option value="استئناف">{{ __('Appeal') }}</option>
-                <option value="ابتدائي">{{ __('Primary') }}</option>
-                <option value="جدول_عام">{{ __('General Table') }}</option>
+                <option value="{{ __('نقض') }}">{{ __('Cassation') }}</option>
+                <option value="{{ __('استئناف') }}">{{ __('Appeal') }}</option>
+                <option value="{{ __('ابتدائي') }}">{{ __('Primary') }}</option>
+                <option value="{{ __('جدول_عام') }}">{{ __('General Table') }}</option>
             </select>
         </div>
 

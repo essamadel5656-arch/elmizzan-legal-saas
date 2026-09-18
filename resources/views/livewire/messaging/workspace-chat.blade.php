@@ -207,7 +207,7 @@
         {{-- Sidebar --}}
         <div class="chat-sidebar">
             <div class="chat-sidebar-header">
-                <input type="text" wire:model.live.debounce.300ms="searchQuery" class="chat-search-input" placeholder="بحث عن عضو...">
+                <input type="text" wire:model.live.debounce.300ms="searchQuery" class="chat-search-input" placeholder="{{ __('بحث عن عضو...') }}">
             </div>
             
             <div class="chat-member-list" wire:poll.30s>
@@ -216,8 +216,8 @@
                         <i class="fas fa-bullhorn"></i>
                     </div>
                     <div style="flex: 1;">
-                        <div style="font-weight: 700; color: var(--text-primary);">الكل (بث عام)</div>
-                        <div style="font-size: 0.75rem; color: var(--text-secondary);">رسائل لجميع الأعضاء</div>
+                        <div style="font-weight: 700; color: var(--text-primary);">{{ __('الكل (بث عام)') }}</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary);">{{ __('رسائل لجميع الأعضاء') }}</div>
                     </div>
                 </div>
 
@@ -249,8 +249,8 @@
                         <i class="fas fa-bullhorn"></i>
                     </div>
                     <div>
-                        <h2 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--text-primary);">الكل (بث عام)</h2>
-                        <div style="font-size: 0.8rem; color: var(--text-secondary);">مرئية لجميع أعضاء مساحة العمل</div>
+                        <h2 style="margin: 0; font-size: 1.1rem; font-weight: 800; color: var(--text-primary);">{{ __('الكل (بث عام)') }}</h2>
+                        <div style="font-size: 0.8rem; color: var(--text-secondary);">{{ __('مرئية لجميع أعضاء مساحة العمل') }}</div>
                     </div>
                 @else
                     @php
@@ -286,7 +286,7 @@
                             <span>{{ $msg->created_at->format('h:i A') }}</span>
                             @if($isSelf && is_null($activeUserId))
                             @elseif($isSelf)
-                                <span title="مقروءة">
+                                <span title="{{ __('مقروءة') }}">
                                     <i class="fas fa-check-double" style="color: {{ $msg->read_at ? '#3b82f6' : 'var(--text-secondary)' }}; font-size: 0.7rem;"></i>
                                 </span>
                             @endif
@@ -319,7 +319,7 @@
                 @empty
                     <div style="text-align: center; color: var(--text-secondary); margin-top: auto; margin-bottom: auto;">
                         <i class="fas fa-comments" style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;"></i>
-                        <p>لا توجد رسائل في هذه المحادثة حتى الآن. ابدأ بإرسال رسالة!</p>
+                        <p>{{ __('لا توجد رسائل في هذه المحادثة حتى الآن. ابدأ بإرسال رسالة!') }}</p>
                     </div>
                 @endforelse
             </div>
@@ -330,7 +330,7 @@
                               class="chat-textarea" 
                               style="width: 100%;"
                               rows="1" 
-                              placeholder="اكتب رسالتك هنا..." 
+                              placeholder="{{ __('اكتب رسالتك هنا...') }}" 
                               wire:keydown.enter.prevent="sendMessage"></textarea>
                 </div>
                 
@@ -345,14 +345,14 @@
                 </div>
 
                 <button class="chat-send-btn" wire:click="sendMessage" wire:loading.attr="disabled">
-                    <span wire:loading.remove wire:target="sendMessage, file">إرسال <i class="fas fa-paper-plane" style="margin-right: 5px;"></i></span>
+                    <span wire:loading.remove wire:target="sendMessage, file">{{ __('إرسال') }} <i class="fas fa-paper-plane" style="margin-right: 5px;"></i></span>
                     <span wire:loading wire:target="sendMessage, file"><i class="fas fa-circle-notch fa-spin"></i></span>
                 </button>
             </div>
             @if($file)
                 <div style="padding: 0 1.5rem 1rem; background: var(--card-bg); font-size: 0.8rem; color: var(--gold-accent); display: flex; align-items: center; gap: 0.5rem;">
                     <i class="fas fa-file-alt"></i> {{ $file->getClientOriginalName() }} 
-                    <button wire:click="$set('file', null)" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.8rem;"><i class="fas fa-times"></i> إزالة</button>
+                    <button wire:click="$set('file', null)" style="background: none; border: none; color: #ef4444; cursor: pointer; font-size: 0.8rem;"><i class="fas fa-times"></i> {{ __('إزالة') }}</button>
                 </div>
             @endif
             @error('file') <span style="color: #ef4444; font-size: 0.8rem; padding: 0 1.5rem 1rem; background: var(--card-bg);">{{ $message }}</span> @enderror

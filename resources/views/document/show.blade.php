@@ -108,7 +108,7 @@
                 {{ $document->title }}
             </h1>
             <p>
-                مستند مرتبط بالقضية:
+                {{ __('مستند مرتبط بالقضية:') }}
                 <a href="{{ route('cases.show', $document->case_id) }}" style="color: var(--sidebar-bg); font-weight: 700; text-decoration: none;">
                     {{ $document->case->case_number ?? '#' . $document->case_id }}
                 </a>
@@ -116,10 +116,10 @@
         </div>
         <div class="header-actions">
             <a href="{{ route('document.index') }}" class="btn-back">
-                <i class="fas fa-arrow-right"></i> رجوع
+                <i class="fas fa-arrow-right"></i> {{ __('رجوع') }}
             </a>
             <a href="{{ route('document.edit', $document->id) }}" class="btn-edit">
-                <i class="fas fa-edit"></i> تعديل
+                <i class="fas fa-edit"></i> {{ __('تعديل') }}
             </a>
         </div>
     </div>
@@ -135,17 +135,17 @@
     {{-- ===== بيانات المستند ===== --}}
     <div class="detail-card">
         <div class="detail-card-title">
-            <i class="fas fa-info-circle"></i> تفاصيل المستند
+            <i class="fas fa-info-circle"></i> {{ __('تفاصيل المستند') }}
         </div>
 
         <div class="detail-grid">
             <div class="detail-item">
-                <div class="detail-label">المعرف</div>
+                <div class="detail-label">{{ __('المعرف') }}</div>
                 <div class="detail-value"># {{ $document->id }}</div>
             </div>
 
             <div class="detail-item">
-                <div class="detail-label">نوع المستند</div>
+                <div class="detail-label">{{ __('نوع المستند') }}</div>
                 <div class="detail-value">
                     @php
                         $typeMap = [
@@ -162,7 +162,7 @@
             </div>
 
             <div class="detail-item">
-                <div class="detail-label">تاريخ الرفع</div>
+                <div class="detail-label">{{ __('تاريخ الرفع') }}</div>
                 <div class="detail-value">
                     <i class="fas fa-calendar-alt" style="color: var(--gold-accent); margin-left: 6px;"></i>
                     {{ $document->created_at->format('Y/m/d') }}
@@ -170,7 +170,7 @@
             </div>
 
             <div class="detail-item">
-                <div class="detail-label">آخر تحديث</div>
+                <div class="detail-label">{{ __('آخر تحديث') }}</div>
                 <div class="detail-value">
                     <i class="fas fa-clock" style="color: var(--text-secondary); margin-left: 6px;"></i>
                     {{ $document->updated_at->format('Y/m/d') }}
@@ -178,7 +178,7 @@
             </div>
 
             <div class="detail-item full-width">
-                <div class="detail-label">الوصف</div>
+                <div class="detail-label">{{ __('الوصف') }}</div>
                 <div class="detail-value" style="display: block; padding: 0.75rem 1rem; line-height: 1.7;">
                     {{ $document->description ?: 'لا يوجد وصف مضاف لهذا المستند.' }}
                 </div>
@@ -189,7 +189,7 @@
     {{-- ===== الملف المرفق ===== --}}
     <div class="detail-card">
         <div class="detail-card-title">
-            <i class="fas fa-paperclip"></i> الملف المرفق
+            <i class="fas fa-paperclip"></i> {{ __('الملف المرفق') }}
         </div>
 
         @if($document->file_path)
@@ -216,13 +216,13 @@
                     </div>
                 </div>
                 <a href="{{ Storage::url($document->file_path) }}" target="_blank" class="btn-download">
-                    <i class="fas fa-download"></i> تحميل الملف
+                    <i class="fas fa-download"></i> {{ __('تحميل الملف') }}
                 </a>
             </div>
         @else
             <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
                 <i class="fas fa-exclamation-circle" style="font-size: 2rem; margin-bottom: 0.75rem; opacity: 0.4; display: block;"></i>
-                لا يوجد ملف مرفق بهذا المستند
+                {{ __('لا يوجد ملف مرفق بهذا المستند') }}
             </div>
         @endif
     </div>

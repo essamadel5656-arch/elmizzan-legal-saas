@@ -122,12 +122,12 @@
             <div class="header-info">
                 <h1>
                     <i class="fas fa-book-bookmark" style="color: var(--gold-accent);"></i> 
-                    المكتبة القانونية والصيغ النموذجية
+                    {{ __('المكتبة القانونية والصيغ النموذجية') }}
                 </h1>
-                <p>نماذج العقود، الدعاوى القضائية، والصيغ القانونية المعتمدة والجاهزة للطباعة والتعديل</p>
+                <p>{{ __('نماذج العقود، الدعاوى القضائية، والصيغ القانونية المعتمدة والجاهزة للطباعة والتعديل') }}</p>
             </div>
 
-            <input type="text" wire:model.live.debounce.300ms="search" placeholder="ابحث في صيغ العقود..." class="search-box-lib">
+            <input type="text" wire:model.live.debounce.300ms="search" placeholder="{{ __('ابحث في صيغ العقود...') }}" class="search-box-lib">
         </div>
 
         <div class="contracts-grid">
@@ -140,7 +140,7 @@
                     <div class="contract-details">
                         <h3 class="contract-name">{{ $title }}</h3>
                         <div class="contract-action">
-                            <span>عرض النموذج والطباعة</span>
+                            <span>{{ __('عرض النموذج والطباعة') }}</span>
                             <i class="fas fa-arrow-left"></i>
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                 <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: #fff; border-radius: 12px; border: 1px solid var(--border-color);">
                     <i class="fas fa-search" style="font-size: 3rem; color: var(--border-color); margin-bottom: 1rem; display: block;"></i>
                     <h3 style="color: var(--text-primary); font-weight: 800;">لا توجد نتائج مطابقة لـ "{{ $search }}"</h3>
-                    <p style="color: var(--text-secondary); margin-top: 0.5rem;">جرب كتابة اسم عقد آخر أو امسح البحث.</p>
+                    <p style="color: var(--text-secondary); margin-top: 0.5rem;">{{ __('جرب كتابة اسم عقد آخر أو امسح البحث.') }}</p>
                 </div>
             @endforelse
         </div>

@@ -1,355 +1,309 @@
 @extends('layouts.app')
 
-@section('title', 'إضافة قضية جديدة | ' . $appName)
-
-@push('styles')
-<style>
-    /* ===== الحاوية والترويسة ===== */
-    .create-page-container { padding: 2rem; max-width: 1000px; margin: 0 auto; }
-    
-    .dashboard-header { 
-        display: flex; justify-content: space-between; align-items: flex-start; 
-        margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;
-    }
-    .header-info h1 { font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; }
-    .header-info p { color: var(--text-secondary); font-size: 0.95rem; margin: 0; }
-
-    /* ===== البانل والكروت ===== */
-    .form-card { 
-        background: #ffffff; border: 1px solid var(--border-color); 
-        border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem; 
-        box-shadow: var(--shadow-sm); transition: all 0.3s ease;
-    }
-    .form-card:hover { border-color: var(--gold-accent); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-    
-    .form-card-title { 
-        font-size: 1.1rem; font-weight: 800; color: var(--sidebar-bg); 
-        margin-bottom: 1.5rem; padding-bottom: 0.75rem; 
-        border-bottom: 2px solid var(--primary-bg); display: flex; 
-        align-items: center; justify-content: space-between;
-    }
-    .title-with-icon { display: flex; align-items: center; gap: 0.75rem; }
-    .title-with-icon i { color: var(--gold-accent); font-size: 1.2rem; }
-
-    /* ===== تقسيم الفورم ===== */
-    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-    .form-grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-    
-    .form-group { margin-bottom: 1rem; }
-    .form-group.full { grid-column: 1 / -1; }
-    .form-label { display: block; margin-bottom: 0.6rem; font-weight: 700; color: var(--text-primary); font-size: 0.9rem; }
-    
-    .form-control { 
-        width: 100%; padding: 0.9rem 1rem; border: 1px solid var(--border-color); 
-        border-radius: 8px; background-color: #ffffff; font-family: inherit; 
-        font-size: 0.95rem; transition: all 0.2s;
-    }
-    .form-control:focus { outline: none; border-color: var(--gold-accent); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); }
-    .form-control[readonly], .form-control:disabled { 
-        background-color: var(--primary-bg); border-style: dashed; cursor: not-allowed; color: var(--text-secondary);
-    }
-
-    textarea.form-control { resize: vertical; min-height: 100px; }
-
-    /* ===== أزرار الإضافة المصغرة ===== */
-    .btn-outline-sm {
-        display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem;
-        border: 1px solid var(--gold-accent); color: #9a7b21; background: rgba(212, 175, 55, 0.05);
-        border-radius: 6px; font-size: 0.85rem; font-weight: 700; text-decoration: none; transition: all 0.2s;
-    }
-    .btn-outline-sm:hover { background: var(--gold-accent); color: #ffffff; }
-
-    /* ===== المرفقات (Upload Box) ===== */
-    .upload-box { 
-        border: 2px dashed var(--border-color); border-radius: 12px; 
-        padding: 2.5rem 2rem; text-align: center; background: var(--primary-bg); 
-        cursor: pointer; transition: all 0.3s; margin-top: 1rem;
-    }
-    .upload-box:hover { border-color: var(--gold-accent); background: #ffffff; }
-    .upload-icon { font-size: 2.5rem; color: var(--text-secondary); margin-bottom: 1rem; transition: color 0.2s; }
-    .upload-box:hover .upload-icon { color: var(--gold-accent); }
-
-    /* ===== أزرار التحكم ===== */
-    .form-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; }
-    
-    .btn-cancel { 
-        padding: 12px 24px; background-color: transparent; color: var(--text-secondary); 
-        border: 1px solid var(--border-color); border-radius: 8px; font-weight: 600; 
-        cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
-    }
-    .btn-cancel:hover { background-color: var(--primary-bg); color: var(--danger-color); border-color: var(--danger-color); }
-    
-    .btn-save { 
-        padding: 12px 32px; background-color: var(--sidebar-bg); color: #ffffff; 
-        border: none; border-radius: 8px; font-weight: 700; cursor: pointer; 
-        transition: 0.3s; display: inline-flex; align-items: center; gap: 0.5rem;
-    }
-    .btn-save:hover { background-color: var(--gold-accent); color: var(--sidebar-bg); box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); }
-
-    /* ===== الأخطاء ===== */
-    .error-box { background: rgba(239, 68, 68, 0.05); border: 1px solid var(--danger-color); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; }
-    .error-box strong { color: var(--danger-color); font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
-    .error-box ul { color: var(--danger-color); margin: 0; padding-right: 1.5rem; font-weight: 600; }
-</style>
-@endpush
+@section('title', __('إضافة قضية جديدة') . ' | ' . ($appName ?? 'El-Mizzan'))
 
 @section('content')
-<div class="create-page-container">
+<div class="p-4 md:p-8 max-w-5xl mx-auto" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 
     <!-- Header -->
-    <div class="dashboard-header">
-        <div class="header-info">
-            <h1><i class="fas fa-folder-plus" style="color: var(--gold-accent); margin-left: 8px;"></i> إضافة ملف قضية جديد</h1>
-            <p>سجل بيانات القضية والطرف الموكل، الخصم، والماليات المترتبة عليها</p>
+    <div class="panel-header mb-8">
+        <div>
+            <h1 class="panel-title flex items-center gap-2 text-xl md:text-2xl">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                {{ __('إضافة ملف قضية جديد') }}
+            </h1>
+            <p class="text-muted mt-2">{{ __('سجل بيانات القضية والطرف الموكل، الخصم، والماليات المترتبة عليها') }}</p>
         </div>
-        <a href="{{ route('cases.index') }}" class="btn-cancel">
-            <i class="fas fa-arrow-right"></i> رجوع للقائمة
+        <a href="{{ route('cases.index') }}" class="btn-secondary flex items-center gap-2">
+            <svg class="w-5 h-5 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+            {{ __('رجوع للقائمة') }}
         </a>
     </div>
 
     @if ($errors->any())
-        <div class="error-box">
-            <strong><i class="fas fa-exclamation-triangle"></i> يرجى مراجعة الأخطاء التالية:</strong>
-            <ul>
+        <div class="panel-subtle mb-6">
+            <div class="flex items-center gap-2 font-bold mb-3">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg> 
+                {{ __('يرجى مراجعة الأخطاء التالية:') }}
+            </div>
+            <ul class="list-disc mx-5 font-medium text-muted">
                 @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
+                    <li>{{ __($error) }}</li>
                 @endforeach
             </ul>
         </div>
     @endif
 
-    <form id="caseForm" action="{{ route('cases.store') }}" method="POST" enctype="multipart/form-data" novalidate>
+    <form id="caseForm" action="{{ route('cases.store') }}" method="POST" enctype="multipart/form-data" novalidate class="space-y-6">
         @csrf
 
-        {{-- 1. بيانات العميل --}}
-        <div class="form-card">
-            <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-user-tie"></i> بيانات العميل الموكل</div>
-                <a href="{{ route('add-client') }}" class="btn-outline-sm" target="_blank">
-                    <i class="fas fa-plus"></i> عميل جديد
+        {{-- 1. Client Details --}}
+        <div class="panel">
+            <div class="panel-header mb-6 pb-3 border-b">
+                <div class="panel-title flex items-center gap-3 text-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    {{ __('بيانات العميل الموكل') }}
+                </div>
+                <a href="{{ route('add-client') }}" class="btn-secondary flex items-center gap-2 px-3 py-1.5 text-sm" target="_blank">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    {{ __('موكل جديد') }}
                 </a>
             </div>
 
-            <div class="form-grid">
-                <div class="form-group full">
-                    <label for="client_search" class="form-label">ابحث عن اسم العميل الموكل <span style="color: var(--danger-color);">*</span></label>
-                    <input type="text" id="client_search" list="clients_list" class="form-control" placeholder="ابدأ بكتابة اسم العميل للربط التلقائي..." autocomplete="off" required>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="field md:col-span-2">
+                    <label for="client_search">{{ __('ابحث عن اسم العميل الموكل *') }}</label>
+                    <div class="input-icon-wrap">
+                        <input type="text" id="client_search" list="clients_list" class="app-input w-full" placeholder="{{ __('ابدأ بكتابة اسم العميل للربط التلقائي...') }}" autocomplete="off" required>
+                    </div>
                     <datalist id="clients_list">
                         @foreach ($clients as $client)
                             <option value="{{ $client->name }}" 
                                     data-id="{{ $client->id }}" 
-                                    data-phone="{{ $client->phone ?? 'غير مسجل' }}" 
-                                    data-national="{{ $client->nid ?? 'غير مسجل' }}" 
-                                    data-address="{{ $client->address ?? 'غير مسجل' }}">
+                                    data-phone="{{ $client->phone ?? __('غير مسجل') }}" 
+                                    data-national="{{ $client->nid ?? __('غير مسجل') }}" 
+                                    data-address="{{ $client->address ?? __('غير مسجل') }}">
                             </option>
                         @endforeach
                     </datalist>
                     <input type="hidden" id="client_id" name="client_id" value="{{ old('client_id') }}">
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">رقم الهاتف</label>
-                    <input type="text" id="display_phone" class="form-control" placeholder="سيتم السحب تلقائياً" readonly>
+                <div class="field">
+                    <label>{{ __('رقم الهاتف') }}</label>
+                    <input type="text" id="display_phone" class="app-input w-full opacity-70 cursor-not-allowed" placeholder="{{ __('سيتم السحب تلقائياً') }}" readonly disabled>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">الرقم القومي</label>
-                    <input type="text" id="display_national_id" class="form-control" placeholder="سيتم السحب تلقائياً" readonly>
+                <div class="field">
+                    <label>{{ __('الرقم القومي') }}</label>
+                    <input type="text" id="display_national_id" class="app-input w-full opacity-70 cursor-not-allowed" placeholder="{{ __('سيتم السحب تلقائياً') }}" readonly disabled>
                 </div>
 
-                <div class="form-group full">
-                    <label class="form-label">العنوان المسجل</label>
-                    <input type="text" id="display_address" class="form-control" placeholder="سيتم السحب تلقائياً" readonly>
+                <div class="field md:col-span-2">
+                    <label>{{ __('العنوان المسجل') }}</label>
+                    <input type="text" id="display_address" class="app-input w-full opacity-70 cursor-not-allowed" placeholder="{{ __('سيتم السحب تلقائياً') }}" readonly disabled>
                 </div>
             </div>
         </div>
 
-        {{-- 2. الفريق القانوني --}}
-        <div class="form-card">
-            <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-users-cog"></i> الفريق القانوني المسؤول</div>
+        {{-- 2. Legal Team --}}
+        <div class="panel">
+            <div class="panel-header mb-6 pb-3 border-b">
+                <div class="panel-title flex items-center gap-3 text-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    {{ __('الفريق القانوني المسؤول') }}
+                </div>
             </div>
 
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="lawyer_id" class="form-label">المحامي المسؤول عن القضية <span style="color: var(--danger-color);">*</span></label>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="field">
+                    <label for="lawyer_id">{{ __('المحامي المسؤول عن القضية *') }}</label>
                     @if(auth()->user()->role === 'admin')
-                        <select id="lawyer_id" name="lawyer_id" class="form-control" required>
-                            <option value="" disabled selected>اختر المحامي المسؤول...</option>
-                            @foreach ($lawyers as $lawyer)
-                                <option value="{{ $lawyer->id }}" {{ old('lawyer_id') == $lawyer->id ? 'selected' : '' }}>{{ $lawyer->name }}</option>
-                            @endforeach
-                        </select>
+                        <div class="select-wrap">
+                            <select id="lawyer_id" name="lawyer_id" class="app-select w-full" required>
+                                <option value="" disabled selected>{{ __('اختر المحامي المسؤول...') }}</option>
+                                @foreach ($lawyers as $lawyer)
+                                    <option value="{{ $lawyer->id }}" {{ old('lawyer_id') == $lawyer->id ? 'selected' : '' }}>{{ $lawyer->name }}</option>
+                                @endforeach
+                            </select>
+                            <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+                        </div>
                     @else
                         <input type="hidden" name="lawyer_id" value="{{ auth()->user()->lawyer_id }}">
-                        <input type="text" class="form-control" value="{{ auth()->user()->name }}" disabled>
+                        <input type="text" class="app-input w-full opacity-70 cursor-not-allowed" value="{{ auth()->user()->name }}" disabled readonly>
                     @endif
                 </div>
             </div>
         </div>
 
-        {{-- 3. تفاصيل القضية والماليات --}}
-        <div class="form-card">
-            <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-gavel"></i> تفاصيل القضية والماليات</div>
-            </div>
-
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="case_number" class="form-label">رقم القضية <span style="color: var(--danger-color);">*</span></label>
-                    <input type="text" id="case_number" name="case_number" class="form-control" value="{{ old('case_number') }}" placeholder="مثال: 2525 أو 2026/123" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="status" class="form-label">حالة القضية الحالية <span style="color: var(--danger-color);">*</span></label>
-                    <select id="status" name="status" class="form-control" required>
-                        <option value="مفتوحة" {{ old('status', 'مفتوحة') == 'مفتوحة' ? 'selected' : '' }}>مفتوحة</option>
-                        <option value="متداولة" {{ old('status') == 'متداولة' ? 'selected' : '' }}>متداولة</option>
-                        <option value="مؤجلة" {{ old('status') == 'مؤجلة' ? 'selected' : '' }}>مؤجلة</option>
-                        <option value="محجوزة للحكم" {{ old('status') == 'محجوزة للحكم' ? 'selected' : '' }}>محجوزة للحكم</option>
-                        <option value="منتهية" {{ old('status') == 'منتهية' ? 'selected' : '' }}>منتهية</option>
-                        <option value="مستأنفة" {{ old('status') == 'مستأنفة' ? 'selected' : '' }}>مستأنفة</option>
-                        <option value="محفوظة" {{ old('status') == 'محفوظة' ? 'selected' : '' }}>محفوظة</option>
-                        <option value="معلقة" {{ old('status') == 'معلقة' ? 'selected' : '' }}>معلقة</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="jurisdiction_id" class="form-label">جهة التقاضي <span style="color: var(--danger-color);">*</span></label>
-                    <select id="jurisdiction_id" name="jurisdiction_id" class="form-control" required>
-                        <option value="" disabled selected>اختر الجهة...</option>
-                        @foreach ($jurisdictions as $jurisdiction)
-                            <option value="{{ $jurisdiction->id }}" {{ old('jurisdiction_id') == $jurisdiction->id ? 'selected' : '' }}>{{ $jurisdiction->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="court_level_id" class="form-label">درجة التقاضي / المحكمة <span style="color: var(--danger-color);">*</span></label>
-                    <select id="court_level_id" name="court_level_id" class="form-control" required>
-                        <option value="" disabled selected>اختر درجة التقاضي...</option>
-                        @foreach ($court_levels as $level)
-                            <option value="{{ $level->id }}" {{ old('court_level_id') == $level->id ? 'selected' : '' }}>{{ $level->name }}</option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="court_id" class="form-label">المحكمة <span style="color: var(--danger-color);">*</span></label>
-                    <select id="court_id" name="court_id" class="form-control" required>
-                        <option value="" disabled selected>اختر المحكمة...</option>
-                        @foreach ($courts as $court)
-                            <option value="{{ $court->id }}" data-jurisdiction="{{ $court->jurisdiction_id }}" {{ old('court_id') == $court->id ? 'selected' : '' }}>
-                                {{ $court->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="circuit" class="form-label">الدائرة</label>
-                    <input type="text" id="circuit" name="circuit" class="form-control" value="{{ old('circuit') }}" placeholder="مثال: الدائرة الثالثة مدني">
-                </div>
-
-                <div class="form-group full">
-                    <label for="Previous_procedure" class="form-label">الإجراء السابق أو الموقف الحالي للدعوى</label>
-                    <input type="text" id="Previous_procedure" name="Previous_procedure" class="form-control" value="{{ old('Previous_procedure', 'لا يوجد إشعار سابق') }}" placeholder="مثال: تقديم مستندات، إعادة إعلان...">
+        {{-- 3. Case Details & Financials --}}
+        <div class="panel">
+            <div class="panel-header mb-6 pb-3 border-b">
+                <div class="panel-title flex items-center gap-3 text-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>
+                    {{ __('تفاصيل القضية والماليات') }}
                 </div>
             </div>
 
-           <div class="form-grid cols-3" style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px dashed var(--border-color);">
-    <div class="form-group">
-        <label for="total_costs" class="form-label">إجمالي الأتعاب (ج.م)</label>
-        <input type="number" id="total_costs" name="total_costs" class="form-control" value="{{ old('total_costs') }}" min="0" placeholder="مثال: 10000">
-    </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="field">
+                    <label for="case_number">{{ __('رقم القضية *') }}</label>
+                    <input type="text" id="case_number" name="case_number" class="app-input w-full" value="{{ old('case_number') }}" placeholder="{{ __('مثال: 2525 أو 2026/123') }}" required>
+                </div>
 
-    <div class="form-group">
-        <label for="deposit" class="form-label">المدفوع مقدماً (ج.م)</label>
-        <input type="number" id="deposit" name="deposit" class="form-control" value="{{ old('deposit') }}" min="0" placeholder="مثال: 1000">
-    </div>
+                <div class="field">
+                    <label for="status">{{ __('حالة القضية الحالية *') }}</label>
+                    <div class="select-wrap">
+                        <select id="status" name="status" class="app-select w-full" required>
+                            <option value="{{ __('مفتوحة') }}" {{ old('status', 'مفتوحة') == 'مفتوحة' ? 'selected' : '' }}>{{ __('مفتوحة') }}</option>
+                            <option value="{{ __('متداولة') }}" {{ old('status') == 'متداولة' ? 'selected' : '' }}>{{ __('متداولة') }}</option>
+                            <option value="{{ __('مؤجلة') }}" {{ old('status') == 'مؤجلة' ? 'selected' : '' }}>{{ __('مؤجلة') }}</option>
+                            <option value="{{ __('محجوزة للحكم') }}" {{ old('status') == 'محجوزة للحكم' ? 'selected' : '' }}>{{ __('محجوزة للحكم') }}</option>
+                            <option value="{{ __('منتهية') }}" {{ old('status') == 'منتهية' ? 'selected' : '' }}>{{ __('منتهية') }}</option>
+                            <option value="{{ __('مستأنفة') }}" {{ old('status') == 'مستأنفة' ? 'selected' : '' }}>{{ __('مستأنفة') }}</option>
+                            <option value="{{ __('محفوظة') }}" {{ old('status') == 'محفوظة' ? 'selected' : '' }}>{{ __('محفوظة') }}</option>
+                            <option value="{{ __('معلقة') }}" {{ old('status') == 'معلقة' ? 'selected' : '' }}>{{ __('معلقة') }}</option>
+                        </select>
+                        <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+                    </div>
+                </div>
 
-    <div class="form-group">
-        <label class="form-label">المبلغ المتبقي (ج.م)</label>
-        <input type="number" id="remaining_amount" class="form-control" value="" readonly style="color: var(--danger-color); font-weight: 800; background: rgba(239, 68, 68, 0.05);">
-    </div>
+                <div class="field">
+                    <label for="jurisdiction_id">{{ __('جهة التقاضي *') }}</label>
+                    <div class="select-wrap">
+                        <select id="jurisdiction_id" name="jurisdiction_id" class="app-select w-full" required>
+                            <option value="" disabled selected>{{ __('اختر الجهة...') }}</option>
+                            @foreach ($jurisdictions as $jurisdiction)
+                                <option value="{{ $jurisdiction->id }}" {{ old('jurisdiction_id') == $jurisdiction->id ? 'selected' : '' }}>{{ __($jurisdiction->name) }}</option>
+                            @endforeach
+                        </select>
+                        <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+                    </div>
+                </div>
 
-    <div class="form-group full">
-        <label for="costs" class="form-label">المصاريف الإدارية والرسوم (ج.م)</label>
-        <input type="number" id="costs" name="costs" class="form-control" value="{{ old('costs') }}" min="0" placeholder="مثال: 500">
-    </div>
-</div> 
-  {{-- 4. الخصم وموضوع الدعوى --}}
-        <div class="form-card">
-            <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-user-shield"></i> موضوع الدعوى والخصم</div>
+                <div class="field">
+                    <label for="court_level_id">{{ __('درجة التقاضي / المحكمة *') }}</label>
+                    <div class="select-wrap">
+                        <select id="court_level_id" name="court_level_id" class="app-select w-full" required>
+                            <option value="" disabled selected>{{ __('اختر درجة التقاضي...') }}</option>
+                            @foreach ($court_levels as $level)
+                                <option value="{{ $level->id }}" {{ old('court_level_id') == $level->id ? 'selected' : '' }}>{{ __($level->name) }}</option>
+                            @endforeach
+                        </select>
+                        <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="court_id">{{ __('المحكمة *') }}</label>
+                    <div class="select-wrap">
+                        <select id="court_id" name="court_id" class="app-select w-full" required>
+                            <option value="" disabled selected>{{ __('اختر المحكمة...') }}</option>
+                            @foreach ($courts as $court)
+                                <option value="{{ $court->id }}" data-jurisdiction="{{ $court->jurisdiction_id }}" {{ old('court_id') == $court->id ? 'selected' : '' }}>
+                                    {{ __($court->name) }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <svg class="select-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 9l-7 7-7-7"/></svg>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="circuit">{{ __('الدائرة') }}</label>
+                    <input type="text" id="circuit" name="circuit" class="app-input w-full" value="{{ old('circuit') }}" placeholder="{{ __('مثال: الدائرة الثالثة مدني') }}">
+                </div>
+
+                <div class="field lg:col-span-3">
+                    <label for="Previous_procedure">{{ __('الإجراء السابق أو الموقف الحالي للدعوى') }}</label>
+                    <input type="text" id="Previous_procedure" name="Previous_procedure" class="app-input w-full" value="{{ old('Previous_procedure', __('لا يوجد إشعار سابق')) }}" placeholder="{{ __('مثال: تقديم مستندات، إعادة إعلان...') }}">
+                </div>
             </div>
 
-            <div class="form-group full">
-                <label for="description" class="form-label">ملخص وقائع الدعوى <span style="color: var(--danger-color);">*</span></label>
-                <textarea id="description" name="description" class="form-control" placeholder="شرح تفصيلي للوقائع..." required>{{ old('description') }}</textarea>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-6 pt-6 border-t border-dashed">
+                <div class="field">
+                    <label for="total_costs">{{ __('إجمالي الأتعاب (ج.م)') }}</label>
+                    <input type="number" id="total_costs" name="total_costs" class="app-input w-full" value="{{ old('total_costs') }}" min="0" placeholder="{{ __('مثال: 10000') }}">
+                </div>
+
+                <div class="field">
+                    <label for="deposit">{{ __('المدفوع مقدماً (ج.م)') }}</label>
+                    <input type="number" id="deposit" name="deposit" class="app-input w-full" value="{{ old('deposit') }}" min="0" placeholder="{{ __('مثال: 1000') }}">
+                </div>
+
+                <div class="field">
+                    <label>{{ __('المبلغ المتبقي (ج.م)') }}</label>
+                    <input type="number" id="remaining_amount" class="app-input w-full opacity-70 cursor-not-allowed font-bold" value="" readonly disabled>
+                </div>
+
+                <div class="field">
+                    <label for="costs">{{ __('المصاريف الإدارية والرسوم (ج.م)') }}</label>
+                    <input type="number" id="costs" name="costs" class="app-input w-full" value="{{ old('costs') }}" min="0" placeholder="{{ __('مثال: 500') }}">
+                </div>
+            </div> 
+        </div>
+
+        {{-- 4. Opponent & Case Subject --}}
+        <div class="panel">
+            <div class="panel-header mb-6 pb-3 border-b">
+                <div class="panel-title flex items-center gap-3 text-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    {{ __('موضوع الدعوى والخصم') }}
+                </div>
             </div>
 
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="rival_name" class="form-label">اسم الخصم بالكامل <span style="color: var(--danger-color);">*</span></label>
-                    <input type="text" id="rival_name" name="rival_name" class="form-control" value="{{ old('rival_name') }}" required>
+            <div class="field mb-6">
+                <label for="description">{{ __('ملخص وقائع الدعوى *') }}</label>
+                <textarea id="description" name="description" class="app-input w-full" rows="4" placeholder="{{ __('شرح تفصيلي للوقائع...') }}" required>{{ old('description') }}</textarea>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="field">
+                    <label for="rival_name">{{ __('اسم الخصم بالكامل *') }}</label>
+                    <input type="text" id="rival_name" name="rival_name" class="app-input w-full" value="{{ old('rival_name') }}" required>
                 </div>
-                <div class="form-group">
-                    <label for="rival_number" class="form-label">رقم هاتف الخصم</label>
-                    <input type="text" id="rival_number" name="rival_number" class="form-control" value="{{ old('rival_number') }}">
+                <div class="field">
+                    <label for="rival_number">{{ __('رقم هاتف الخصم') }}</label>
+                    <input type="text" id="rival_number" name="rival_number" class="app-input w-full" value="{{ old('rival_number') }}" dir="ltr">
                 </div>
-                <div class="form-group">
-                    <label for="rival_nid" class="form-label">الرقم القومي للخصم</label>
-                    <input type="text" id="rival_nid" name="rival_nid" class="form-control" value="{{ old('rival_nid') }}" maxlength="14">
+                <div class="field">
+                    <label for="rival_nid">{{ __('الرقم القومي للخصم') }}</label>
+                    <input type="text" id="rival_nid" name="rival_nid" class="app-input w-full" value="{{ old('rival_nid') }}" maxlength="14" dir="ltr">
                 </div>
-                <div class="form-group">
-                    <label for="rival_address" class="form-label">عنوان الخصم</label>
-                    <input type="text" id="rival_address" name="rival_address" class="form-control" value="{{ old('rival_address') }}">
+                <div class="field">
+                    <label for="rival_address">{{ __('عنوان الخصم') }}</label>
+                    <input type="text" id="rival_address" name="rival_address" class="app-input w-full" value="{{ old('rival_address') }}">
                 </div>
             </div>
         </div>
 
-        {{-- 5. المرفقات والتوكيل --}}
-        <div class="form-card">
-            <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-paperclip"></i> المرفقات والتوكيلات</div>
-            </div>
-
-            <div class="form-grid">
-                <div class="form-group full">
-                    <label for="procuration" class="form-label">بيانات أو رقم التوكيل الرسمي الخاص بالقضية</label>
-                    <input type="text" id="procuration" name="procuration" class="form-control" value="{{ old('procuration', 'لا يوجد') }}" placeholder="مثال: توكيل رقم 1234 ص توثيق أسوان النموذجي">
-                </div>
-
-          <div class="form-group full">
-    <label for="final_decision" class="form-label">الحكم النهائي أو القرار (في حال كانت منتهية)</label>
-    <input type="text" id="final_decision" name="final_decision" class="form-control" value="{{ old('final_decision', 'لم يصدر حكم بعد') }}" placeholder="مثال: قبول الدعوى شكلاً وفي الموضوع..." readonly style="cursor: not-allowed; opacity: 0.7;">
-</div>
-
-                <div class="form-group full">
-                    <label for="notes" class="form-label">ملاحظات إضافية على القضية</label>
-                    <textarea id="notes" name="notes" class="form-control" placeholder="أي تفاصيل أو ملاحظات أخرى للمكتب...">{{ old('notes', 'لا توجد ملاحظات') }}</textarea>
+        {{-- 5. Attachments --}}
+        <div class="panel">
+            <div class="panel-header mb-6 pb-3 border-b">
+                <div class="panel-title flex items-center gap-3 text-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                    {{ __('المرفقات والتوكيلات') }}
                 </div>
             </div>
 
-            <div class="upload-box" id="uploadBox">
-                <div id="uploadDefault">
-                    <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                    <p style="color: var(--text-secondary); font-weight: 600;">اضغط لرفع التوكيل (PDF, Word, Images)</p>
+            <div class="grid grid-cols-1 gap-6">
+                <div class="field">
+                    <label for="procuration">{{ __('بيانات أو رقم التوكيل الرسمي الخاص بالقضية') }}</label>
+                    <input type="text" id="procuration" name="procuration" class="app-input w-full" value="{{ old('procuration', __('لا يوجد')) }}" placeholder="{{ __('مثال: توكيل رقم 1234 ص توثيق أسوان النموذجي') }}">
                 </div>
 
-                <div id="uploadPreview" style="display: none; flex-direction: column; align-items: center; gap: 0.8rem;"></div>
+                <div class="field">
+                    <label for="final_decision">{{ __('الحكم النهائي أو القرار (في حال كانت منتهية)') }}</label>
+                    <input type="text" id="final_decision" name="final_decision" class="app-input w-full opacity-70 cursor-not-allowed" value="{{ old('final_decision', __('لم يصدر حكم بعد')) }}" placeholder="{{ __('مثال: قبول الدعوى شكلاً وفي الموضوع...') }}" readonly disabled>
+                </div>
+
+                <div class="field">
+                    <label for="notes">{{ __('ملاحظات إضافية على القضية') }}</label>
+                    <textarea id="notes" name="notes" class="app-input w-full" rows="3" placeholder="{{ __('أي تفاصيل أو ملاحظات أخرى للمكتب...') }}">{{ old('notes', __('لا توجد ملاحظات')) }}</textarea>
+                </div>
             </div>
-            <input type="file" id="case_file" name="case_file" style="display:none;" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
+
+            <div class="panel-subtle mt-6 cursor-pointer text-center border-dashed border-2 hover:bg-black/5 transition-colors" id="uploadBox">
+                <div id="uploadDefault" class="py-8">
+                    <svg class="w-12 h-12 mb-4 mx-auto text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
+                    <p class="font-bold mb-1">{{ __('اضغط لرفع التوكيل (PDF, Word, Images)') }}</p>
+                    <span class="text-sm text-muted">{{ __('الحد الأقصى 2MB') }}</span>
+                </div>
+
+                <div id="uploadPreview" class="hidden flex-col items-center gap-3 py-6"></div>
+            </div>
+            <input type="file" id="case_file" name="case_file" class="hidden" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg">
         </div>
 
-        {{-- أزرار التحكم --}}
-        <div class="form-actions">
-            <button type="button" class="btn-cancel" id="resetFormBtn">
-                <i class="fas fa-eraser"></i> مسح المدخلات
+        {{-- Actions --}}
+        <div class="flex items-center justify-end gap-4 mt-8 pt-6 border-t">
+            <button type="button" class="btn-secondary px-6 py-3 flex items-center gap-2" id="resetFormBtn">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+                {{ __('مسح المدخلات') }}
             </button>
-            <button type="submit" class="btn-save">
-                <i class="fas fa-save"></i> حفظ ملف القضية
+            <button type="submit" class="btn-primary px-8 py-3 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                {{ __('حفظ ملف القضية') }}
             </button>
         </div>
     </form>
@@ -410,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* تفريغ ومسح الفورم بالكامل وعودة القيم الافتراضية */
     document.getElementById('resetFormBtn').addEventListener('click', function() {
-        if(confirm('هل أنت متأكد من مسح جميع البيانات المدخلة؟')) {
+        if(confirm('{{ __('هل أنت متأكد من مسح جميع البيانات المدخلة؟') }}')) {
             document.getElementById('caseForm').reset();
             hiddenClientId.value = '';
             displayPhone.value = '';
@@ -438,7 +392,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const placeholderOpt = document.createElement('option');
             placeholderOpt.value = '';
-            placeholderOpt.textContent = 'اختر المحكمة...';
+            placeholderOpt.textContent = '{{ __('اختر المحكمة...') }}';
             placeholderOpt.disabled = true;
             placeholderOpt.selected = true;
             courtSelect.appendChild(placeholderOpt);
@@ -460,7 +414,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (selectedJurisdictionId && !hasMatches) {
                 const noMatchesOpt = document.createElement('option');
                 noMatchesOpt.value = '';
-                noMatchesOpt.textContent = 'لا توجد محاكم تابعة لهذه الجهة';
+                noMatchesOpt.textContent = '{{ __('لا توجد محاكم تابعة لهذه الجهة') }}';
                 noMatchesOpt.disabled = true;
                 courtSelect.appendChild(noMatchesOpt);
             }
@@ -487,6 +441,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (file) {
             uploadDefault.style.display = 'none';
             uploadPreview.style.display = 'flex';
+            uploadPreview.classList.remove('hidden');
             uploadPreview.innerHTML = '';
 
             const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
@@ -495,34 +450,26 @@ document.addEventListener('DOMContentLoaded', function () {
                 const reader = new FileReader();
                 reader.onload = function (e) {
                     uploadPreview.innerHTML = `
-                        <div style="position: relative; display: inline-block;">
-                            <img src="${e.target.result}" style="max-width: 140px; max-height: 140px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                        <div class="panel p-2">
+                            <img src="${e.target.result}" class="max-w-[140px] max-h-[140px]">
                         </div>
-                        <p style="color: var(--success-color); font-size: 0.95rem; font-weight: 700; margin: 0.5rem 0;">
-                            <i class="fas fa-check-circle"></i> تم اختيار: <span style="color: var(--text-primary);">${file.name}</span> (${fileSizeMB} MB)
+                        <p class="badge-item badge-success mt-2">
+                            {{ __('تم اختيار:') }} <span>${file.name}</span> (${fileSizeMB} {{ __('ميجابايت') }})
                         </p>
-                        <span class="remove-file-btn" style="color: var(--danger-color); cursor: pointer; font-size: 0.9rem; font-weight: 700; text-decoration: underline;">
-                            <i class="fas fa-trash-alt"></i> حذف واختيار ملف آخر
+                        <span class="remove-file-btn cursor-pointer text-muted underline">
+                            {{ __('حذف واختيار ملف آخر') }}
                         </span>
                     `;
                 }
                 reader.readAsDataURL(file);
             } else {
-                let fileIcon = 'fa-file-pdf';
-                let iconColor = 'var(--danger-color)';
-
-                if (file.name.endsWith('.doc') || file.name.endsWith('.docx')) {
-                    fileIcon = 'fa-file-word';
-                    iconColor = '#3498db';
-                }
-
                 uploadPreview.innerHTML = `
-                    <i class="fas ${fileIcon}" style="font-size: 3.5rem; color: ${iconColor};"></i>
-                    <p style="color: var(--success-color); font-size: 0.95rem; font-weight: 700; margin: 0.5rem 0;">
-                        <i class="fas fa-check-circle"></i> تم اختيار: <span style="color: var(--text-primary);">${file.name}</span> (${fileSizeMB} MB)
+                    <svg class="w-16 h-16 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                    <p class="badge-item badge-success mt-2">
+                        {{ __('تم اختيار:') }} <span>${file.name}</span> (${fileSizeMB} {{ __('ميجابايت') }})
                     </p>
-                    <span class="remove-file-btn" style="color: var(--danger-color); cursor: pointer; font-size: 0.9rem; font-weight: 700; text-decoration: underline;">
-                        <i class="fas fa-trash-alt"></i> حذف واختيار ملف آخر
+                    <span class="remove-file-btn cursor-pointer text-muted underline">
+                        {{ __('حذف واختيار ملف آخر') }}
                     </span>
                 `;
             }
@@ -535,6 +482,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fileInput.value = '';
         uploadDefault.style.display = 'block';
         uploadPreview.style.display = 'none';
+        uploadPreview.classList.add('hidden');
         uploadPreview.innerHTML = '';
     }
 

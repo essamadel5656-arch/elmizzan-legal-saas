@@ -68,11 +68,11 @@
 
         <div class="dashboard-header">
             <div class="header-info">
-                <h1><i class="fas fa-edit" style="color: var(--gold-accent); margin-left: 8px;"></i> تعديل جهة تقاضي</h1>
-                <p>تحديث اسم جهة التقاضي: <strong>{{ $jurisdiction->name }}</strong></p>
+                <h1><i class="fas fa-edit" style="color: var(--gold-accent); margin-left: 8px;"></i> {{ __('تعديل جهة تقاضي') }}</h1>
+                <p>{{ __('تحديث اسم جهة التقاضي:') }} <strong>{{ $jurisdiction->name }}</strong></p>
             </div>
             <a href="{{ route('jurisdictions.index') }}" wire:navigate class="btn-cancel" style="flex: unset; padding: 10px 20px;">
-                <i class="fas fa-arrow-right"></i> رجوع للقائمة
+                <i class="fas fa-arrow-right"></i> {{ __('رجوع للقائمة') }}
             </a>
         </div>
 
@@ -81,7 +81,7 @@
                 <form wire:submit="save">
 
                     <div class="form-group">
-                        <label for="name" class="form-label">اسم نوع القضاء أو الجهة <span style="color: var(--danger-color);">*</span></label>
+                        <label for="name" class="form-label">{{ __('اسم نوع القضاء أو الجهة') }} <span style="color: var(--danger-color);">*</span></label>
                         <input type="text" id="name" wire:model="name" class="form-control" required autofocus>
                         @error('name')
                             <div class="error-msg"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
@@ -90,11 +90,11 @@
 
                     <div class="form-actions">
                         <a href="{{ route('jurisdictions.index') }}" wire:navigate class="btn-cancel">
-                            <i class="fas fa-times"></i> إلغاء
+                            <i class="fas fa-times"></i> {{ __('إلغاء') }}
                         </a>
                         <button type="submit" class="btn-save" wire:loading.attr="disabled">
-                            <span wire:loading.remove wire:target="save"><i class="fas fa-save"></i> حفظ التعديل</span>
-                            <span wire:loading wire:target="save"><i class="fas fa-spinner fa-spin"></i> جاري الحفظ...</span>
+                            <span wire:loading.remove wire:target="save"><i class="fas fa-save"></i> {{ __('حفظ التعديل') }}</span>
+                            <span wire:loading wire:target="save"><i class="fas fa-spinner fa-spin"></i> {{ __('جاري الحفظ...') }}</span>
                         </button>
                     </div>
 

@@ -154,15 +154,15 @@
     
     <div class="dashboard-header">
         <div>
-            <h1 class="welcome-title">إدارة العملاء</h1>
-            <p class="date-text">عرض وتتبع بيانات ومقرات جميع العملاء والموكلين</p>
+            <h1 class="welcome-title">{{ __('إدارة العملاء') }}</h1>
+            <p class="date-text">{{ __('عرض وتتبع بيانات ومقرات جميع العملاء والموكلين') }}</p>
         </div>
         
         <a href="{{ route('add-client') }}" class="btn-add-new">
             <span class="icon-circle">
                 <i class="fas fa-plus"></i>
             </span>
-            <span>إضافة عميل جديد</span>
+            <span>{{ __('إضافة عميل جديد') }}</span>
         </a>
     </div>
 
@@ -170,14 +170,14 @@
         <form method="GET" action="{{ route('clients.index') }}" class="search-form">
             <div class="search-input-wrapper">
                 <i class="fas fa-search search-icon-inside"></i>
-                <input type="text" name="search" placeholder="ابحث عن اسم العميل، الهاتف، الرقم القومي أو العنوان..." value="{{ $search ?? '' }}" autocomplete="off">
+                <input type="text" name="search" placeholder="{{ __('ابحث عن اسم العميل، الهاتف، الرقم القومي أو العنوان...') }}" value="{{ $search ?? '' }}" autocomplete="off">
             </div>
             
-            <button type="submit" class="btn-search">بحث</button>
+            <button type="submit" class="btn-search">{{ __('بحث') }}</button>
             
             @if(!empty($search))
                 <a href="{{ route('clients.index') }}" class="btn-clear-search">
-                    <i class="fas fa-times"></i> مسح الفلتر
+                    <i class="fas fa-times"></i> {{ __('مسح الفلتر') }}
                 </a>
             @endif
         </form>
@@ -186,7 +186,7 @@
     <div class="results-header">
         <div class="results-info">
             @if(!empty($search))
-                تم العثور على <strong>{{ $clients->count() }}</strong> عميل يطابق البحث الحالي <span class="search-term">"{{ $search }}"</span>
+                تم العثور على <strong>{{ $clients->count() }}</strong> {{ __('عميل يطابق البحث الحالي') }} <span class="search-term">"{{ $search }}"</span>
             @else
                 إجمالي العملاء المسجلين بالنظام: <strong>{{ $clients->count() }}</strong> عميل
             @endif
@@ -241,14 +241,14 @@
 
                     <div class="client-card-actions">
                         <a href="{{ route('clients.show', $client->id) }}" class="btn-action btn-action-view">
-                            <i class="fas fa-folder-open"></i> عرض الملف
+                            <i class="fas fa-folder-open"></i> {{ __('عرض الملف') }}
                         </a>
                         
                         <form method="POST" action="{{ route('clients.destroy', $client->id) }}" class="delete-form" onsubmit="return confirm('هل أنت متأكد من حذف هذا العميل نهائياً من النظام؟ لا يمكن التراجع عن هذا الإجراء.');">
                             @csrf
                             @method('DELETE')
                             <button type="submit" class="btn-action btn-action-delete">
-                                <i class="fas fa-trash-alt"></i> حذف
+                                <i class="fas fa-trash-alt"></i> {{ __('حذف') }}
                             </button>
                         </form>
                     </div>
@@ -272,11 +272,11 @@
                     <span class="icon-circle">
                         <i class="fas fa-plus"></i>
                     </span>
-                    <span>إضافة العميل الأول</span>
+                    <span>{{ __('إضافة العميل الأول') }}</span>
                 </a>
             @else
                 <a href="{{ route('clients.index') }}" class="btn-clear-search">
-                    <i class="fas fa-redo"></i> تفريغ البحث والعودة
+                    <i class="fas fa-redo"></i> {{ __('تفريغ البحث والعودة') }}
                 </a>
             @endif
         </div>

@@ -92,17 +92,17 @@
 
     <div class="dashboard-header">
         <div>
-            <h1 class="welcome-title">إدارة المستندات</h1>
-            <p class="date-text">عرض وتتبع جميع المرفقات والمستندات الخاصة بالقضايا</p>
+            <h1 class="welcome-title">{{ __('إدارة المستندات') }}</h1>
+            <p class="date-text">{{ __('عرض وتتبع جميع المرفقات والمستندات الخاصة بالقضايا') }}</p>
         </div>
         
-        <a href="{{ route('cases.index') }}" class="btn-add-new" title="الذهاب لصفحة القضايا لإضافة مستند">
+        <a href="{{ route('cases.index') }}" class="btn-add-new" title="{{ __('الذهاب لصفحة القضايا لإضافة مستند') }}">
             <span class="icon-circle">
                 <i class="fas fa-file-upload"></i>
             </span>
             <div style="display: flex; flex-direction: column; align-items: flex-start; line-height: 1.2;">
-                <span>إضافة مستند</span>
-                <span style="font-size: 0.7rem; font-weight: 500; opacity: 0.8;">(من صفحة القضية)</span>
+                <span>{{ __('إضافة مستند') }}</span>
+                <span style="font-size: 0.7rem; font-weight: 500; opacity: 0.8;">{{ __('(من صفحة القضية)') }}</span>
             </div>
         </a>
     </div>
@@ -120,7 +120,7 @@
                 type="text"
                 name="search"
                 value="{{ request('search') }}"
-                placeholder="ابحث باسم المستند..."
+                placeholder="{{ __('ابحث باسم المستند...') }}"
                 style="
                     width: 100%; padding: 0.75rem 2.75rem 0.75rem 1rem;
                     border: 1px solid var(--border-color); border-radius: 8px;
@@ -141,7 +141,7 @@
         "
         onmouseover="this.style.background='var(--gold-accent)'; this.style.color='var(--sidebar-bg)';"
         onmouseout="this.style.background='var(--sidebar-bg)'; this.style.color='#fff';">
-            <i class="fas fa-search"></i> بحث
+            <i class="fas fa-search"></i> {{ __('بحث') }}
         </button>
 
         {{-- زر مسح البحث (يظهر فقط لو فيه بحث نشط) --}}
@@ -154,7 +154,7 @@
             "
             onmouseover="this.style.background='var(--danger-color)'; this.style.color='#fff';"
             onmouseout="this.style.background='rgba(239,68,68,0.08)'; this.style.color='var(--danger-color)';">
-                <i class="fas fa-times"></i> مسح
+                <i class="fas fa-times"></i> {{ __('مسح') }}
             </a>
         @endif
     </div>
@@ -163,8 +163,8 @@
     @if(request('search'))
         <p style="margin-top: 0.6rem; font-size: 0.88rem; color: var(--text-secondary); font-weight: 600;">
             <i class="fas fa-filter" style="color: var(--gold-accent);"></i>
-            نتائج البحث عن: "<strong style="color: var(--text-primary);">{{ request('search') }}</strong>"
-            — {{ $documents->count() }} نتيجة
+            {{ __('نتائج البحث عن: "') }}<strong style="color: var(--text-primary);">{{ request('search') }}</strong>"
+            — {{ $documents->{{ __('count() }} نتيجة') }}
         </p>
     @endif
 </form>
@@ -175,11 +175,11 @@
                 <table class="custom-table">
                     <thead>
                         <tr>
-                            <th style="width: 8%;">المعرف</th>
-                            <th style="width: 25%;">عنوان المستند</th>
-                            <th style="width: 35%;">النوع</th>
-                            <th style="width: 15%;">تاريخ الإضافة</th>
-                            <th style="width: 17%; text-align: center;">الإجراءات</th>
+                            <th style="width: 8%;">{{ __('المعرف') }}</th>
+                            <th style="width: 25%;">{{ __('عنوان المستند') }}</th>
+                            <th style="width: 35%;">{{ __('النوع') }}</th>
+                            <th style="width: 15%;">{{ __('تاريخ الإضافة') }}</th>
+                            <th style="width: 17%; text-align: center;">{{ __('الإجراءات') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -216,18 +216,18 @@
                                 
                                 <td style="text-align: center;">
                                     <div style="display: flex; justify-content: center; gap: 0.4rem;">
-                                        <a href="{{ route('document.show', $doc->id) }}" class="btn-action btn-action-view" title="عرض الملف">
+                                        <a href="{{ route('document.show', $doc->{{ __('id) }}" class="btn-action btn-action-view" title="{{ __('عرض الملف') }}">') }}
                                             <i class="fas fa-eye"></i>
                                         </a>
                                         
-                                        <a href="{{ route('document.edit', $doc->id) }}" class="btn-action btn-action-edit" title="تعديل البيانات">
+                                        <a href="{{ route('document.edit', $doc->{{ __('id) }}" class="btn-action btn-action-edit" title="{{ __('تعديل البيانات') }}">') }}
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         
                                         <form action="{{ route('document.destroy', $doc->id) }}" method="POST" style="margin: 0; display: inline-block;" onsubmit="return confirm('هل أنت متأكد من حذف هذا المستند نهائياً؟');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn-action btn-action-delete" title="حذف المستند">
+                                            <button type="submit" class="btn-action btn-action-delete" title="{{ __('حذف المستند') }}">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
@@ -243,14 +243,14 @@
                 <div class="empty-state-icon-wrapper">
                     <i class="fas fa-file-excel"></i>
                 </div>
-                <h3 style="color: var(--text-primary); font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 800;">لا توجد مستندات مسجلة</h3>
-                <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 2.5rem;">لم يتم رفع أي مستندات للنظام حتى الآن. يتم إضافة المستندات مباشرة من داخل ملف كل قضية.</p>
+                <h3 style="color: var(--text-primary); font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 800;">{{ __('لا توجد مستندات مسجلة') }}</h3>
+                <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 2.5rem;">{{ __('لم يتم رفع أي مستندات للنظام حتى الآن. يتم إضافة المستندات مباشرة من داخل ملف كل قضية.') }}</p>
                 
                 <a href="{{ route('cases.index') }}" class="btn-add-new">
                     <span class="icon-circle">
                         <i class="fas fa-folder-open"></i>
                     </span>
-                    <span>الذهاب لصفحة القضايا</span>
+                    <span>{{ __('الذهاب لصفحة القضايا') }}</span>
                 </a>
             </div>
         @endif

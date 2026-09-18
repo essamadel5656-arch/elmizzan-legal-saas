@@ -137,20 +137,20 @@
 
     <div class="dashboard-header">
         <div>
-            <h1 class="welcome-title">إدارة جهات التقاضي</h1>
-            <p class="date-text">إعداد وتكوين جهات التقاضي والمحاكم التابعة لها</p>
+            <h1 class="welcome-title">{{ __('إدارة جهات التقاضي') }}</h1>
+            <p class="date-text">{{ __('إعداد وتكوين جهات التقاضي والمحاكم التابعة لها') }}</p>
         </div>
         
         <div class="header-actions">
             <a href="{{ route('courts.create') }}" class="btn-action-secondary">
-                <i class="fas fa-landmark"></i> إضافة محكمة
+                <i class="fas fa-landmark"></i> {{ __('إضافة محكمة') }}
             </a>
             
             <a href="{{ route('jurisdictions.create') }}" class="btn-add-new">
                 <span class="icon-circle">
                     <i class="fas fa-plus"></i>
                 </span>
-                <span>إضافة جهة تقاضي</span>
+                <span>{{ __('إضافة جهة تقاضي') }}</span>
             </a>
         </div>
     </div>
@@ -161,10 +161,10 @@
                 <table class="custom-table">
                     <thead>
                         <tr>
-                            <th style="width: 8%; text-align: center;">المعرف</th>
-                            <th style="width: 25%;">جهة التقاضي</th>
-                            <th style="width: 52%;">المحاكم التابعة لها</th>
-                            <th style="width: 15%; text-align: center;">إجراءات</th>
+                            <th style="width: 8%; text-align: center;">{{ __('المعرف') }}</th>
+                            <th style="width: 25%;">{{ __('جهة التقاضي') }}</th>
+                            <th style="width: 52%;">{{ __('المحاكم التابعة لها') }}</th>
+                            <th style="width: 15%; text-align: center;">{{ __('إجراءات') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -178,7 +178,7 @@
                                     <span class="jurisdiction-name">{{ $jurisdiction->name }}</span>
                                     <div class="courts-count">
                                         <i class="fas fa-sitemap" style="color: var(--gold-accent); margin-left: 3px;"></i>
-                                        {{ $jurisdiction->courts->count() }} محكمة
+                                        {{ $jurisdiction->{{ __('courts->count() }} محكمة') }}
                                     </div>
                                 </td>
 
@@ -195,7 +195,7 @@
                                         @empty
                                             <span class="empty-courts-text">
                                                 <i class="fas fa-exclamation-circle" style="color: var(--gold-accent);"></i>
-                                                لا توجد محاكم مسجلة بعد تابعة لهذه الجهة.
+                                                {{ __('لا توجد محاكم مسجلة بعد تابعة لهذه الجهة.') }}
                                             </span>
                                         @endforelse
                                     </div>
@@ -203,14 +203,14 @@
 
                                 <td style="text-align: center;">
                                     <div style="display: flex; justify-content: center; gap: 0.5rem;">
-                                        <a href="{{ route('jurisdictions.edit', $jurisdiction->id) }}" class="btn-action btn-action-edit" title="تعديل جهة التقاضي">
+                                        <a href="{{ route('jurisdictions.edit', $jurisdiction->{{ __('id) }}" class="btn-action btn-action-edit" title="{{ __('تعديل جهة التقاضي') }}">') }}
                                             <i class="fas fa-edit"></i>
                                         </a>
                                         
                                         <form action="{{ route('jurisdictions.destroy', $jurisdiction->id) }}" method="POST" style="margin: 0; display: inline-block;" onsubmit="return confirm('هل أنت متأكد من حذف جهة التقاضي: {{ $jurisdiction->name }}؟\nتنبيه: سيتم حذف جميع المحاكم التابعة لها!');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn-action btn-action-delete" title="حذف جهة التقاضي">
+                                            <button type="submit" class="btn-action btn-action-delete" title="{{ __('حذف جهة التقاضي') }}">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
@@ -226,14 +226,14 @@
                 <div class="empty-state-icon-wrapper">
                     <i class="fas fa-sitemap"></i>
                 </div>
-                <h3 style="color: var(--text-primary); font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 800;">لا توجد جهات تقاضي مسجلة</h3>
-                <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 2.5rem;">لم يتم إضافة أي جهات تقاضي للنظام حتى الآن. قم بإضافة جهات التقاضي لربط المحاكم بها لاحقاً.</p>
+                <h3 style="color: var(--text-primary); font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 800;">{{ __('لا توجد جهات تقاضي مسجلة') }}</h3>
+                <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 2.5rem;">{{ __('لم يتم إضافة أي جهات تقاضي للنظام حتى الآن. قم بإضافة جهات التقاضي لربط المحاكم بها لاحقاً.') }}</p>
                 
                 <a href="{{ route('jurisdictions.create') }}" class="btn-add-new">
                     <span class="icon-circle">
                         <i class="fas fa-plus"></i>
                     </span>
-                    <span>إضافة أول جهة تقاضي</span>
+                    <span>{{ __('إضافة أول جهة تقاضي') }}</span>
                 </a>
             </div>
         @endif

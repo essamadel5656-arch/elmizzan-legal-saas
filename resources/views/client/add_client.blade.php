@@ -78,17 +78,17 @@
 
     <div class="dashboard-header">
         <div class="header-info">
-            <h1><i class="fas fa-user-plus" style="color: var(--gold-accent); margin-left: 8px;"></i> إضافة عميل جديد</h1>
-            <p>تسجيل بيانات عميل جديد في قاعدة بيانات المكتب</p>
+            <h1><i class="fas fa-user-plus" style="color: var(--gold-accent); margin-left: 8px;"></i> {{ __('إضافة عميل جديد') }}</h1>
+            <p>{{ __('تسجيل بيانات عميل جديد في قاعدة بيانات المكتب') }}</p>
         </div>
         <a href="{{ route('clients.index') }}" class="btn-cancel">
-            <i class="fas fa-arrow-right"></i> رجوع للقائمة
+            <i class="fas fa-arrow-right"></i> {{ __('رجوع للقائمة') }}
         </a>
     </div>
 
     @if ($errors->any())
         <div class="error-box">
-            <strong><i class="fas fa-exclamation-triangle"></i> يرجى مراجعة الأخطاء التالية:</strong>
+            <strong><i class="fas fa-exclamation-triangle"></i> {{ __('يرجى مراجعة الأخطاء التالية:') }}</strong>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -103,46 +103,46 @@
         {{-- 1. البيانات الأساسية للعميل --}}
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-id-card"></i> البيانات الأساسية للعميل</div>
+                <div class="title-with-icon"><i class="fas fa-id-card"></i> {{ __('البيانات الأساسية للعميل') }}</div>
             </div>
 
             <div class="form-grid">
                 <div class="form-group">
-                    <label for="clientName" class="form-label">اسم العميل <span style="color: var(--danger-color);">*</span></label>
-                    <input id="clientName" name="name" type="text" class="form-control" placeholder="الاسم الكامل للعميل" value="{{ old('name') }}" required />
+                    <label for="clientName" class="form-label">{{ __('اسم العميل') }} <span style="color: var(--danger-color);">*</span></label>
+                    <input id="clientName" name="name" type="text" class="form-control" placeholder="{{ __('الاسم الكامل للعميل') }}" value="{{ old('name') }}" required />
                     <small class="error-msg" data-error-for="clientName"></small>
                 </div>
 
                 <div class="form-group">
-                    <label for="clientType" class="form-label">نوع العميل <span style="color: var(--danger-color);">*</span></label>
+                    <label for="clientType" class="form-label">{{ __('نوع العميل') }} <span style="color: var(--danger-color);">*</span></label>
                     <select id="clientType" name="clientType" class="form-control" required>
-                        <option value="" disabled selected>اختر النوع...</option>
-                        <option value="individual" {{ old('clientType') == 'individual' ? 'selected' : '' }}>فرد</option>
-                        <option value="company" {{ old('clientType') == 'company' ? 'selected' : '' }}>شركة / مؤسسة</option>
+                        <option value="" disabled selected>{{ __('اختر النوع...') }}</option>
+                        <option value="individual" {{ old('clientType') == 'individual' ? 'selected' : '' }}>{{ __('فرد') }}</option>
+                        <option value="company" {{ old('clientType') == 'company' ? 'selected' : '' }}>{{ __('شركة / مؤسسة') }}</option>
                     </select>
                     <small class="error-msg" data-error-for="clientType"></small>
                 </div>
 
                 <div class="form-group">
-                    <label for="phone" class="form-label">رقم الهاتف <span style="color: var(--danger-color);">*</span></label>
-                    <input id="phone" name="phone" type="tel" class="form-control" placeholder="مثال: 010xxxxxxxx" value="{{ old('phone') }}" required />
+                    <label for="phone" class="form-label">{{ __('رقم الهاتف') }} <span style="color: var(--danger-color);">*</span></label>
+                    <input id="phone" name="phone" type="tel" class="form-control" placeholder="{{ __('مثال: 010xxxxxxxx') }}" value="{{ old('phone') }}" required />
                     <small class="error-msg" data-error-for="phone"></small>
                 </div>
 
                 <div class="form-group">
-                    <label for="email" class="form-label">البريد الإلكتروني</label>
+                    <label for="email" class="form-label">{{ __('البريد الإلكتروني') }}</label>
                     <input id="email" name="email" type="email" class="form-control" placeholder="example@email.com" value="{{ old('email') }}" />
                 </div>
 
                 <div class="form-group full">
-                    <label for="nationalId" class="form-label">الرقم القومي / السجل التجاري</label>
-                    <input id="nationalId" name="nid" type="text" class="form-control" placeholder="مكون من 14 رقم للأفراد" maxlength="14" minlength="14" inputmode="numeric" pattern="\d{14}" value="{{ old('nid') }}" />
+                    <label for="nationalId" class="form-label">{{ __('الرقم القومي / السجل التجاري') }}</label>
+                    <input id="nationalId" name="nid" type="text" class="form-control" placeholder="{{ __('مكون من 14 رقم للأفراد') }}" maxlength="14" minlength="14" inputmode="numeric" pattern="\d{14}" value="{{ old('nid') }}" />
                     <small class="error-msg" data-error-for="nationalId"></small>
                 </div>
 
                 <div class="form-group full">
-                    <label for="address" class="form-label">العنوان بالكامل <span style="color: var(--danger-color);">*</span></label>
-                    <input id="address" name="address" type="text" class="form-control" placeholder="المحافظة، الحي، الشارع، رقم العقار..." value="{{ old('address') }}" required />
+                    <label for="address" class="form-label">{{ __('العنوان بالكامل') }} <span style="color: var(--danger-color);">*</span></label>
+                    <input id="address" name="address" type="text" class="form-control" placeholder="{{ __('المحافظة، الحي، الشارع، رقم العقار...') }}" value="{{ old('address') }}" required />
                     <input type="hidden" name="case_id" value="1">
                 </div>
             </div>
@@ -151,38 +151,38 @@
         {{-- 2. البيانات الإضافية --}}
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-sliders-h"></i> تصنيف وشؤون العميل</div>
+                <div class="title-with-icon"><i class="fas fa-sliders-h"></i> {{ __('تصنيف وشؤون العميل') }}</div>
             </div>
 
             <div class="form-grid">
                 <div class="form-group">
-                    <label for="clientStatus" class="form-label">حالة العميل القانونية <span style="color: var(--danger-color);">*</span></label>
+                    <label for="clientStatus" class="form-label">{{ __('حالة العميل القانونية') }} <span style="color: var(--danger-color);">*</span></label>
                     <select id="clientStatus" name="clientStatus" class="form-control" required>
-                        <option value="" disabled selected>اختر الحالة...</option>
-                        <option value="active" {{ old('clientStatus', 'active') == 'active' ? 'selected' : '' }}>نشط</option>
-                        <option value="vip" {{ old('clientStatus') == 'vip' ? 'selected' : '' }}>عميل مهم (VIP)</option>
-                        <option value="inactive" {{ old('clientStatus') == 'inactive' ? 'selected' : '' }}>متوقف / أرشيف</option>
+                        <option value="" disabled selected>{{ __('اختر الحالة...') }}</option>
+                        <option value="active" {{ old('clientStatus', 'active') == 'active' ? 'selected' : '' }}>{{ __('نشط') }}</option>
+                        <option value="vip" {{ old('clientStatus') == 'vip' ? 'selected' : '' }}>{{ __('عميل مهم (VIP)') }}</option>
+                        <option value="inactive" {{ old('clientStatus') == 'inactive' ? 'selected' : '' }}>{{ __('متوقف / أرشيف') }}</option>
                     </select>
                     <small class="error-msg" data-error-for="clientStatus"></small>
                 </div>
 
                 <div class="form-group">
-                    <label for="lastContact" class="form-label">تاريخ فتح الملف / أول تعامل</label>
+                    <label for="lastContact" class="form-label">{{ __('تاريخ فتح الملف / أول تعامل') }}</label>
                     <input id="lastContact" name="lastContact" type="date" class="form-control" value="{{ old('lastContact', date('Y-m-d')) }}" />
                 </div>
 
                 <div class="form-group full">
-                    <label for="notes" class="form-label">ملاحظات وتقرير داخلي عن العميل</label>
-                    <textarea id="notes" name="note" class="form-control" placeholder="اكتب هنا أي ملاحظات إدارية أو تفاصيل خاصة بملف العميل...">{{ old('note') }}</textarea>
+                    <label for="notes" class="form-label">{{ __('ملاحظات وتقرير داخلي عن العميل') }}</label>
+                    <textarea id="notes" name="note" class="form-control" placeholder="{{ __('اكتب هنا أي ملاحظات إدارية أو تفاصيل خاصة بملف العميل...') }}">{{ old('note') }}</textarea>
                 </div>
             </div>
         </div>
 
         {{-- أزرار التحكم --}}
         <div class="form-actions">
-            <button type="reset" class="btn-cancel"><i class="fas fa-eraser"></i> مسح المدخلات</button>
+            <button type="reset" class="btn-cancel"><i class="fas fa-eraser"></i> {{ __('مسح المدخلات') }}</button>
             <button type="submit" class="btn-save">
-                <i class="fas fa-save"></i> حفظ بيانات العميل
+                <i class="fas fa-save"></i> {{ __('حفظ بيانات العميل') }}
             </button>
         </div>
     </form>

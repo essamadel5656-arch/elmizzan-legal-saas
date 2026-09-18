@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>إشعار قضية جديدة</title>
+    <title>{{ __('إشعار قضية جديدة') }}</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -108,24 +108,24 @@
             </div>
             
             <div class="content">
-                <p class="welcome-text">مرحباً زميلنا العزيز،</p>
-                <p class="welcome-text">نود إحاطتك علماً بأنه قد تم تسجيل قضية جديدة بنجاح في النظام، وتم إسنادها إليك مباشرة لمتابعة الإجراءات القانونية والدفاع. إليك تفاصيل القضية المحفوظة:</p>
+                <p class="welcome-text">{{ __('مرحباً زميلنا العزيز،') }}</p>
+                <p class="welcome-text">{{ __('نود إحاطتك علماً بأنه قد تم تسجيل قضية جديدة بنجاح في النظام، وتم إسنادها إليك مباشرة لمتابعة الإجراءات القانونية والدفاع. إليك تفاصيل القضية المحفوظة:') }}</p>
                 
                 <table class="info-table">
                     <tr>
-                        <td class="label">🔢 رقم القضية</td>
+                        <td class="label">{{ __('🔢 رقم القضية') }}</td>
                         <td class="value"><strong>{{ $case->case_number }}</strong></td>
                     </tr>
                     <tr>
-                        <td class="label">👤 اسم الخصم</td>
+                        <td class="label">{{ __('👤 اسم الخصم') }}</td>
                         <td class="value">{{ $case->rival_name }}</td>
                     </tr>
                     <tr>
-                        <td class="label">🏛️ الدائرة القضائية</td>
+                        <td class="label">{{ __('🏛️ الدائرة القضائية') }}</td>
                         <td class="value">{{ $case->circuit ?? 'غير محددة بعد' }}</td>
                     </tr>
                     <tr>
-                        <td class="label">💼 حالة القضية</td>
+                        <td class="label">{{ __('💼 حالة القضية') }}</td>
                         <td class="value">
                             <span style="background-color: #e2e8f0; padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: 600; color: #2d3748;">
                                 {{ $case->status }}
@@ -134,16 +134,16 @@
                     </tr>
                     @if($case->description)
                     <tr>
-                        <td class="label">📝 تفاصيل إضافية</td>
+                        <td class="label">{{ __('📝 تفاصيل إضافية') }}</td>
                         <td class="value">{{ $case->description }}</td>
                     </tr>
                     @endif
                 </table>
 
-                <p class="welcome-text" style="margin-top: 25px;">يمكنك الآن الانتقال إلى النظام لمراجعة مستندات ومرفقات القضية كاملة، أو جدولة الجلسات القادمة عبر الزر التالي:</p>
+                <p class="welcome-text" style="margin-top: 25px;">{{ __('يمكنك الآن الانتقال إلى النظام لمراجعة مستندات ومرفقات القضية كاملة، أو جدولة الجلسات القادمة عبر الزر التالي:') }}</p>
                 
                 <div class="btn-container">
-                    <a href="{{ url('/cases/' . $case->id) }}" class="btn">عرض ملف القضية بالكامل</a>
+                    <a href="{{ url('/cases/' . $case->{{ __('id) }}" class="btn">عرض ملف القضية بالكامل') }}</a>
                 </div>
             </div>
             

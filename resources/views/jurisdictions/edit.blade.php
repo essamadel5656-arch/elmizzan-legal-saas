@@ -79,11 +79,11 @@
 
     <div class="dashboard-header">
         <div class="header-info">
-            <h1><i class="fas fa-edit" style="color: var(--gold-accent); margin-left: 8px;"></i> تعديل جهة التقاضي</h1>
-            <p>تحديث اسم أو بيانات نوع القضاء المحدد</p>
+            <h1><i class="fas fa-edit" style="color: var(--gold-accent); margin-left: 8px;"></i> {{ __('تعديل جهة التقاضي') }}</h1>
+            <p>{{ __('تحديث اسم أو بيانات نوع القضاء المحدد') }}</p>
         </div>
         <a href="{{ route('jurisdictions.index') }}" class="btn-cancel" style="flex: unset; padding: 10px 20px;">
-            <i class="fas fa-arrow-right"></i> رجوع للقائمة
+            <i class="fas fa-arrow-right"></i> {{ __('رجوع للقائمة') }}
         </a>
     </div>
 
@@ -98,7 +98,7 @@
         <div class="alert-box alert-danger">
             <i class="fas fa-exclamation-circle" style="margin-top: 4px; font-size: 1.1rem;"></i>
             <div>
-                <strong>حدث خطأ:</strong>
+                <strong>{{ __('حدث خطأ:') }}</strong>
                 <ul>
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -115,13 +115,13 @@
                 @method('PUT')
 
                 <div class="form-group">
-                    <label for="name" class="form-label">اسم نوع القضاء <span style="color: var(--danger-color);">*</span></label>
+                    <label for="name" class="form-label">{{ __('اسم نوع القضاء') }} <span style="color: var(--danger-color);">*</span></label>
                     <input type="text" 
                            id="name" 
                            name="name" 
                            class="form-control" 
                            value="{{ old('name', $jurisdiction->name) }}" 
-                           placeholder="أدخل اسم جهة التقاضي..." 
+                           placeholder="{{ __('أدخل اسم جهة التقاضي...') }}" 
                            required autofocus>
                            
                     @error('name')
@@ -132,10 +132,10 @@
                 {{-- أزرار الإجراءات --}}
                 <div class="form-actions">
                     <a href="{{ route('jurisdictions.index') }}" class="btn-cancel">
-                        <i class="fas fa-times"></i> إلغاء
+                        <i class="fas fa-times"></i> {{ __('إلغاء') }}
                     </a>
                     <button type="submit" class="btn-save">
-                        <i class="fas fa-save"></i> حفظ التعديلات
+                        <i class="fas fa-save"></i> {{ __('حفظ التعديلات') }}
                     </button>
                 </div>
 

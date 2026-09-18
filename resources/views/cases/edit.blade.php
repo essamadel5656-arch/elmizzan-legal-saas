@@ -1,121 +1,36 @@
 @extends('layouts.app')
 
-@section('title', 'تعديل القضية - ' . $case->case_number . ' | ' . $appName)
-
-@push('styles')
-<style>
-    /* ===== الحاوية والترويسة ===== */
-    .create-page-container { padding: 2rem; max-width: 950px; margin: 0 auto; }
-    
-    .dashboard-header { 
-        display: flex; justify-content: space-between; align-items: flex-start; 
-        margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;
-    }
-    .header-info h1 { font-size: 1.6rem; font-weight: 800; color: var(--text-primary); margin-bottom: 0.5rem; }
-    .header-info p { color: var(--text-secondary); font-size: 0.95rem; margin: 0; }
-
-    /* ===== البانل والكروت ===== */
-    .form-card { 
-        background: #ffffff; border: 1px solid var(--border-color); 
-        border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem; 
-        box-shadow: var(--shadow-sm); transition: all 0.3s ease;
-    }
-    .form-card:hover { border-color: var(--gold-accent); box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
-    
-    .form-card-title { 
-        font-size: 1.1rem; font-weight: 800; color: var(--sidebar-bg); 
-        margin-bottom: 1.5rem; padding-bottom: 0.75rem; 
-        border-bottom: 2px solid var(--primary-bg); display: flex; align-items: center; gap: 0.75rem;
-    }
-    .form-card-title i { color: var(--gold-accent); font-size: 1.2rem; }
-
-    /* ===== تقسيم الفورم ===== */
-    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
-    .form-grid.cols-3 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-    
-    .form-group { margin-bottom: 0.5rem; }
-    .form-group.full { grid-column: 1 / -1; }
-    
-    .form-label { display: block; margin-bottom: 0.6rem; font-weight: 700; color: var(--text-primary); font-size: 0.9rem; }
-    
-    .form-control { 
-        width: 100%; padding: 0.9rem 1rem; border: 1px solid var(--border-color); 
-        border-radius: 8px; background-color: var(--primary-bg); font-family: inherit; 
-        font-size: 0.95rem; transition: all 0.2s; color: var(--text-primary);
-    }
-    .form-control:focus { outline: none; border-color: var(--gold-accent); box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1); background-color: #ffffff; }
-    
-    textarea.form-control { resize: vertical; min-height: 100px; }
-
-    /* ===== التحديد المتعدد (العملاء والمحامين) ===== */
-    .multi-select-grid { 
-        display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
-        gap: 0.8rem; max-height: 280px; overflow-y: auto; padding: 1rem; 
-        background: var(--primary-bg); border: 1px solid var(--border-color); border-radius: 8px; 
-    }
-    
-    .selection-item { 
-        display: flex; flex-direction: column; gap: 0.5rem; padding: 0.8rem; 
-        background: #ffffff; border: 1px solid var(--border-color); border-radius: 8px; 
-        transition: all 0.2s ease; cursor: pointer;
-    }
-    .selection-item:hover { border-color: var(--gold-accent); }
-    .selection-item.selected { border-color: var(--success-color); background: rgba(34, 197, 94, 0.05); }
-    
-    .selection-header { display: flex; align-items: center; gap: 0.6rem; }
-    .selection-header input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--success-color); cursor: pointer; }
-    .selection-header label { margin: 0; cursor: pointer; flex: 1; font-weight: 700; font-size: 0.9rem; color: var(--text-primary); }
-    .lawyer-spec { display: block; font-size: 0.8rem; color: var(--text-secondary); font-weight: 500; margin-top: 2px; }
-
-    /* ===== أزرار التحكم ===== */
-    .form-actions { display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem; border-top: 1px dashed var(--border-color); padding-top: 1.5rem; }
-    
-    .btn-cancel { 
-        padding: 12px 24px; background-color: transparent; color: var(--text-secondary); 
-        border: 1px solid var(--border-color); border-radius: 8px; font-weight: 600; 
-        cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; text-decoration: none;
-    }
-    .btn-cancel:hover { background-color: var(--primary-bg); color: var(--danger-color); border-color: var(--danger-color); }
-    
-    .btn-save { 
-        padding: 12px 32px; background-color: var(--sidebar-bg); color: #ffffff; 
-        border: none; border-radius: 8px; font-weight: 700; cursor: pointer; 
-        transition: 0.3s; display: inline-flex; align-items: center; gap: 0.5rem; font-size: 1rem; font-family: inherit;
-    }
-    .btn-save:hover { background-color: var(--gold-accent); color: var(--sidebar-bg); box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2); transform: translateY(-2px); }
-
-    /* ===== الأخطاء ===== */
-    .error-msg { font-size: 0.85rem; color: var(--danger-color); margin-top: 4px; display: block; font-weight: 600; }
-    .error-box { background: rgba(239, 68, 68, 0.05); border: 1px solid var(--danger-color); padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; }
-    .error-box strong { color: var(--danger-color); font-size: 1.05rem; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; }
-    .error-box ul { color: var(--danger-color); margin: 0; padding-right: 1.5rem; font-weight: 600; }
-
-    @media (max-width: 768px) {
-        .create-page-container { padding: 1rem; }
-        .form-grid { grid-template-columns: 1fr; }
-        .form-actions { flex-direction: column-reverse; }
-        .btn-cancel, .btn-save { width: 100%; justify-content: center; }
-    }
-</style>
-@endpush
+@section('title', __('تعديل القضية') . ' - ' . $case->case_number . ' | ' . $appName)
 
 @section('content')
-<div class="create-page-container">
+<div class="p-6" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 
-    <div class="dashboard-header">
-        <div class="header-info">
-            <h1><i class="fas fa-edit" style="color: var(--gold-accent); margin-left: 8px;"></i> تعديل بيانات القضية</h1>
-            <p>تحديث ملف القضية رقم: <strong style="color: var(--sidebar-bg);">{{ $case->case_number }}</strong></p>
+    <!-- Header -->
+    <div class="panel mb-6">
+        <div class="panel-header mb-8 flex justify-between items-start flex-wrap gap-4">
+            <div>
+                <div class="panel-title flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                    {{ __('تعديل بيانات القضية') }}
+                </div>
+                <p class="text-muted mt-2">{{ __('تحديث ملف القضية رقم:') }} <strong>{{ $case->case_number }}</strong></p>
+            </div>
+            <a href="{{ route('cases.show', $case->id) }}" class="btn-secondary flex items-center gap-2">
+                <svg class="w-5 h-5 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                {{ __('رجوع لملف القضية') }}
+            </a>
         </div>
-        <a href="{{ route('cases.show', $case->id) }}" class="btn-cancel">
-            <i class="fas fa-arrow-right"></i> رجوع لملف القضية
-        </a>
     </div>
 
     @if($errors->any())
-        <div class="error-box">
-            <strong><i class="fas fa-exclamation-triangle"></i> حدث خطأ في البيانات:</strong>
-            <ul>
+        <div class="panel mb-6">
+            <div class="panel-header">
+                <div class="panel-title flex items-center gap-2">
+                    <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    {{ __('حدث خطأ في البيانات:') }}
+                </div>
+            </div>
+            <ul class="text-muted mt-2">
                 @foreach($errors->all() as $error)
                     <li>{{ $error }}</li>
                 @endforeach
@@ -128,151 +43,175 @@
         @method('PUT')
 
         {{-- 1. بيانات القضية الأساسية --}}
-        <div class="form-card">
-            <div class="form-card-title"><i class="fas fa-file-alt"></i> بيانات القضية الأساسية</div>
+        <div class="panel mb-6">
+            <div class="panel-header mb-6">
+                <div class="panel-title flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    {{ __('بيانات القضية الأساسية') }}
+                </div>
+            </div>
             
-            <div class="form-grid">
-                <div class="form-group">
-                    <label class="form-label">رقم القضية <span style="color: var(--danger-color);">*</span></label>
-                    <input type="text" name="case_number" class="form-control" value="{{ old('case_number', $case->case_number) }}" required>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="field">
+                    <label>{{ __('رقم القضية *') }}</label>
+                    <input type="text" name="case_number" class="app-input" value="{{ old('case_number', $case->case_number) }}" required>
                 </div>
 
-                {{-- التعديل تم هنا: الحالات مطابقة للداتا بيز بالضبط --}}
-                <div class="form-group">
-                    <label class="form-label">حالة القضية <span style="color: var(--danger-color);">*</span></label>
-                    <select name="status" class="form-control" required>
-                        <option value="">-- اختر حالة القضية --</option>
-                        @foreach(['مفتوحة', 'متداولة', 'مؤجلة', 'محجوزة للحكم', 'منتهية', 'مستأنفة', 'محفوظة', 'معلقة'] as $s)
-                            <option value="{{ $s }}" {{ old('status', $case->status) == $s ? 'selected' : '' }}>
-                                {{ $s }}
-                            </option>
-                        @endforeach
-                    </select>
+                <div class="field">
+                    <label>{{ __('حالة القضية *') }}</label>
+                    <div class="select-wrap">
+                        <select name="status" class="app-select" required>
+                            <option value="">{{ __('-- اختر حالة القضية --') }}</option>
+                            @foreach(['مفتوحة', 'متداولة', 'مؤجلة', 'محجوزة للحكم', 'منتهية', 'مستأنفة', 'محفوظة', 'معلقة'] as $s)
+                                <option value="{{ $s }}" {{ old('status', $case->status) == $s ? 'selected' : '' }}>
+                                    {{ __($s) }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">المحكمة <span style="color: var(--danger-color);">*</span></label>
-                    <select name="court_id" class="form-control" required>
-                        <option value="">-- اختر المحكمة --</option>
-                        @foreach($courts as $court)
-                            <option value="{{ $court->id }}" {{ old('court_id', $case->court_id) == $court->id ? 'selected' : '' }}>
-                                {{ $court->jurisdiction->name ?? '' }} - {{ $court->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                <div class="field">
+                    <label>{{ __('المحكمة *') }}</label>
+                    <div class="select-wrap">
+                        <select name="court_id" class="app-select" required>
+                            <option value="">{{ __('-- اختر المحكمة --') }}</option>
+                            @foreach($courts as $court)
+                                <option value="{{ $court->id }}" {{ old('court_id', $case->court_id) == $court->id ? 'selected' : '' }}>
+                                    {{ $court->jurisdiction->name ?? '' }} - {{ $court->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">نوع الجهة القضائية <span style="color: var(--danger-color);">*</span></label>
-                    <select name="judicial_authority_type" class="form-control" required>
-                        <option value="">-- اختر النوع --</option>
-                        @foreach($jurisdictions as $jurisdiction)
-                            <option value="{{ $jurisdiction->name }}" {{ old('judicial_authority_type', $case->judicial_authority_type ?? '') == $jurisdiction->name ? 'selected' : '' }}>
-                                {{ $jurisdiction->name }}
-                            </option>
-                        @endforeach
-                    </select>
+                <div class="field">
+                    <label>{{ __('نوع الجهة القضائية *') }}</label>
+                    <div class="select-wrap">
+                        <select name="judicial_authority_type" class="app-select" required>
+                            <option value="">{{ __('-- اختر النوع --') }}</option>
+                            @foreach($jurisdictions as $jurisdiction)
+                                <option value="{{ $jurisdiction->name }}" {{ old('judicial_authority_type', $case->judicial_authority_type ?? '') == $jurisdiction->name ? 'selected' : '' }}>
+                                    {{ $jurisdiction->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
-                <div class="form-group full">
-                    <label class="form-label">درجة التقاضي <span style="color: var(--danger-color);">*</span></label>
-
+                <div class="field md:col-span-2">
+                    <label>{{ __('درجة التقاضي *') }}</label>
                     @php
                         $currentCourtLevelId = (int) old('court_level_id', $case->court_level_id ?? '');
                     @endphp
-
-                    <select name="court_level_id" class="form-control" required>
-                        <option value="">-- اختر درجة التقاضي --</option>
-                        @foreach($court_levels as $level)
-                            <option value="{{ $level->id }}" {{ $currentCourtLevelId === (int)$level->id ? 'selected' : '' }}>
-                                {{ $level->name }}
-                            </option>
-                        @endforeach
-                    </select>
-
+                    <div class="select-wrap">
+                        <select name="court_level_id" class="app-select" required>
+                            <option value="">{{ __('-- اختر درجة التقاضي --') }}</option>
+                            @foreach($court_levels as $level)
+                                <option value="{{ $level->id }}" {{ $currentCourtLevelId === (int)$level->id ? 'selected' : '' }}>
+                                    {{ $level->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                     @error('court_level_id')
-                        <span class="error-msg">{{ $message }}</span>
+                        <span class="text-muted block mt-2">{{ $message }}</span>
                     @enderror
                 </div>
 
                 <input type="hidden" name="jurisdiction_id" value="{{ old('jurisdiction_id', $case->jurisdiction_id ?? '') }}">
 
-                <div class="form-group full">
-                    <label class="form-label">وصف القضية</label>
-                    <textarea name="description" class="form-control">{{ old('description', $case->description) }}</textarea>
+                <div class="field md:col-span-2">
+                    <label>{{ __('وصف القضية') }}</label>
+                    <textarea name="description" class="app-input" rows="3">{{ old('description', $case->description) }}</textarea>
                 </div>
 
-                <div class="form-group full">
-                    <label class="form-label">الإجراء السابق</label>
-                    <textarea name="Previous_procedure" class="form-control">{{ old('Previous_procedure', $case->Previous_procedure) }}</textarea>
+                <div class="field md:col-span-2">
+                    <label>{{ __('الإجراء السابق') }}</label>
+                    <textarea name="Previous_procedure" class="app-input" rows="2">{{ old('Previous_procedure', $case->Previous_procedure) }}</textarea>
                 </div>
 
-                <div class="form-group full">
-                    <label class="form-label">الحكم النهائي</label>
-                    <textarea name="final_decision" class="form-control">{{ old('final_decision', $case->final_decision) }}</textarea>
+                <div class="field md:col-span-2">
+                    <label>{{ __('الحكم النهائي') }}</label>
+                    <textarea name="final_decision" class="app-input" rows="2">{{ old('final_decision', $case->final_decision) }}</textarea>
                 </div>
 
-                <div class="form-group full">
-                    <label class="form-label">ملاحظات</label>
-                    <textarea name="notes" class="form-control">{{ old('notes', $case->notes) }}</textarea>
+                <div class="field md:col-span-2">
+                    <label>{{ __('ملاحظات') }}</label>
+                    <textarea name="notes" class="app-input" rows="2">{{ old('notes', $case->notes) }}</textarea>
                 </div>
             </div>
         </div>
 
         {{-- 2. بيانات الخصم --}}
-        <div class="form-card">
-            <div class="form-card-title"><i class="fas fa-user-times"></i> بيانات الخصم</div>
+        <div class="panel mb-6">
+            <div class="panel-header mb-6">
+                <div class="panel-title flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    {{ __('بيانات الخصم') }}
+                </div>
+            </div>
             
-            <div class="form-grid">
-                <div class="form-group">
-                    <label class="form-label">اسم الخصم <span style="color: var(--danger-color);">*</span></label>
-                    <input type="text" name="rival_name" class="form-control" value="{{ old('rival_name', $case->rival_name) }}" required>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="field">
+                    <label>{{ __('اسم الخصم *') }}</label>
+                    <input type="text" name="rival_name" class="app-input" value="{{ old('rival_name', $case->rival_name) }}" required>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">رقم الخصم <span style="color: var(--danger-color);">*</span></label>
-                    <input type="text" name="rival_number" class="form-control" value="{{ old('rival_number', $case->rival_number) }}" required>
+                <div class="field">
+                    <label>{{ __('رقم الخصم *') }}</label>
+                    <input type="text" name="rival_number" class="app-input" value="{{ old('rival_number', $case->rival_number) }}" required>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">الرقم القومي للخصم <span style="color: var(--danger-color);">*</span></label>
-                    <input type="text" name="rival_nid" class="form-control" value="{{ old('rival_nid', $case->rival_nid) }}" required>
+                <div class="field">
+                    <label>{{ __('الرقم القومي للخصم *') }}</label>
+                    <input type="text" name="rival_nid" class="app-input" value="{{ old('rival_nid', $case->rival_nid) }}" required>
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">عنوان الخصم <span style="color: var(--danger-color);">*</span></label>
-                    <input type="text" name="rival_address" class="form-control" value="{{ old('rival_address', $case->rival_address) }}" required>
+                <div class="field">
+                    <label>{{ __('عنوان الخصم *') }}</label>
+                    <input type="text" name="rival_address" class="app-input" value="{{ old('rival_address', $case->rival_address) }}" required>
                 </div>
             </div>
         </div>
 
         {{-- 3. البيانات المالية --}}
-        <div class="form-card">
-            <div class="form-card-title"><i class="fas fa-coins"></i> البيانات المالية</div>
+        <div class="panel mb-6">
+            <div class="panel-header mb-6">
+                <div class="panel-title flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    {{ __('البيانات المالية') }}
+                </div>
+            </div>
             
-            <div class="form-grid cols-3">
-                <div class="form-group">
-                    <label class="form-label">التكاليف</label>
-                    <input type="number" name="costs" class="form-control" step="0.01" value="{{ old('costs', $case->costs) }}">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="field">
+                    <label>{{ __('التكاليف') }}</label>
+                    <input type="number" name="costs" class="app-input" step="0.01" value="{{ old('costs', $case->costs) }}">
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">إجمالي الأتعاب (التكاليف الإجمالية)</label>
-                    <input type="number" name="total_costs" class="form-control" step="0.01" value="{{ old('total_costs', $case->total_costs) }}">
+                <div class="field">
+                    <label>{{ __('إجمالي الأتعاب (التكاليف الإجمالية)') }}</label>
+                    <input type="number" name="total_costs" class="app-input" step="0.01" value="{{ old('total_costs', $case->total_costs) }}">
                 </div>
 
-                <div class="form-group">
-                    <label class="form-label">المبلغ المدفوع (الإيداع)</label>
-                    <input type="number" name="deposit" class="form-control" step="0.01" value="{{ old('deposit', $case->deposit) }}">
+                <div class="field">
+                    <label>{{ __('المبلغ المدفوع (الإيداع)') }}</label>
+                    <input type="number" name="deposit" class="app-input" step="0.01" value="{{ old('deposit', $case->deposit) }}">
                 </div>
             </div>
         </div>
 
         {{-- 4. العملاء المرتبطون بالقضية --}}
-        <div class="form-card">
-            <div class="form-card-title"><i class="fas fa-users"></i> العملاء المرتبطون بالقضية</div>
+        <div class="panel mb-6">
+            <div class="panel-header mb-6">
+                <div class="panel-title flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    {{ __('العملاء المرتبطون بالقضية') }}
+                </div>
+            </div>
             
-            <div class="multi-select-grid">
+            <div class="panel-subtle grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
                 @php 
                     $savedClientIds = $case->clients ? array_map('intval', $case->clients->pluck('id')->toArray()) : [];
                     $selectedClients = old('client_ids') ? array_map('intval', old('client_ids')) : $savedClientIds;
@@ -281,22 +220,27 @@
                 @foreach($clients as $client)
                     @php $isClientSelected = in_array((int)$client->id, $selectedClients); @endphp
                     
-                    <div class="selection-item {{ $isClientSelected ? 'selected' : '' }}">
-                        <div class="selection-header">
-                            <input type="checkbox" id="client-{{ $client->id }}" name="client_ids[]" value="{{ $client->id }}" {{ $isClientSelected ? 'checked' : '' }} onchange="this.closest('.selection-item').classList.toggle('selected', this.checked)">
+                    <div class="field p-3 panel">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="client-{{ $client->id }}" name="client_ids[]" value="{{ $client->id }}" {{ $isClientSelected ? 'checked' : '' }}>
                             <label for="client-{{ $client->id }}">{{ $client->name }}</label>
                         </div>
                     </div>
                 @endforeach
             </div>
             @error('client_ids')
-                <span class="error-msg" style="margin-top:10px;">{{ $message }}</span>
+                <span class="text-muted block mt-2">{{ $message }}</span>
             @enderror
         </div>
 
         {{-- 5. المحامون المرتبطون بالقضية --}}
-        <div class="form-card">
-            <div class="form-card-title"><i class="fas fa-user-tie"></i> المحامون المرتبطون بالقضية</div>
+        <div class="panel mb-6">
+            <div class="panel-header mb-6">
+                <div class="panel-title flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                    {{ __('المحامون المرتبطون بالقضية') }}
+                </div>
+            </div>
             
             @php 
                 $caseLawyers     = $case->lawyers->keyBy('id');
@@ -304,11 +248,12 @@
                 $selectedLawyers = old('lawyer_ids') ? array_map('intval', old('lawyer_ids')) : $savedLawyerIds;
             @endphp
 
-            <div style="font-size: 0.95rem; font-weight: 700; color: var(--sidebar-bg); margin-bottom: 1rem;">
-                <i class="fas fa-star" style="color: var(--gold-accent);"></i> حدد المحامين وأدوارهم في هذه القضية:
+            <div class="mb-4 flex items-center gap-2 text-muted">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                {{ __('حدد المحامين وأدوارهم في هذه القضية:') }}
             </div>
 
-            <div class="multi-select-grid">
+            <div class="panel-subtle grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
                 @foreach($lawyers as $lawyer)
                     @php
                         $isSelected = in_array((int)$lawyer->id, $selectedLawyers);
@@ -322,37 +267,41 @@
                         }
                     @endphp
 
-                    <div class="selection-item {{ $isSelected ? 'selected' : '' }}" id="row-{{ $lawyer->id }}">
-                        <div class="selection-header">
-                            <input type="checkbox" id="lawyer-{{ $lawyer->id }}" name="lawyer_ids[]" value="{{ $lawyer->id }}" {{ $isSelected ? 'checked' : '' }} onchange="this.closest('.selection-item').classList.toggle('selected', this.checked)">
-                            <label for="lawyer-{{ $lawyer->id }}">
-                                {{ $lawyer->name }}
+                    <div class="field flex flex-col gap-2 p-3 panel" id="row-{{ $lawyer->id }}">
+                        <div class="flex items-start gap-3">
+                            <input type="checkbox" id="lawyer-{{ $lawyer->id }}" name="lawyer_ids[]" value="{{ $lawyer->id }}" {{ $isSelected ? 'checked' : '' }}>
+                            <label for="lawyer-{{ $lawyer->id }}" class="w-full">
+                                <span class="block">{{ $lawyer->name }}</span>
                                 @if($lawyer->specialization)
-                                    <span class="lawyer-spec">{{ $lawyer->specialization }}</span>
+                                    <span class="block text-muted">{{ $lawyer->specialization }}</span>
                                 @endif
                             </label>
                         </div>
                         
-                        <select name="lawyer_roles[{{ $lawyer->id }}]" class="form-control" style="padding: 0.5rem; font-size: 0.85rem; margin-top: 0.5rem;">
-                            <option value="lead"        {{ $currentRole === 'lead'        ? 'selected' : '' }}>محامي رئيسي</option>
-                            <option value="assistant"   {{ $currentRole === 'assistant'   ? 'selected' : '' }}>مساعد</option>
-                            <option value="consultant"  {{ $currentRole === 'consultant'  ? 'selected' : '' }}>مستشار</option>
-                        </select>
+                        <div class="select-wrap mt-2">
+                            <select name="lawyer_roles[{{ $lawyer->id }}]" class="app-select">
+                                <option value="lead"        {{ $currentRole === 'lead'        ? 'selected' : '' }}>{{ __('محامي رئيسي') }}</option>
+                                <option value="assistant"   {{ $currentRole === 'assistant'   ? 'selected' : '' }}>{{ __('مساعد') }}</option>
+                                <option value="consultant"  {{ $currentRole === 'consultant'  ? 'selected' : '' }}>{{ __('مستشار') }}</option>
+                            </select>
+                        </div>
                     </div>
                 @endforeach
             </div>
             @error('lawyer_ids')
-                <span class="error-msg" style="margin-top:10px;">{{ $message }}</span>
+                <span class="text-muted block mt-2">{{ $message }}</span>
             @enderror
         </div>
 
         {{-- أزرار التحكم --}}
-        <div class="form-actions">
-            <a href="{{ route('cases.show', $case->id) }}" class="btn-cancel">
-                <i class="fas fa-times"></i> إلغاء والتراجع
+        <div class="flex justify-end gap-4 mt-8 pt-6">
+            <a href="{{ route('cases.show', $case->id) }}" class="btn-secondary flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                {{ __('إلغاء والتراجع') }}
             </a>
-            <button type="submit" class="btn-save">
-                <i class="fas fa-save"></i> حفظ جميع التعديلات
+            <button type="submit" class="btn-primary flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"/></svg>
+                {{ __('حفظ جميع التعديلات') }}
             </button>
         </div>
 

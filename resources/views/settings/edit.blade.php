@@ -87,7 +87,7 @@
     {{-- Header --}}
     <div class="settings-header">
         <i class="fas fa-cog"></i>
-        <h1>إعدادات المكتب</h1>
+        <h1>{{ __('إعدادات المكتب') }}</h1>
     </div>
 
     {{-- Success Alert --}}
@@ -118,39 +118,39 @@
 
         <div class="settings-section-title">
             <i class="fas fa-building" style="color:var(--gold-accent);"></i>
-            هوية المكتب (White-Labeling)
+            {{ __('هوية المكتب (White-Labeling)') }}
         </div>
 
         <form action="{{ route('settings.update') }}" method="POST">
             @csrf
 
             <div class="form-group">
-                <label for="app_name" class="form-label">اسم المكتب / التطبيق</label>
+                <label for="app_name" class="form-label">{{ __('اسم المكتب / التطبيق') }}</label>
                 <input type="text"
                        id="app_name"
                        name="app_name"
                        class="form-input"
                        value="{{ old('app_name', $appName) }}"
-                       placeholder="مثال: الميزان، مكتب أحمد للمحاماة..."
+                       placeholder="{{ __('مثال: الميزان، مكتب أحمد للمحاماة...') }}"
                        maxlength="100"
                        oninput="updatePreview(this.value)">
                 <p class="form-hint">
                     <i class="fas fa-info-circle"></i>
-                    سيظهر هذا الاسم في: عنوان المتصفح، الشريط الجانبي، التذييل، والمساعد الذكي.
+                    {{ __('سيظهر هذا الاسم في: عنوان المتصفح، الشريط الجانبي، التذييل، والمساعد الذكي.') }}
                 </p>
             </div>
 
             {{-- Live Preview --}}
             <div class="preview-box" id="previewBox">
                 <i class="fas fa-eye" style="margin-left:5px;"></i>
-                معاينة: <strong id="previewName">{{ $appName }}</strong>
-                &nbsp;·&nbsp; عنوان المتصفح: <strong id="previewTitle">الرئيسية | {{ $appName }}</strong>
+                {{ __('معاينة:') }} <strong id="previewName">{{ $appName }}</strong>
+                {{ __('&nbsp;·&nbsp; عنوان المتصفح:') }} <strong id="previewTitle">الرئيسية | {{ $appName }}</strong>
             </div>
 
             <div style="margin-top:1.5rem;">
                 <button type="submit" class="btn-save">
                     <i class="fas fa-save"></i>
-                    حفظ الإعدادات
+                    {{ __('حفظ الإعدادات') }}
                 </button>
             </div>
         </form>

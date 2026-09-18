@@ -121,7 +121,7 @@
             @if($notifications->where('read_at', null)->count() > 0)
                 <span style="font-size:0.8rem; background:var(--gold-accent); color:#1e293b;
                              padding:0.2rem 0.6rem; border-radius:20px; font-weight:800;">
-                    {{ $notifications->where('read_at', null)->count() }} جديد
+                    {{ $notifications->{{ __('where(\'read_at\', null)->count() }} جديد') }}
                 </span>
             @endif
         </h1>
@@ -131,7 +131,7 @@
                 @csrf
                 <button type="submit" class="btn-mark-all">
                     <i class="fas fa-check-double"></i>
-                    تعليم الكل كمقروء
+                    {{ __('تعليم الكل كمقروء') }}
                 </button>
             </form>
         @endif
@@ -150,8 +150,8 @@
     @if($notifications->isEmpty())
         <div class="notif-empty">
             <i class="fas fa-bell-slash"></i>
-            <p style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">لا توجد إشعارات</p>
-            <p style="font-size:0.9rem;">ستظهر هنا إشعارات القضايا والجلسات</p>
+            <p style="font-size:1.1rem; font-weight:600; margin-bottom:0.5rem;">{{ __('لا توجد إشعارات') }}</p>
+            <p style="font-size:0.9rem;">{{ __('ستظهر هنا إشعارات القضايا والجلسات') }}</p>
         </div>
     @else
         <div class="notif-list">
@@ -195,7 +195,7 @@
                                 @endif
                                 <span><i class="fas fa-clock" style="margin-left:3px;"></i> {{ $timeAgo }}</span>
                                 @if($isUnread)
-                                    <span style="color:var(--gold-accent); font-weight:700;">● غير مقروء</span>
+                                    <span style="color:var(--gold-accent); font-weight:700;">{{ __('● غير مقروء') }}</span>
                                 @endif
                             </span>
                         </span>

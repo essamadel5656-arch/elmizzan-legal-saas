@@ -17,10 +17,11 @@ class CaseExpenses extends Component
     public LegalCase $case;
 
     // Form state
-    public bool   $showForm  = false;
+    public bool   $isModalOpen = false;
+    public ?int   $confirmingDeleteId = null;
     public float  $amount    = 0;
     public string $category  = 'عام';
-    public string $notes     = '';
+    public string $description = '';
     public $receipt          = null;
 
     public array $categories = [
@@ -35,10 +36,10 @@ class CaseExpenses extends Component
     protected function rules(): array
     {
         return [
-            'amount'   => 'required|numeric|min:0.01',
-            'category' => 'required|string',
-            'notes'    => 'nullable|string|max:1000',
-            'receipt'  => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
+            'amount'      => 'required|numeric|min:0.01',
+            'category'    => 'required|string',
+            'description' => 'required|string|max:1000',
+            'receipt'     => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:5120',
         ];
     }
 
@@ -47,6 +48,7 @@ class CaseExpenses extends Component
         return [
             'amount.required' => 'المبلغ مطلوب.',
             'amount.min'      => 'المبلغ يجب أن يكون أكبر من صفر.',
+            'description.required' => 'البيان / الوصف مطلوب.',
             'receipt.mimes'   => 'صيغ الإيصال المقبولة: pdf, jpg, png.',
             'receipt.max'     => 'حجم الإيصال لا يتجاوز 5 ميجابايت.',
         ];
@@ -57,7 +59,20 @@ class CaseExpenses extends Component
         $this->case = $case;
     }
 
-    public function submitExpense(): void
+    public function openModal(): void
+    {
+        $this->reset(['amount', 'category', 'description', 'receipt']);
+        $this->category = 'عام';
+        $this->isModalOpen = true;
+    }
+
+    public function closeModal(): void
+    {
+        $this->isModalOpen = false;
+        $this->resetValidation();
+    }
+
+    public function save(): void
     {
         $user = auth()->user();
 
@@ -74,7 +89,7 @@ class CaseExpenses extends Component
             'user_id'      => $user->id,
             'amount'       => $this->amount,
             'category'     => $this->category,
-            'notes'        => $this->notes ?: null,
+            'notes'        => $this->description, // DB expects notes column
             'receipt_path' => $receiptPath,
             'status'       => 'pending',
         ]);
@@ -85,19 +100,18 @@ class CaseExpenses extends Component
             $admin->notify(new ExpenseSubmittedNotification($expense));
         }
 
-        $this->reset(['amount', 'category', 'notes', 'receipt', 'showForm']);
-        $this->category = 'عام';
-        session()->flash('expense_success', 'تم تقديم طلب المصروف بنجاح وهو بانتظار موافقة الإدارة.');
+        $this->closeModal();
+        session()->flash('success', 'تم تقديم طلب المصروف بنجاح وهو بانتظار موافقة الإدارة.');
     }
 
-    public function approveExpense(int $expenseId): void
+    public function approve(int $expenseId): void
     {
         abort_unless(auth()->user()->isAdmin(), 403);
 
         $expense = CaseExpense::findOrFail($expenseId);
         $expense->update(['status' => 'approved', 'approved_by' => auth()->id()]);
 
-        session()->flash('expense_success', 'تمت الموافقة على المصروف بنجاح.');
+        session()->flash('success', 'تمت الموافقة على المصروف بنجاح.');
     }
 
     public function rejectExpense(int $expenseId): void
@@ -107,17 +121,29 @@ class CaseExpenses extends Component
         $expense = CaseExpense::findOrFail($expenseId);
         $expense->update(['status' => 'rejected', 'approved_by' => auth()->id()]);
 
-        session()->flash('expense_success', 'تم رفض طلب المصروف.');
+        session()->flash('success', 'تم رفض طلب المصروف.');
     }
 
-    public function deleteExpense(int $expenseId): void
+    public function confirmDelete(int $id): void
     {
+        $this->confirmingDeleteId = $id;
+    }
+
+    public function cancelDelete(): void
+    {
+        $this->confirmingDeleteId = null;
+    }
+
+    public function deleteExpense(): void
+    {
+        abort_unless($this->confirmingDeleteId, 404);
+
         $user    = auth()->user();
-        $expense = CaseExpense::findOrFail($expenseId);
+        $expense = CaseExpense::findOrFail($this->confirmingDeleteId);
 
         // Only the submitter (if pending) or admin can delete
         abort_unless(
-            $user->isAdmin() || ($expense->user_id === $user->id && $expense->isPending()),
+            $user->isAdmin() || ($expense->user_id === $user->id && $expense->status === 'pending'),
             403
         );
 
@@ -126,7 +152,8 @@ class CaseExpenses extends Component
         }
 
         $expense->delete();
-        session()->flash('expense_success', 'تم حذف طلب المصروف.');
+        $this->confirmingDeleteId = null;
+        session()->flash('success', 'تم حذف طلب المصروف.');
     }
 
     public function render()

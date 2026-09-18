@@ -101,11 +101,11 @@
     <!-- Header الموحد -->
     <div class="dashboard-header no-print">
         <div class="header-info">
-            <h1><i class="fas fa-store" style="color: var(--gold-accent); margin-left: 8px;"></i> عقد بيع وتنازل عن محل تجاري</h1>
-            <p>أدخل بيانات أطراف العقد وتفاصيل المحل التجاري ثم اضغط على زر المعاينة والطباعة أدناه.</p>
+            <h1><i class="fas fa-store" style="color: var(--gold-accent); margin-left: 8px;"></i> {{ __('عقد بيع وتنازل عن محل تجاري') }}</h1>
+            <p>{{ __('أدخل بيانات أطراف العقد وتفاصيل المحل التجاري ثم اضغط على زر المعاينة والطباعة أدناه.') }}</p>
         </div>
         <a href="{{ route('contracts.index') }}" class="btn-cancel">
-            <i class="fas fa-arrow-right"></i> العودة للمكتبة القانونية
+            <i class="fas fa-arrow-right"></i> {{ __('العودة للمكتبة القانونية') }}
         </a>
     </div>
 
@@ -115,15 +115,15 @@
         {{-- بيانات العقد --}}
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-calendar-alt"></i> توقيت وتاريخ العقد</div>
+                <div class="title-with-icon"><i class="fas fa-calendar-alt"></i> {{ __('توقيت وتاريخ العقد') }}</div>
             </div>
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label" for="contract_day">اليوم</label>
-                    <input type="text" id="contract_day" class="form-control" placeholder="مثال: الثلاثاء">
+                    <label class="form-label" for="contract_day">{{ __('اليوم') }}</label>
+                    <input type="text" id="contract_day" class="form-control" placeholder="{{ __('مثال: الثلاثاء') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="contract_date">تاريخ العقد</label>
+                    <label class="form-label" for="contract_date">{{ __('تاريخ العقد') }}</label>
                     <input type="date" id="contract_date" class="form-control">
                 </div>
             </div>
@@ -132,28 +132,28 @@
         {{-- بيانات البائع --}}
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-user-tag"></i> بيانات الطرف الأول (البائع)</div>
+                <div class="title-with-icon"><i class="fas fa-user-tag"></i> {{ __('بيانات الطرف الأول (البائع)') }}</div>
             </div>
             <div class="form-grid">
                 <div class="form-group full">
-                    <label class="form-label" for="seller_name">الاسم الكامل</label>
-                    <input type="text" id="seller_name" class="form-control" placeholder="الاسم رباعي">
+                    <label class="form-label" for="seller_name">{{ __('الاسم الكامل') }}</label>
+                    <input type="text" id="seller_name" class="form-control" placeholder="{{ __('الاسم رباعي') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="seller_id">الرقم القومي</label>
-                    <input type="text" id="seller_id" class="form-control" placeholder="14 رقم" maxlength="14">
+                    <label class="form-label" for="seller_id">{{ __('الرقم القومي') }}</label>
+                    <input type="text" id="seller_id" class="form-control" placeholder="{{ __('14 رقم') }}" maxlength="14">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="seller_religion">الديانة</label>
-                    <input type="text" id="seller_religion" class="form-control" value="مسلم">
+                    <label class="form-label" for="seller_religion">{{ __('الديانة') }}</label>
+                    <input type="text" id="seller_religion" class="form-control" value="{{ __('مسلم') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="seller_nationality">الجنسية</label>
-                    <input type="text" id="seller_nationality" class="form-control" value="مصري">
+                    <label class="form-label" for="seller_nationality">{{ __('الجنسية') }}</label>
+                    <input type="text" id="seller_nationality" class="form-control" value="{{ __('مصري') }}">
                 </div>
                 <div class="form-group full">
-                    <label class="form-label" for="seller_address">عنوان الإقامة</label>
-                    <input type="text" id="seller_address" class="form-control" placeholder="مثال: أسوان - كيما عمارة (42) شقة (9)">
+                    <label class="form-label" for="seller_address">{{ __('عنوان الإقامة') }}</label>
+                    <input type="text" id="seller_address" class="form-control" placeholder="{{ __('مثال: أسوان - كيما عمارة (42) شقة (9)') }}">
                 </div>
             </div>
         </div>
@@ -161,28 +161,28 @@
         {{-- بيانات المشتري --}}
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-user-check"></i> بيانات الطرف الثاني (المشتري)</div>
+                <div class="title-with-icon"><i class="fas fa-user-check"></i> {{ __('بيانات الطرف الثاني (المشتري)') }}</div>
             </div>
             <div class="form-grid">
                 <div class="form-group full">
-                    <label class="form-label" for="buyer_name">الاسم الكامل</label>
-                    <input type="text" id="buyer_name" class="form-control" placeholder="الاسم رباعي">
+                    <label class="form-label" for="buyer_name">{{ __('الاسم الكامل') }}</label>
+                    <input type="text" id="buyer_name" class="form-control" placeholder="{{ __('الاسم رباعي') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="buyer_id">الرقم القومي</label>
-                    <input type="text" id="buyer_id" class="form-control" placeholder="14 رقم" maxlength="14">
+                    <label class="form-label" for="buyer_id">{{ __('الرقم القومي') }}</label>
+                    <input type="text" id="buyer_id" class="form-control" placeholder="{{ __('14 رقم') }}" maxlength="14">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="buyer_religion">الديانة</label>
-                    <input type="text" id="buyer_religion" class="form-control" value="مسلم">
+                    <label class="form-label" for="buyer_religion">{{ __('الديانة') }}</label>
+                    <input type="text" id="buyer_religion" class="form-control" value="{{ __('مسلم') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="buyer_nationality">الجنسية</label>
-                    <input type="text" id="buyer_nationality" class="form-control" value="مصري">
+                    <label class="form-label" for="buyer_nationality">{{ __('الجنسية') }}</label>
+                    <input type="text" id="buyer_nationality" class="form-control" value="{{ __('مصري') }}">
                 </div>
                 <div class="form-group full">
-                    <label class="form-label" for="buyer_address">عنوان الإقامة</label>
-                    <input type="text" id="buyer_address" class="form-control" placeholder="مثال: أسوان - طريق السادات - خلف مديرية التموين">
+                    <label class="form-label" for="buyer_address">{{ __('عنوان الإقامة') }}</label>
+                    <input type="text" id="buyer_address" class="form-control" placeholder="{{ __('مثال: أسوان - طريق السادات - خلف مديرية التموين') }}">
                 </div>
             </div>
         </div>
@@ -190,23 +190,23 @@
         {{-- بيانات المحل التجاري --}}
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-store"></i> بيانات المحل التجاري</div>
+                <div class="title-with-icon"><i class="fas fa-store"></i> {{ __('بيانات المحل التجاري') }}</div>
             </div>
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label" for="shop_number">رقم المحل</label>
-                    <input type="text" id="shop_number" class="form-control" placeholder="مثال: 22">
+                    <label class="form-label" for="shop_number">{{ __('رقم المحل') }}</label>
+                    <input type="text" id="shop_number" class="form-control" placeholder="{{ __('مثال: 22') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="building_number">رقم العمارة</label>
-                    <input type="text" id="building_number" class="form-control" placeholder="مثال: 44">
+                    <label class="form-label" for="building_number">{{ __('رقم العمارة') }}</label>
+                    <input type="text" id="building_number" class="form-control" placeholder="{{ __('مثال: 44') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="shop_area">المساحة (م²)</label>
-                    <input type="text" id="shop_area" class="form-control" placeholder="المساحة بالمتر المربع">
+                    <label class="form-label" for="shop_area">{{ __('المساحة (م²)') }}</label>
+                    <input type="text" id="shop_area" class="form-control" placeholder="{{ __('المساحة بالمتر المربع') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="original_purchase_date">تاريخ عقد الشراء الأصلي (سند الملكية)</label>
+                    <label class="form-label" for="original_purchase_date">{{ __('تاريخ عقد الشراء الأصلي (سند الملكية)') }}</label>
                     <input type="date" id="original_purchase_date" class="form-control">
                 </div>
             </div>
@@ -215,24 +215,24 @@
         {{-- بيانات البيع --}}
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-handshake"></i> تفاصيل البيع والتعاقد</div>
+                <div class="title-with-icon"><i class="fas fa-handshake"></i> {{ __('تفاصيل البيع والتعاقد') }}</div>
             </div>
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label" for="price_number">ثمن البيع (أرقام)</label>
-                    <input type="text" id="price_number" class="form-control" placeholder="مثال: 1,500,000">
+                    <label class="form-label" for="price_number">{{ __('ثمن البيع (أرقام)') }}</label>
+                    <input type="text" id="price_number" class="form-control" placeholder="{{ __('مثال: 1,500,000') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="price_text">ثمن البيع (كتابة)</label>
-                    <input type="text" id="price_text" class="form-control" placeholder="مثال: مليون وخمسمائة ألف ريالاً عمانياً">
+                    <label class="form-label" for="price_text">{{ __('ثمن البيع (كتابة)') }}</label>
+                    <input type="text" id="price_text" class="form-control" placeholder="{{ __('مثال: مليون وخمسمائة ألف ريالاً عمانياً') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="penalty_number">الشرط الجزائي (أرقام)</label>
+                    <label class="form-label" for="penalty_number">{{ __('الشرط الجزائي (أرقام)') }}</label>
                     <input type="text" id="penalty_number" class="form-control" value="500000">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="penalty_text">الشرط الجزائي (كتابة)</label>
-                    <input type="text" id="penalty_text" class="form-control" value="خمسمائة ألف ريال لاغير">
+                    <label class="form-label" for="penalty_text">{{ __('الشرط الجزائي (كتابة)') }}</label>
+                    <input type="text" id="penalty_text" class="form-control" value="{{ __('خمسمائة ألف ريال لاغير') }}">
                 </div>
             </div>
         </div>
@@ -240,7 +240,7 @@
         {{-- زر الطباعة --}}
         <div class="form-actions">
             <button class="btn-print-action" onclick="printContract()">
-                <i class="fas fa-print fa-lg"></i> معاينة وطباعة العقد الموثق
+                <i class="fas fa-print fa-lg"></i> {{ __('معاينة وطباعة العقد الموثق') }}
             </button>
         </div>
 
@@ -248,141 +248,141 @@
 
     <!-- منطقة الطباعة (تظهر في الطباعة فقط) -->
     <div class="print-area" id="printArea">
-        <h2>عقد بيع وتنازل عن محل تجاري</h2>
-        <h3>كائن بمنطقة المحمودية (حي قدري عثمان) بأسوان</h3>
+        <h2>{{ __('عقد بيع وتنازل عن محل تجاري') }}</h2>
+        <h3>{{ __('كائن بمنطقة المحمودية (حي قدري عثمان) بأسوان') }}</h3>
 
-        <p>إنه في يوم <span id="p_day"></span> الموافق <span id="p_date"></span></p>
-        <p>تم الاتفاق بين كل من:-</p>
+        <p>{{ __('إنه في يوم') }} <span id="p_day"></span> {{ __('الموافق') }} <span id="p_date"></span></p>
+        <p>{{ __('تم الاتفاق بين كل من:-') }}</p>
 
         <p>
-            <strong>أولاً:- السيد/</strong> <span id="p_seller_name"></span> -
-            المقيم بـ <span id="p_seller_address"></span> -
-            <span id="p_seller_religion"></span> - <span id="p_seller_nationality"></span> -
-            بالغ سن الرشد - ويحمل بطاقة رقم قومي (<span id="p_seller_id"></span>)
-            <br><strong>(طرف أول بائع)</strong>
+            <strong>{{ __('أولاً:- السيد/') }}</strong> <span id="p_seller_name"></span> {{ __('-
+            المقيم بـ') }} <span id="p_seller_address"></span> -
+            <span id="p_seller_religion"></span> - <span id="p_seller_nationality"></span> {{ __('-
+            بالغ سن الرشد - ويحمل بطاقة رقم قومي (') }}<span id="p_seller_id"></span>)
+            <br><strong>{{ __('(طرف أول بائع)') }}</strong>
         </p>
 
         <p>
-            <strong>ثانياً:- السيد/</strong> <span id="p_buyer_name"></span> -
-            المقيم بـ <span id="p_buyer_address"></span> -
-            <span id="p_buyer_religion"></span> - <span id="p_buyer_nationality"></span> -
-            بالغ سن الرشد - ويحمل بطاقة رقم قومي (<span id="p_buyer_id"></span>)
-            <br><strong>(طرف ثاني مشتري)</strong>
+            <strong>{{ __('ثانياً:- السيد/') }}</strong> <span id="p_buyer_name"></span> {{ __('-
+            المقيم بـ') }} <span id="p_buyer_address"></span> -
+            <span id="p_buyer_religion"></span> - <span id="p_buyer_nationality"></span> {{ __('-
+            بالغ سن الرشد - ويحمل بطاقة رقم قومي (') }}<span id="p_buyer_id"></span>)
+            <br><strong>{{ __('(طرف ثاني مشتري)') }}</strong>
         </p>
 
-        <p>بعد أن أقر الطرفان بأهليتهما للتصرف والتعاقد اتفقا على ما يأتي:-</p>
+        <p>{{ __('بعد أن أقر الطرفان بأهليتهما للتصرف والتعاقد اتفقا على ما يأتي:-') }}</p>
 
-        <p><strong>تمهيـــد</strong></p>
+        <p><strong>{{ __('تمهيـــد') }}</strong></p>
         <p>
-            يمتلك الطرف الأول البائع ما هو عبارة عن محل تجاري رقم (<span id="p_shop_number"></span>)
-            بالعمارة رقم (<span id="p_building_number"></span>) والكائن بمنطقة المحمودية (حي قدري عثمان) بأسوان
-            والبالغ مساحته (<span id="p_shop_area"></span>) تحت العجز والزيادة، والذي آلت له ملكيته عن طريق
-            الشراء من الوحدة المحلية لمركز ومدينة أسوان بموجب عقد البيع الصادر بتاريخ <span id="p_original_purchase_date"></span>،
+            {{ __('يمتلك الطرف الأول البائع ما هو عبارة عن محل تجاري رقم (') }}<span id="p_shop_number"></span>{{ __(')
+            بالعمارة رقم (') }}<span id="p_building_number"></span>{{ __(') والكائن بمنطقة المحمودية (حي قدري عثمان) بأسوان
+            والبالغ مساحته (') }}<span id="p_shop_area"></span>{{ __(') تحت العجز والزيادة، والذي آلت له ملكيته عن طريق
+            الشراء من الوحدة المحلية لمركز ومدينة أسوان بموجب عقد البيع الصادر بتاريخ') }} <span id="p_original_purchase_date"></span>{{ __('،
             ولرغبة الطرف الأول في بيع المحل التجاري والتنازل عنه للطرف الثاني والقابل لذلك
-            فإنهما اتفقا على ذلك بالشروط الآتية:
+            فإنهما اتفقا على ذلك بالشروط الآتية:') }}
         </p>
 
-        <p><strong>البند الأول:</strong> يعتبر هذا التمهيد جزءاً لا يتجزأ من هذا العقد وهو مكملاً ومفسراً له.</p>
+        <p><strong>{{ __('البند الأول:') }}</strong> {{ __('يعتبر هذا التمهيد جزءاً لا يتجزأ من هذا العقد وهو مكملاً ومفسراً له.') }}</p>
 
         <p>
-            <strong>البند الثاني:</strong> باع وأسقط وتنازل الطرف الأول (البائع) بكافة الضمانات القانونية والفعلية
-            إلى الطرف الثاني المشتري ما هو عبارة عن محل تجاري رقم (<span id="p_shop_number2"></span>)
-            بالعمارة رقم (<span id="p_building_number2"></span>) والكائن بمنطقة المحمودية (حي قدري عثمان) بأسوان
-            والبالغ مساحته (<span id="p_shop_area2"></span>) تحت العجز والزيادة، والذي آلت له ملكيته عن طريق
-            الشراء من الوحدة المحلية لمركز ومدينة أسوان بموجب عقد البيع الصادر بتاريخ <span id="p_original_purchase_date2"></span>.
-        </p>
-
-        <p>
-            <strong>البند الثالث:-</strong> تم هذا البيع بين الطرفين نظير مبلغ إجمالي وقدره (<span id="p_price_number"></span>ج)
-            (فقط <span id="p_price_text"></span>) دُفع من يد ومال الطرف الثاني المشتري إلى الطرف الأول البائع
-            عند تحرير هذا العقد، ويعتبر توقيع الطرف الأول على هذا العقد بمثابة مخالصة تامة باستلامه كامل الثمن.
+            <strong>{{ __('البند الثاني:') }}</strong> {{ __('باع وأسقط وتنازل الطرف الأول (البائع) بكافة الضمانات القانونية والفعلية
+            إلى الطرف الثاني المشتري ما هو عبارة عن محل تجاري رقم (') }}<span id="p_shop_number2"></span>{{ __(')
+            بالعمارة رقم (') }}<span id="p_building_number2"></span>{{ __(') والكائن بمنطقة المحمودية (حي قدري عثمان) بأسوان
+            والبالغ مساحته (') }}<span id="p_shop_area2"></span>{{ __(') تحت العجز والزيادة، والذي آلت له ملكيته عن طريق
+            الشراء من الوحدة المحلية لمركز ومدينة أسوان بموجب عقد البيع الصادر بتاريخ') }} <span id="p_original_purchase_date2"></span>.
         </p>
 
         <p>
-            <strong>البند الرابع:</strong> يلتزم الطرف الأول البائع بتقديم كافة مستندات الملكية الخاصة بالمحل التجاري
+            <strong>{{ __('البند الثالث:-') }}</strong> {{ __('تم هذا البيع بين الطرفين نظير مبلغ إجمالي وقدره (') }}<span id="p_price_number"></span>{{ __('ج)
+            (فقط') }} <span id="p_price_text"></span>{{ __(') دُفع من يد ومال الطرف الثاني المشتري إلى الطرف الأول البائع
+            عند تحرير هذا العقد، ويعتبر توقيع الطرف الأول على هذا العقد بمثابة مخالصة تامة باستلامه كامل الثمن.') }}
+        </p>
+
+        <p>
+            <strong>{{ __('البند الرابع:') }}</strong> {{ __('يلتزم الطرف الأول البائع بتقديم كافة مستندات الملكية الخاصة بالمحل التجاري
             محل البيع للطرف الثاني المشتري وكذلك عمل توكيل عام فيما يخص المحل التجاري بالبيع أو التنازل والإدارة،
             بالإضافة لعمل تنازل عن عدادات المياه والكهرباء والتليفون والغاز (إن وجد)، كما يتعهد الطرف الأول البائع
             بتقديم كافة المستندات المطلوبة قانوناً منه ويتعهد بالحضور لإتمام إجراءات الحكم بصحة ونفاذ أو بصحة التوقيع
-            على هذا العقد عند إخطاره بذلك.
+            على هذا العقد عند إخطاره بذلك.') }}
         </p>
 
         <p>
-            <strong>البند الخامس:-</strong> يقر الطرف الثاني المشتري بأنه عاين المحل التجاري المعاينة التامة النافية
+            <strong>{{ __('البند الخامس:-') }}</strong> {{ __('يقر الطرف الثاني المشتري بأنه عاين المحل التجاري المعاينة التامة النافية
             للجهالة شرعاً وقانوناً وقبله بالحالة التي هي عليها عند التعاقد وأصبح تحت يده وحيازته من تاريخ تحرير
-            هذا العقد وأصبح له حق التصرف فيه كيفما يشاء بسائر أوجه التصرفات الشرعية والقانونية.
+            هذا العقد وأصبح له حق التصرف فيه كيفما يشاء بسائر أوجه التصرفات الشرعية والقانونية.') }}
         </p>
 
-        <p><strong>البند السادس:-</strong> تقع مصروفات العقد وشهرته على عاتق الطرف الثاني المشتري.</p>
+        <p><strong>{{ __('البند السادس:-') }}</strong> {{ __('تقع مصروفات العقد وشهرته على عاتق الطرف الثاني المشتري.') }}</p>
 
         <p>
-            <strong>البند السابع:-</strong> يقر الطرف الأول البائع بخلو المحل التجاري من أي حقوق عينية أياً كان نوعها
+            <strong>{{ __('البند السابع:-') }}</strong> {{ __('يقر الطرف الأول البائع بخلو المحل التجاري من أي حقوق عينية أياً كان نوعها
             كالرهن والاختصاص والوقف والحكر وحقوق الانتفاع والارتفاق ظاهرة أو خفية، كما يقر أنه حائز لهذا المحل التجاري
             دون منازعة وبصفة ظاهرة وغير منقطعة وأنه لم يتصرف فيه من قبل سواء بالرهن أو الإيجار أو البيع
-            وأن هذا التصرف بالبيع والتنازل هو الأول.
+            وأن هذا التصرف بالبيع والتنازل هو الأول.') }}
         </p>
 
         <p>
-            <strong>البند الثامن:-</strong> بموجب هذا العقد ومن تاريخ تحريره أصبح الطرف الثاني المشتري مسئولاً مسئولية
+            <strong>{{ __('البند الثامن:-') }}</strong> {{ __('بموجب هذا العقد ومن تاريخ تحريره أصبح الطرف الثاني المشتري مسئولاً مسئولية
             كاملة عن جميع المستحقات المالية المتعلقة بالمحل التجاري موضوع هذا العقد من (ضرائب ومياه أو كهرباء أو تليفون
-            أو غاز إن وجد) وأن ما يسبق هذا التاريخ يتحمله الطرف الأول البائع.
+            أو غاز إن وجد) وأن ما يسبق هذا التاريخ يتحمله الطرف الأول البائع.') }}
         </p>
 
         <p>
-            <strong>البند التاسع:-</strong> يلتزم الطرف الأول البائع بالحضور عند طلبه في حالة وجود أي خلافات أو نزاعات
-            (تتطلب حضوره) لحلها أو قد تواجه الطرف الثاني المشتري أثناء نقل الملكية.
+            <strong>{{ __('البند التاسع:-') }}</strong> {{ __('يلتزم الطرف الأول البائع بالحضور عند طلبه في حالة وجود أي خلافات أو نزاعات
+            (تتطلب حضوره) لحلها أو قد تواجه الطرف الثاني المشتري أثناء نقل الملكية.') }}
         </p>
 
         <p>
-            <strong>البند العاشر:-</strong> يقر الطرف الأول البائع بصحة ملكيته للمحل التجاري موضوع العقد وعدم منازعة
-            أي شخص له في ملكيته أو حيازته وبأنه ملتزم بعدم تعرض الغير للطرف الثاني المشتري أو تعرضه شخصياً.
+            <strong>{{ __('البند العاشر:-') }}</strong> {{ __('يقر الطرف الأول البائع بصحة ملكيته للمحل التجاري موضوع العقد وعدم منازعة
+            أي شخص له في ملكيته أو حيازته وبأنه ملتزم بعدم تعرض الغير للطرف الثاني المشتري أو تعرضه شخصياً.') }}
         </p>
 
         <p>
-            <strong>البند الحادي عشر:-</strong> إذا أخل أحد الطرفين بأي بند من بنود هذا العقد يلتزم بدفع مبلغ وقدره
-            (<span id="p_penalty_number"></span>ج) (فقط <span id="p_penalty_text"></span>) كتعويض اتفاقي غير خاضع
-            لرقابة القضاء في قيمته وتقديره وإنما يُحكم به بمجرد التحقق من وقوع المخالفة.
+            <strong>{{ __('البند الحادي عشر:-') }}</strong> {{ __('إذا أخل أحد الطرفين بأي بند من بنود هذا العقد يلتزم بدفع مبلغ وقدره
+            (') }}<span id="p_penalty_number"></span>{{ __('ج) (فقط') }} <span id="p_penalty_text"></span>{{ __(') كتعويض اتفاقي غير خاضع
+            لرقابة القضاء في قيمته وتقديره وإنما يُحكم به بمجرد التحقق من وقوع المخالفة.') }}
         </p>
 
         <p>
-            <strong>البند الثاني عشر:-</strong> هذا العقد نهائي وملزم لجميع أطرافه بالمضي في بنوده وأيضاً هذا العقد
-            يسري علينا وعلى ممثلينا وعلى خلفنا العام والخاص من بعدنا والله ولي التوفيق.
+            <strong>{{ __('البند الثاني عشر:-') }}</strong> {{ __('هذا العقد نهائي وملزم لجميع أطرافه بالمضي في بنوده وأيضاً هذا العقد
+            يسري علينا وعلى ممثلينا وعلى خلفنا العام والخاص من بعدنا والله ولي التوفيق.') }}
         </p>
 
         <p>
-            <strong>البند الثالث عشر:-</strong> أي نزاع قد ينشأ بسبب هذا العقد يكون من اختصاص محكمة أسوان الابتدائية وجزئياتها.
+            <strong>{{ __('البند الثالث عشر:-') }}</strong> {{ __('أي نزاع قد ينشأ بسبب هذا العقد يكون من اختصاص محكمة أسوان الابتدائية وجزئياتها.') }}
         </p>
 
-        <p><strong>البند الرابع عشر:-</strong> حرر هذا العقد من نسختين بيد كل طرف نسخة للعمل بموجبها عند الاقتضاء.</p>
+        <p><strong>{{ __('البند الرابع عشر:-') }}</strong> {{ __('حرر هذا العقد من نسختين بيد كل طرف نسخة للعمل بموجبها عند الاقتضاء.') }}</p>
 
         <div class="signature-section">
             <div class="signature-box">
-                <p><strong>الطرف الأول (البائع)</strong></p>
-                <p style="text-align: right; margin-top: 10px;">الاسم/ <span id="p_seller_name2"></span></p>
-                <p style="text-align: right;">رقم البطاقة/ <span id="p_seller_id2"></span></p>
-                <p style="text-align: right;">التوقيع/ .........................................</p>
-                <p style="text-align: right;">البصمة/ .........................................</p>
+                <p><strong>{{ __('الطرف الأول (البائع)') }}</strong></p>
+                <p style="text-align: right; margin-top: 10px;">{{ __('الاسم/') }} <span id="p_seller_name2"></span></p>
+                <p style="text-align: right;">{{ __('رقم البطاقة/') }} <span id="p_seller_id2"></span></p>
+                <p style="text-align: right;">{{ __('التوقيع/ .........................................') }}</p>
+                <p style="text-align: right;">{{ __('البصمة/ .........................................') }}</p>
             </div>
             <div class="signature-box">
-                <p><strong>الطرف الثاني (المشتري)</strong></p>
-                <p style="text-align: right; margin-top: 10px;">الاسم/ <span id="p_buyer_name2"></span></p>
-                <p style="text-align: right;">رقم البطاقة/ <span id="p_buyer_id2"></span></p>
-                <p style="text-align: right;">التوقيع/ .........................................</p>
-                <p style="text-align: right;">البصمة/ .........................................</p>
+                <p><strong>{{ __('الطرف الثاني (المشتري)') }}</strong></p>
+                <p style="text-align: right; margin-top: 10px;">{{ __('الاسم/') }} <span id="p_buyer_name2"></span></p>
+                <p style="text-align: right;">{{ __('رقم البطاقة/') }} <span id="p_buyer_id2"></span></p>
+                <p style="text-align: right;">{{ __('التوقيع/ .........................................') }}</p>
+                <p style="text-align: right;">{{ __('البصمة/ .........................................') }}</p>
             </div>
         </div>
 
         <div class="signature-section" style="margin-top: 2rem;">
             <div class="signature-box">
-                <p><strong>الشهـود - شاهد أول</strong></p>
-                <p style="text-align: right; margin-top: 10px;">الاسم/ .........................................</p>
-                <p style="text-align: right;">رقم البطاقة/ .........................................</p>
-                <p style="text-align: right;">التوقيع/ .........................................</p>
+                <p><strong>{{ __('الشهـود - شاهد أول') }}</strong></p>
+                <p style="text-align: right; margin-top: 10px;">{{ __('الاسم/ .........................................') }}</p>
+                <p style="text-align: right;">{{ __('رقم البطاقة/ .........................................') }}</p>
+                <p style="text-align: right;">{{ __('التوقيع/ .........................................') }}</p>
             </div>
             <div class="signature-box">
-                <p><strong>شاهد ثاني</strong></p>
-                <p style="text-align: right; margin-top: 10px;">الاسم/ .........................................</p>
-                <p style="text-align: right;">رقم البطاقة/ .........................................</p>
-                <p style="text-align: right;">التوقيع/ .........................................</p>
+                <p><strong>{{ __('شاهد ثاني') }}</strong></p>
+                <p style="text-align: right; margin-top: 10px;">{{ __('الاسم/ .........................................') }}</p>
+                <p style="text-align: right;">{{ __('رقم البطاقة/ .........................................') }}</p>
+                <p style="text-align: right;">{{ __('التوقيع/ .........................................') }}</p>
             </div>
         </div>
     </div>

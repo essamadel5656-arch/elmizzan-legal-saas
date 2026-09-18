@@ -99,7 +99,7 @@
         @if ($errors->any())
             <div class="alert-box alert-danger">
                 <div>
-                    <i class="fas fa-exclamation-triangle"></i> <strong>برجاء تصحيح الأخطاء التالية للتمكن من الحفظ:</strong>
+                    <i class="fas fa-exclamation-triangle"></i> <strong>{{ __('برجاء تصحيح الأخطاء التالية للتمكن من الحفظ:') }}</strong>
                     <ul>
                         @foreach ($errors->all() as $error)
                             <li>{{ $error }}</li>
@@ -117,96 +117,96 @@
 
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-id-card"></i> البيانات الأساسية والاتصال</div>
+                <div class="title-with-icon"><i class="fas fa-id-card"></i> {{ __('البيانات الأساسية والاتصال') }}</div>
             </div>
 
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label">اسم المحامي <span class="text-danger">*</span></label>
-                    <input type="text" name="name" class="form-control" placeholder="أدخل اسم المحامي بالكامل" value="{{ old('name') }}" minlength="3" maxlength="255" required>
+                    <label class="form-label">{{ __('اسم المحامي') }} <span class="text-danger">*</span></label>
+                    <input type="text" name="name" class="form-control" placeholder="{{ __('أدخل اسم المحامي بالكامل') }}" value="{{ old('name') }}" minlength="3" maxlength="255" required>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">رقم الموبايل <span class="text-danger">*</span></label>
-                    <input type="text" name="phone" class="form-control" placeholder="أدخل رقم الموبايل (مثال: 01012345678)" value="{{ old('phone') }}" pattern="^(010|011|012|015)[0-9]{8}$" title="يجب أن يكون رقم موبايل مصري صحيح مكون من 11 رقم ويبدأ بـ 010، 011، 012، أو 015" required>
+                    <label class="form-label">{{ __('رقم الموبايل') }} <span class="text-danger">*</span></label>
+                    <input type="text" name="phone" class="form-control" placeholder="{{ __('أدخل رقم الموبايل (مثال: 01012345678)') }}" value="{{ old('phone') }}" pattern="^(010|011|012|015)[0-9]{8}$" title="{{ __('يجب أن يكون رقم موبايل مصري صحيح مكون من 11 رقم ويبدأ بـ 010، 011، 012، أو 015') }}" required>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">البريد الإلكتروني <span class="text-danger">*</span></label>
-                    <input type="email" name="email" class="form-control" placeholder="أدخل البريد الإلكتروني" value="{{ old('email') }}" maxlength="255" required>
+                    <label class="form-label">{{ __('البريد الإلكتروني') }} <span class="text-danger">*</span></label>
+                    <input type="email" name="email" class="form-control" placeholder="{{ __('أدخل البريد الإلكتروني') }}" value="{{ old('email') }}" maxlength="255" required>
                 </div>
 
                 <div class="form-group full">
-                    <label class="form-label">العنوان <span class="text-danger">*</span></label>
-                    <textarea name="address" class="form-control" placeholder="أدخل العنوان بالتفصيل" minlength="10" maxlength="500" required>{{ old('address') }}</textarea>
+                    <label class="form-label">{{ __('العنوان') }} <span class="text-danger">*</span></label>
+                    <textarea name="address" class="form-control" placeholder="{{ __('أدخل العنوان بالتفصيل') }}" minlength="10" maxlength="500" required>{{ old('address') }}</textarea>
                 </div>
             </div>
         </div>
 
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-briefcase"></i> البيانات المهنية</div>
+                <div class="title-with-icon"><i class="fas fa-briefcase"></i> {{ __('البيانات المهنية') }}</div>
             </div>
 
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label">التخصص <span class="text-danger">*</span></label>
-                    <input type="text" name="specialization" class="form-control" placeholder="أدخل التخصص (مثال: مدني، جنائي...)" value="{{ old('specialization') }}" minlength="3" maxlength="100" required>
+                    <label class="form-label">{{ __('التخصص') }} <span class="text-danger">*</span></label>
+                    <input type="text" name="specialization" class="form-control" placeholder="{{ __('أدخل التخصص (مثال: مدني، جنائي...)') }}" value="{{ old('specialization') }}" minlength="3" maxlength="100" required>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">رقم القيد <span class="text-danger">*</span></label>
-                    <input type="text" name="license_number" class="form-control" placeholder="أدخل رقم القيد بنقابة المحامين" value="{{ old('license_number') }}" maxlength="50" required>
+                    <label class="form-label">{{ __('رقم القيد') }} <span class="text-danger">*</span></label>
+                    <input type="text" name="license_number" class="form-control" placeholder="{{ __('أدخل رقم القيد بنقابة المحامين') }}" value="{{ old('license_number') }}" maxlength="50" required>
                 </div>
 
                 <div class="form-group full">
-                    <label class="form-label">الدرجة <span class="text-danger">*</span></label>
+                    <label class="form-label">{{ __('الدرجة') }} <span class="text-danger">*</span></label>
                     <select name="degree" class="form-control" required>
-                        <option value="" disabled {{ old('degree') ? '' : 'selected' }}>اختر الدرجة</option>
-                        <option value="نقض" {{ old('degree') == 'نقض' ? 'selected' : '' }}>نقض</option>
-                        <option value="استئناف" {{ old('degree') == 'استئناف' ? 'selected' : '' }}>استئناف</option>
-                        <option value="ابتدائي" {{ old('degree') == 'ابتدائي' ? 'selected' : '' }}>ابتدائي</option>
-                        <option value="جدول_عام" {{ old('degree') == 'جدول_عام' ? 'selected' : '' }}>جدول عام</option>
+                        <option value="" disabled {{ old('degree') ? '' : 'selected' }}>{{ __('اختر الدرجة') }}</option>
+                        <option value="{{ __('نقض') }}" {{ old('degree') == 'نقض' ? 'selected' : '' }}>{{ __('نقض') }}</option>
+                        <option value="{{ __('استئناف') }}" {{ old('degree') == 'استئناف' ? 'selected' : '' }}>{{ __('استئناف') }}</option>
+                        <option value="{{ __('ابتدائي') }}" {{ old('degree') == 'ابتدائي' ? 'selected' : '' }}>{{ __('ابتدائي') }}</option>
+                        <option value="{{ __('جدول_عام') }}" {{ old('degree') == 'جدول_عام' ? 'selected' : '' }}>{{ __('جدول عام') }}</option>
                     </select>
                 </div>
 
                 <div class="form-group full">
-                    <label class="form-label">نبذة مختصرة <span class="text-danger">*</span></label>
-                    <textarea name="bio" class="form-control" placeholder="أدخل نبذة مختصرة عن المحامي وخبراته (20 حرف على الأقل)" minlength="20" maxlength="1000" required>{{ old('bio') }}</textarea>
+                    <label class="form-label">{{ __('نبذة مختصرة') }} <span class="text-danger">*</span></label>
+                    <textarea name="bio" class="form-control" placeholder="{{ __('أدخل نبذة مختصرة عن المحامي وخبراته (20 حرف على الأقل)') }}" minlength="20" maxlength="1000" required>{{ old('bio') }}</textarea>
                 </div>
             </div>
         </div>
 
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-lock"></i> بيانات الدخول للحساب</div>
+                <div class="title-with-icon"><i class="fas fa-lock"></i> {{ __('بيانات الدخول للحساب') }}</div>
             </div>
 
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label">كلمة المرور <span class="text-danger">*</span></label>
+                    <label class="form-label">{{ __('كلمة المرور') }} <span class="text-danger">*</span></label>
                     <div style="display: flex; gap: 8px;">
                         <input type="password" id="lawyer_password" name="password" class="form-control"
-                               placeholder="من 8 إلى 20 حرف أو رقم" minlength="8" maxlength="20" required style="flex: 1;">
+                               placeholder="{{ __('من 8 إلى 20 حرف أو رقم') }}" minlength="8" maxlength="20" required style="flex: 1;">
 
                         <button type="button" onclick="generateAiPassword()" class="btn"
                                 style="background-color: #0f172a; color: #f59e0b; border: 1px solid rgba(245, 158, 11, 0.4); padding: 0 16px; border-radius: .375rem; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 500;"
-                                title="توليد كلمة مرور عشوائية ذكية">
+                                title="{{ __('توليد كلمة مرور عشوائية ذكية') }}">
                             <i class="fa-solid fa-robot"></i> AI
                         </button>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">تأكيد كلمة المرور <span class="text-danger">*</span></label>
+                    <label class="form-label">{{ __('تأكيد كلمة المرور') }} <span class="text-danger">*</span></label>
                     <div style="display: flex; gap: 8px;">
                         <input type="password" id="lawyer_password_confirmation" name="password_confirmation" class="form-control"
-                               placeholder="أعد إدخال كلمة المرور" minlength="8" maxlength="20" required style="flex: 1;">
+                               placeholder="{{ __('أعد إدخال كلمة المرور') }}" minlength="8" maxlength="20" required style="flex: 1;">
 
                         <button type="button" onclick="syncConfirmPassword()" class="btn"
                                 style="background-color: #4b5563; color: #ffffff; border: none; padding: 0 16px; border-radius: .375rem; cursor: pointer; display: flex; align-items: center; gap: 6px; font-weight: 500;"
-                                title="نسخ كلمة المرور لحقل التأكيد">
-                            <i class="fa-solid fa-copy"></i> نسخ
+                                title="{{ __('نسخ كلمة المرور لحقل التأكيد') }}">
+                            <i class="fa-solid fa-copy"></i> {{ __('نسخ') }}
                         </button>
                     </div>
                 </div>
@@ -250,22 +250,22 @@
 
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-images"></i> المرفقات والصور</div>
+                <div class="title-with-icon"><i class="fas fa-images"></i> {{ __('المرفقات والصور') }}</div>
             </div>
 
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label">صورة الكارنيه <span class="text-danger">*</span></label>
+                    <label class="form-label">{{ __('صورة الكارنيه') }} <span class="text-danger">*</span></label>
                     <input type="file" name="bar_card_image" class="form-control" accept="image/*" required>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">الصورة الشخصية (اختياري)</label>
+                    <label class="form-label">{{ __('الصورة الشخصية (اختياري)') }}</label>
                     <input type="file" name="profile_image" class="form-control" accept="image/*">
                 </div>
 
                 <div class="form-group full">
-                    <label class="form-label">صورة البطاقة الشخصية (اختياري)</label>
+                    <label class="form-label">{{ __('صورة البطاقة الشخصية (اختياري)') }}</label>
                     <input type="file" name="national_id_image" class="form-control" accept="image/*">
                 </div>
             </div>
@@ -273,10 +273,10 @@
 
         <div class="form-actions">
             <a href="{{ route('lawyers.index') }}" class="btn-cancel">
-                <i class="fas fa-times"></i> إلغاء
+                <i class="fas fa-times"></i> {{ __('إلغاء') }}
             </a>
             <button type="submit" class="btn-save">
-                <i class="fas fa-user-plus"></i> إضافة المحامي
+                <i class="fas fa-user-plus"></i> {{ __('إضافة المحامي') }}
             </button>
         </div>
 

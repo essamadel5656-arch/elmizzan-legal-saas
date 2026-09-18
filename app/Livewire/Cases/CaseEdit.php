@@ -22,10 +22,10 @@ class CaseEdit extends Component
 
     public string $case_number = '';
     public string $status = 'مفتوحة';
-    public $court_id = '';
-    public $jurisdiction_id = '';
+    public int|string $court_id = '';
+    public int|string $jurisdiction_id = '';
     public string $judicial_authority_type = '';
-    public $court_level_id = '';
+    public int|string $court_level_id = '';
     public string $circuit = '';
     public string $description = '';
     public string $Previous_procedure = '';
@@ -48,6 +48,10 @@ class CaseEdit extends Component
 
     public $case_file = null;
 
+    public bool $isMediaViewerOpen = false;
+    public array $mediaGallery = [];
+    public int $currentMediaIndex = 0;
+
     protected function rules(): array
     {
         return [
@@ -61,9 +65,9 @@ class CaseEdit extends Component
             'court_level_id'          => 'required|exists:court_levels,id',
             'circuit'                 => 'nullable|string|max:255',
             'status'                  => 'required|string',
-            'court_id'                => 'required|exists:courts,id',
+            'court_id'                => 'nullable|exists:courts,id',
             'judicial_authority_type' => 'nullable|string',
-            'description'             => 'nullable|string',
+            'description'             => 'required|string',
             'costs'                   => 'nullable|numeric',
             'total_costs'             => 'nullable|numeric',
             'deposit'                 => 'nullable|numeric',
@@ -74,7 +78,7 @@ class CaseEdit extends Component
             'rival_number'            => 'required|string',
             'rival_address'           => 'required|string',
             'rival_nid'               => 'required|string',
-            'case_file'               => 'nullable|file|mimes:pdf,doc,docx,png,jpg|max:2048',
+            'case_file'               => 'nullable|file|mimes:pdf,doc,docx,png,jpg,jpeg|max:2048',
         ];
     }
 
@@ -89,13 +93,13 @@ class CaseEdit extends Component
             'jurisdiction_id.required' => 'جهة التقاضي مطلوبة.',
             'court_level_id.required'  => 'درجة التقاضي مطلوبة.',
             'status.required'          => 'حالة القضية مطلوبة.',
-            'court_id.required'        => 'المحكمة مطلوبة.',
             'rival_name.required'      => 'اسم الخصم مطلوب.',
             'rival_number.required'    => 'رقم الخصم مطلوب.',
             'rival_address.required'   => 'عنوان الخصم مطلوب.',
             'rival_nid.required'       => 'الرقم القومي للخصم مطلوب.',
+            'description.required'     => 'ملخص وقائع القضية مطلوب.',
             'case_file.file'           => 'الملف المرفوع يجب أن يكون ملفاً صحيحاً.',
-            'case_file.mimes'          => 'صيغ الملفات المسموحة هي: pdf, doc, docx, png, jpg.',
+            'case_file.mimes'          => 'صيغ الملفات المسموحة هي: pdf, doc, docx, png, jpg, jpeg.',
             'case_file.max'            => 'حجم الملف لا يجب أن يتخطى 2 ميجابايت.',
         ];
     }
@@ -104,14 +108,14 @@ class CaseEdit extends Component
     {
         $this->authorize('update', $case);
 
-        $this->case = $case->load(['clients', 'lawyers', 'court.jurisdiction']);
+        $this->case = $case->load(['clients', 'lawyers', 'court.jurisdiction', 'documents']);
 
         $this->case_number             = (string) $case->case_number;
         $this->status                  = (string) $case->status;
-        $this->court_id                = (string) $case->court_id;
-        $this->jurisdiction_id         = (string) ($case->jurisdiction_id ?: ($case->court?->jurisdiction_id ?? ''));
+        $this->court_id                = $case->court_id ?? '';
+        $this->jurisdiction_id         = $case->jurisdiction_id ?? ($case->court?->jurisdiction_id ?? '');
         $this->judicial_authority_type = (string) ($case->judicial_authority_type ?? '');
-        $this->court_level_id          = (string) $case->court_level_id;
+        $this->court_level_id          = $case->court_level_id ?? '';
         $this->circuit                 = (string) ($case->circuit ?? '');
         $this->description             = (string) ($case->description ?? '');
         $this->Previous_procedure      = (string) ($case->Previous_procedure ?? '');
@@ -131,13 +135,131 @@ class CaseEdit extends Component
         $this->client_ids              = $case->clients->pluck('id')->map(fn($id) => (int)$id)->toArray();
         $this->lawyer_ids              = $case->lawyers->pluck('id')->map(fn($id) => (int)$id)->toArray();
 
+        $this->lawyer_roles = [];
         foreach ($case->lawyers as $lawyer) {
             $this->lawyer_roles[$lawyer->id] = $lawyer->pivot->role ?? 'assistant';
+        }
+
+        $this->loadMediaGallery();
+    }
+
+    public function loadMediaGallery(): void
+    {
+        $this->mediaGallery = [];
+
+        if ($this->case->case_file && Storage::disk('public')->exists($this->case->case_file)) {
+            $this->mediaGallery[] = [
+                'id' => 'main_file',
+                'url' => asset('storage/' . $this->case->case_file),
+                'path' => $this->case->case_file,
+                'type' => $this->getFileType($this->case->case_file),
+                'title' => __('ملف القضية الرئيسي'),
+                'is_main_file' => true,
+            ];
+        }
+
+        if ($this->case->relationLoaded('documents')) {
+            foreach ($this->case->documents as $doc) {
+                if ($doc->file_path && Storage::disk('public')->exists($doc->file_path)) {
+                    $this->mediaGallery[] = [
+                        'id' => $doc->id,
+                        'url' => asset('storage/' . $doc->file_path),
+                        'path' => $doc->file_path,
+                        'type' => $this->getFileType($doc->file_path),
+                        'title' => $doc->title ?? __('مستند إضافي'),
+                        'is_main_file' => false,
+                    ];
+                }
+            }
+        }
+    }
+
+    private function getFileType($path): string
+    {
+        $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp'])) {
+            return 'image';
+        }
+        if ($ext === 'pdf') {
+            return 'pdf';
+        }
+        if (in_array($ext, ['doc', 'docx'])) {
+            return 'word';
+        }
+        return 'other';
+    }
+
+    public function openMediaViewer($index = 0): void
+    {
+        $this->loadMediaGallery();
+        if (count($this->mediaGallery) > 0) {
+            $this->currentMediaIndex = max(0, min($index, count($this->mediaGallery) - 1));
+            $this->isMediaViewerOpen = true;
+        }
+    }
+
+    public function nextMedia(): void
+    {
+        if ($this->currentMediaIndex < count($this->mediaGallery) - 1) {
+            $this->currentMediaIndex++;
+        }
+    }
+
+    public function prevMedia(): void
+    {
+        if ($this->currentMediaIndex > 0) {
+            $this->currentMediaIndex--;
+        }
+    }
+
+    public function closeMediaViewer(): void
+    {
+        $this->isMediaViewerOpen = false;
+    }
+
+    public function deleteCurrentMedia(): void
+    {
+        if (!auth()->user()?->isAdmin()) {
+            abort(403, __('غير مصرح لك بحذف المرفقات.'));
+        }
+
+        if (!isset($this->mediaGallery[$this->currentMediaIndex])) {
+            return;
+        }
+
+        $currentMedia = $this->mediaGallery[$this->currentMediaIndex];
+
+        if ($currentMedia['is_main_file']) {
+            if (Storage::disk('public')->exists($this->case->case_file)) {
+                Storage::disk('public')->delete($this->case->case_file);
+            }
+            $this->case->update(['case_file' => null]);
+            $this->case_file = null;
+        } else {
+            $doc = \App\Models\DocumentRequest::find($currentMedia['id']);
+            if ($doc) {
+                if (Storage::disk('public')->exists($doc->file_path)) {
+                    Storage::disk('public')->delete($doc->file_path);
+                }
+                $doc->delete();
+            }
+        }
+        
+        $this->case->load('documents');
+        $this->loadMediaGallery();
+
+        if (count($this->mediaGallery) === 0) {
+            $this->isMediaViewerOpen = false;
+        } else {
+            if ($this->currentMediaIndex >= count($this->mediaGallery)) {
+                $this->currentMediaIndex = count($this->mediaGallery) - 1;
+            }
         }
     }
 
     public function updatedJurisdictionId(): void
     {
+        $this->court_id = '';
         if ($this->jurisdiction_id) {
             $jurisdiction = Jurisdiction::find($this->jurisdiction_id);
             if ($jurisdiction) {
@@ -151,7 +273,7 @@ class CaseEdit extends Component
         $this->authorize('update', $this->case);
 
         if ($this->agreed_legal_fee !== null && (float)$this->agreed_legal_fee !== (float)$this->case->agreed_legal_fee && ! auth()->user()?->isAdmin()) {
-            abort(403, 'غير مصرح لك بتحديد أو تعديل الأتعاب المتفق عليها.');
+            abort(403, __('غير مصرح لك بتحديد أو تعديل الأتعاب المتفق عليها.'));
         }
 
         $this->validate();
@@ -177,7 +299,7 @@ class CaseEdit extends Component
             'rival_address'           => $this->rival_address,
             'rival_nid'               => $this->rival_nid,
             'jurisdiction_id'         => $this->jurisdiction_id,
-            'court_id'                => $this->court_id,
+            'court_id'                => $this->court_id ?: null,
             'circuit'                 => $this->circuit ?: null,
             'judicial_authority_type' => $this->judicial_authority_type ?: null,
             'case_file'               => $filePath,
@@ -212,15 +334,7 @@ class CaseEdit extends Component
 
         $this->case->lawyers()->sync($lawyersSyncData);
 
-        // Notify assigned lawyers
-        foreach ($lawyersSyncData as $lawyerId => $pivot) {
-            $u = User::where('lawyer_id', $lawyerId)->first();
-            if ($u) {
-                $u->notify(new CaseAssignedNotification($this->case, $pivot['role']));
-            }
-        }
-
-        session()->flash('success', 'تم تحديث القضية بنجاح');
+        session()->flash('success', __('تم تحديث القضية بنجاح'));
         $this->redirect(route('cases.show', $this->case->id), navigate: true);
     }
 
@@ -245,6 +359,6 @@ class CaseEdit extends Component
 
         return view('livewire.cases.case-edit', compact(
             'courts', 'lawyers', 'jurisdictions', 'court_levels', 'clients'
-        ))->title('تعديل القضية - ' . $this->case->case_number . ' | ' . firm_name());
+        ))->title(__('تعديل القضية') . ' - ' . $this->case->case_number . ' | ' . firm_name());
     }
 }

@@ -43,12 +43,12 @@
         @endif
 
         <div class="upload-card">
-            <h1 class="upload-title">📤 رفع مستند مطلوب</h1>
-            <p class="upload-subtitle">قم برفع المستند المطلوب منك من قِبَل فريق المكتب القانوني</p>
+            <h1 class="upload-title">{{ __('📤 رفع مستند مطلوب') }}</h1>
+            <p class="upload-subtitle">{{ __('قم برفع المستند المطلوب منك من قِبَل فريق المكتب القانوني') }}</p>
 
             {{-- Document Request Info --}}
             <div class="doc-info-box">
-                <div class="doc-info-label">المستند المطلوب</div>
+                <div class="doc-info-label">{{ __('المستند المطلوب') }}</div>
                 <div class="doc-info-value">{{ $documentRequest->title }}</div>
                 @if($documentRequest->description)
                     <div style="font-size:.85rem;color:var(--text-secondary);margin-top:.35rem;">{{ $documentRequest->description }}</div>
@@ -65,8 +65,8 @@
                      @drop.prevent="isDragging = false; $el.classList.remove('dragover')">
                     <input type="file" wire:model="file" accept=".pdf,.doc,.docx,.xlsx,.xls,.png,.jpg,.jpeg,.webp">
                     <span class="dropzone-icon">📂</span>
-                    <div class="dropzone-text">اسحب وأفلت الملف هنا، أو اضغط للاختيار</div>
-                    <div class="dropzone-hint">الصيغ المقبولة: PDF · DOCX · XLSX · PNG · JPG · WebP — الحجم الأقصى: 10MB</div>
+                    <div class="dropzone-text">{{ __('اسحب وأفلت الملف هنا، أو اضغط للاختيار') }}</div>
+                    <div class="dropzone-hint">{{ __('الصيغ المقبولة: PDF · DOCX · XLSX · PNG · JPG · WebP — الحجم الأقصى: 10MB') }}</div>
                 </div>
 
                 {{-- File Preview --}}
@@ -86,13 +86,13 @@
 
                 <button type="submit" wire:loading.attr="disabled"
                     style="margin-top:1.5rem;width:100%;background:linear-gradient(135deg,#1e293b,#0f172a);color:var(--gold-accent,#d4af37);border:none;padding:.85rem;border-radius:10px;font-size:1rem;font-weight:800;cursor:pointer;font-family:inherit;transition:.2s;display:flex;align-items:center;justify-content:center;gap:.5rem;">
-                    <span wire:loading.remove>📤 رفع المستند الآن</span>
-                    <span wire:loading>⏳ جاري الرفع...</span>
+                    <span wire:loading.remove>{{ __('📤 رفع المستند الآن') }}</span>
+                    <span wire:loading>{{ __('⏳ جاري الرفع...') }}</span>
                 </button>
 
                 <a href="{{ route('client-portal.dashboard') }}" wire:navigate
                    style="display:block;text-align:center;margin-top:.85rem;color:var(--text-secondary);font-size:.85rem;text-decoration:none;">
-                    ← العودة للبوابة
+                    {{ __('← العودة للبوابة') }}
                 </a>
             </form>
         </div>

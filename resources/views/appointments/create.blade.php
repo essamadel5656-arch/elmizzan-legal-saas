@@ -75,12 +75,12 @@
 
     <div class="dashboard-header">
         <div class="header-info">
-            <h1><i class="fas fa-calendar-plus" style="color: var(--gold-accent); margin-left: 8px;"></i> إضافة موعد جديد</h1>
-            <p>سجل موعداً جديداً لجلسة قضائية أو اجتماع مع موكل</p>
+            <h1><i class="fas fa-calendar-plus" style="color: var(--gold-accent); margin-left: 8px;"></i> {{ __('إضافة موعد جديد') }}</h1>
+            <p>{{ __('سجل موعداً جديداً لجلسة قضائية أو اجتماع مع موكل') }}</p>
         </div>
         {{-- تم تعديل زر الرجوع ليعود إلى القضية نفسها --}}
         <a href="{{ route('cases.show', $case->id) }}" class="btn-cancel">
-            <i class="fas fa-arrow-right"></i> رجوع للقضية
+            <i class="fas fa-arrow-right"></i> {{ __('رجوع للقضية') }}
         </a>
     </div>
 
@@ -91,7 +91,7 @@
             {{-- القضية — صف كامل (ثابتة، مش قابلة للتعديل) --}}
             <div class="form-row-full">
                 <div class="form-group">
-                    <label class="form-label">القضية</label>
+                    <label class="form-label">{{ __('القضية') }}</label>
                     <div class="form-control" style="background-color: var(--primary-bg); display: flex; align-items: center; gap: 0.5rem;">
                         <i class="fas fa-folder-open" style="color: var(--gold-accent);"></i>
                         <strong>{{ $case->case_number }}</strong>
@@ -104,7 +104,7 @@
             <div class="form-row-half">
                 <div class="form-group">
                     <label for="date" class="form-label">
-                        التاريخ <span style="color: var(--danger-color);">*</span>
+                        {{ __('التاريخ') }} <span style="color: var(--danger-color);">*</span>
                     </label>
                     <input type="date" id="date" name="date" class="form-control" 
                            value="{{ old('date') }}" required>
@@ -117,7 +117,7 @@
 
                 <div class="form-group">
                     <label for="time" class="form-label">
-                        الوقت <span style="color: var(--danger-color);">*</span>
+                        {{ __('الوقت') }} <span style="color: var(--danger-color);">*</span>
                     </label>
                     <input type="time" id="time" name="time" class="form-control" 
                            value="{{ old('time') }}" required>
@@ -131,9 +131,9 @@
 
             {{-- الملاحظات — صف كامل --}}
             <div class="form-group">
-                <label for="notes" class="form-label">الملاحظات</label>
+                <label for="notes" class="form-label">{{ __('الملاحظات') }}</label>
                 <textarea id="notes" name="notes" class="form-control" 
-                          placeholder="اكتب أي ملاحظات هنا...">{{ old('notes') }}</textarea>
+                          placeholder="{{ __('اكتب أي ملاحظات هنا...') }}">{{ old('notes') }}</textarea>
                 @error('notes')
                     <div style="font-size:0.85rem; color:var(--danger-color); margin-top:6px; font-weight:600;">
                         <i class="fas fa-exclamation-circle"></i> {{ $message }}
@@ -144,10 +144,10 @@
             <div class="form-actions">
                 {{-- تم تعديل زر الإلغاء ليعود إلى القضية نفسها --}}
                 <a href="{{ route('cases.show', $case->id) }}" class="btn-cancel">
-                    <i class="fas fa-times"></i> إلغاء
+                    <i class="fas fa-times"></i> {{ __('إلغاء') }}
                 </a>
                 <button type="submit" class="btn-save">
-                    <i class="fas fa-save"></i> حفظ الموعد
+                    <i class="fas fa-save"></i> {{ __('حفظ الموعد') }}
                 </button>
             </div>
         </form>

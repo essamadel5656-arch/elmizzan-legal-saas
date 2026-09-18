@@ -118,11 +118,11 @@
 
     <div class="dashboard-header">
         <div class="header-info">
-            <h1><i class="fas fa-user-edit" style="color: var(--gold-accent); margin-left: 8px;"></i> تعديل بيانات المحامي</h1>
-            <p>تحديث المعلومات الشخصية والمهنية للمحامي: <strong style="color: var(--sidebar-bg);">{{ $lawyers->name }}</strong></p>
+            <h1><i class="fas fa-user-edit" style="color: var(--gold-accent); margin-left: 8px;"></i> {{ __('تعديل بيانات المحامي') }}</h1>
+            <p>{{ __('تحديث المعلومات الشخصية والمهنية للمحامي:') }} <strong style="color: var(--sidebar-bg);">{{ $lawyers->name }}</strong></p>
         </div>
         <a href="{{ route('lawyers.index') }}" class="btn-cancel">
-            <i class="fas fa-arrow-right"></i> العودة للقائمة
+            <i class="fas fa-arrow-right"></i> {{ __('العودة للقائمة') }}
         </a>
     </div>
 
@@ -139,7 +139,7 @@
         <div class="alert-box alert-danger">
             <i class="fas fa-exclamation-triangle" style="margin-top: 4px; font-size: 1.1rem;"></i>
             <div>
-                <strong>يرجى مراجعة الأخطاء التالية:</strong>
+                <strong>{{ __('يرجى مراجعة الأخطاء التالية:') }}</strong>
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -155,119 +155,119 @@
 
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-id-card"></i> البيانات الأساسية والاتصال</div>
+                <div class="title-with-icon"><i class="fas fa-id-card"></i> {{ __('البيانات الأساسية والاتصال') }}</div>
             </div>
             
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label">اسم المحامي <span class="text-danger">*</span></label>
-                    <input type="text" name="name" class="form-control" placeholder="أدخل اسم المحامي" value="{{ old('name', $lawyers->name) }}" required>
+                    <label class="form-label">{{ __('اسم المحامي') }} <span class="text-danger">*</span></label>
+                    <input type="text" name="name" class="form-control" placeholder="{{ __('أدخل اسم المحامي') }}" value="{{ old('name', $lawyers->name) }}" required>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">رقم الموبايل <span class="text-danger">*</span></label>
-                    <input type="text" name="phone" class="form-control" placeholder="أدخل رقم الموبايل" value="{{ old('phone', $lawyers->phone) }}" required>
+                    <label class="form-label">{{ __('رقم الموبايل') }} <span class="text-danger">*</span></label>
+                    <input type="text" name="phone" class="form-control" placeholder="{{ __('أدخل رقم الموبايل') }}" value="{{ old('phone', $lawyers->phone) }}" required>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">البريد الإلكتروني <span class="text-danger">*</span></label>
-                    <input type="email" name="email" class="form-control" placeholder="أدخل البريد الإلكتروني" 
+                    <label class="form-label">{{ __('البريد الإلكتروني') }} <span class="text-danger">*</span></label>
+                    <input type="email" name="email" class="form-control" placeholder="{{ __('أدخل البريد الإلكتروني') }}" 
                            value="{{ old('email', $lawyers->email) }}" required
                            {{ auth()->user()->role !== 'admin' ? 'readonly' : '' }}>
                     @if(auth()->user()->role !== 'admin')
                         <div class="field-locked-note">
-                            <i class="fas fa-lock"></i> لا يمكن تعديل هذا الحقل، يرجى التواصل مع الإدارة
+                            <i class="fas fa-lock"></i> {{ __('لا يمكن تعديل هذا الحقل، يرجى التواصل مع الإدارة') }}
                         </div>
                     @endif
                 </div>
 
                 <div class="form-group full">
-                    <label class="form-label">العنوان <span class="text-danger">*</span></label>
-                    <textarea name="address" class="form-control" placeholder="أدخل العنوان بالتفصيل" required>{{ old('address', $lawyers->address) }}</textarea>
+                    <label class="form-label">{{ __('العنوان') }} <span class="text-danger">*</span></label>
+                    <textarea name="address" class="form-control" placeholder="{{ __('أدخل العنوان بالتفصيل') }}" required>{{ old('address', $lawyers->address) }}</textarea>
                 </div>
             </div>
         </div>
 
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-user-tie"></i> البيانات المهنية</div>
+                <div class="title-with-icon"><i class="fas fa-user-tie"></i> {{ __('البيانات المهنية') }}</div>
             </div>
 
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label">التخصص <span class="text-danger">*</span></label>
-                    <input type="text" name="specialization" class="form-control" placeholder="أدخل التخصص" 
+                    <label class="form-label">{{ __('التخصص') }} <span class="text-danger">*</span></label>
+                    <input type="text" name="specialization" class="form-control" placeholder="{{ __('أدخل التخصص') }}" 
                            value="{{ old('specialization', $lawyers->specialization) }}" required
                            {{ auth()->user()->role !== 'admin' ? 'readonly' : '' }}>
                     @if(auth()->user()->role !== 'admin')
                         <div class="field-locked-note">
-                            <i class="fas fa-lock"></i> لا يمكن تعديل هذا الحقل، يرجى التواصل مع الإدارة
+                            <i class="fas fa-lock"></i> {{ __('لا يمكن تعديل هذا الحقل، يرجى التواصل مع الإدارة') }}
                         </div>
                     @endif
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">رقم القيد <span class="text-danger">*</span></label>
-                    <input type="text" name="license_number" class="form-control" placeholder="أدخل رقم القيد" 
+                    <label class="form-label">{{ __('رقم القيد') }} <span class="text-danger">*</span></label>
+                    <input type="text" name="license_number" class="form-control" placeholder="{{ __('أدخل رقم القيد') }}" 
                            value="{{ old('license_number', $lawyers->license_number) }}" required
                            {{ auth()->user()->role !== 'admin' ? 'readonly' : '' }}>
                     @if(auth()->user()->role !== 'admin')
                         <div class="field-locked-note">
-                            <i class="fas fa-lock"></i> لا يمكن تعديل هذا الحقل، يرجى التواصل مع الإدارة
+                            <i class="fas fa-lock"></i> {{ __('لا يمكن تعديل هذا الحقل، يرجى التواصل مع الإدارة') }}
                         </div>
                     @endif
                 </div>
 
                 <div class="form-group full">
-                    <label class="form-label">الدرجة <span class="text-danger">*</span></label>
+                    <label class="form-label">{{ __('الدرجة') }} <span class="text-danger">*</span></label>
                     <select name="degree" id="degree" class="form-control" required>
-                        <option value="" disabled>اختر الدرجة</option>
-                        <option value="نقض" {{ old('degree', $lawyers->degree) == 'نقض' ? 'selected' : '' }}>نقض</option>
-                        <option value="استئناف" {{ old('degree', $lawyers->degree) == 'استئناف' ? 'selected' : '' }}>استئناف</option>
-                        <option value="ابتدائي" {{ old('degree', $lawyers->degree) == 'ابتدائي' ? 'selected' : '' }}>ابتدائي</option>
-                        <option value="تجاري" {{ old('degree', $lawyers->degree) == 'تجاري' ? 'selected' : '' }}>جدول عام</option>
+                        <option value="" disabled>{{ __('اختر الدرجة') }}</option>
+                        <option value="{{ __('نقض') }}" {{ old('degree', $lawyers->{{ __('degree) == \'نقض\' ? \'selected\' : \'\' }}>نقض') }}</option>
+                        <option value="{{ __('استئناف') }}" {{ old('degree', $lawyers->{{ __('degree) == \'استئناف\' ? \'selected\' : \'\' }}>استئناف') }}</option>
+                        <option value="{{ __('ابتدائي') }}" {{ old('degree', $lawyers->{{ __('degree) == \'ابتدائي\' ? \'selected\' : \'\' }}>ابتدائي') }}</option>
+                        <option value="{{ __('تجاري') }}" {{ old('degree', $lawyers->{{ __('degree) == \'تجاري\' ? \'selected\' : \'\' }}>جدول عام') }}</option>
                     </select>
                 </div>
 
                 <div class="form-group full">
-                    <label class="form-label">نبذة مختصرة <span class="text-danger">*</span></label>
-                    <textarea name="bio" class="form-control" placeholder="أدخل نبذة مختصرة عن المحامي">{{ old('bio', $lawyers->bio) }}</textarea>
+                    <label class="form-label">{{ __('نبذة مختصرة') }} <span class="text-danger">*</span></label>
+                    <textarea name="bio" class="form-control" placeholder="{{ __('أدخل نبذة مختصرة عن المحامي') }}">{{ old('bio', $lawyers->bio) }}</textarea>
                 </div>
             </div>
         </div>
 
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-paperclip"></i> المرفقات والصور</div>
+                <div class="title-with-icon"><i class="fas fa-paperclip"></i> {{ __('المرفقات والصور') }}</div>
             </div>
 
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label">صورة الكارنيه (اختياري)</label>
+                    <label class="form-label">{{ __('صورة الكارنيه (اختياري)') }}</label>
                     <input type="file" name="bar_card_image" class="form-control" accept="image/*">
                     @if($lawyers->bar_card_image && file_exists(storage_path('app/' . $lawyers->bar_card_image)))
                         <div class="current-file-link">
-                            <i class="fas fa-image"></i> الصورة الحالية: <a href="{{ asset('storage/' . $lawyers->bar_card_image) }}" target="_blank">عرض</a>
+                            <i class="fas fa-image"></i> {{ __('الصورة الحالية:') }} <a href="{{ asset('storage/' . $lawyers->{{ __('bar_card_image) }}" target="_blank">عرض') }}</a>
                         </div>
                     @endif
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">الصورة الشخصية (اختياري)</label>
+                    <label class="form-label">{{ __('الصورة الشخصية (اختياري)') }}</label>
                     <input type="file" name="profile_image" class="form-control" accept="image/*">
                     @if($lawyers->profile_image && file_exists(storage_path('app/' . $lawyers->profile_image)))
                         <div class="current-file-link">
-                            <i class="fas fa-user-circle"></i> الصورة الحالية: <a href="{{ asset('storage/' . $lawyers->profile_image) }}" target="_blank">عرض</a>
+                            <i class="fas fa-user-circle"></i> {{ __('الصورة الحالية:') }} <a href="{{ asset('storage/' . $lawyers->{{ __('profile_image) }}" target="_blank">عرض') }}</a>
                         </div>
                     @endif
                 </div>
 
                 <div class="form-group full">
-                    <label class="form-label">صورة البطاقة الشخصية (اختياري)</label>
+                    <label class="form-label">{{ __('صورة البطاقة الشخصية (اختياري)') }}</label>
                     <input type="file" name="national_id_image" class="form-control" accept="image/*">
                     @if($lawyers->national_id_image && file_exists(storage_path('app/' . $lawyers->national_id_image)))
                         <div class="current-file-link">
-                            <i class="fas fa-id-card"></i> الصورة الحالية: <a href="{{ asset('storage/' . $lawyers->national_id_image) }}" target="_blank">عرض</a>
+                            <i class="fas fa-id-card"></i> {{ __('الصورة الحالية:') }} <a href="{{ asset('storage/' . $lawyers->{{ __('national_id_image) }}" target="_blank">عرض') }}</a>
                         </div>
                     @endif
                 </div>
@@ -277,18 +277,18 @@
         @if(auth()->user()->role === 'admin')
             <div class="form-card" style="border-color: rgba(239, 68, 68, 0.3);">
                 <div class="form-card-title">
-                    <div class="title-with-icon"><i class="fas fa-key" style="color: var(--danger-color);"></i> تغيير كلمة المرور (للمدير فقط)</div>
+                    <div class="title-with-icon"><i class="fas fa-key" style="color: var(--danger-color);"></i> {{ __('تغيير كلمة المرور (للمدير فقط)') }}</div>
                 </div>
 
                 <div class="form-grid">
                     <div class="form-group">
-                        <label class="form-label">كلمة المرور الجديدة</label>
-                        <input type="password" name="password" class="form-control" placeholder="اتركه فارغاً إذا لم تريد التغيير">
+                        <label class="form-label">{{ __('كلمة المرور الجديدة') }}</label>
+                        <input type="password" name="password" class="form-control" placeholder="{{ __('اتركه فارغاً إذا لم تريد التغيير') }}">
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">تأكيد كلمة المرور</label>
-                        <input type="password" name="password_confirmation" class="form-control" placeholder="أعد كتابة كلمة المرور الجديدة">
+                        <label class="form-label">{{ __('تأكيد كلمة المرور') }}</label>
+                        <input type="password" name="password_confirmation" class="form-control" placeholder="{{ __('أعد كتابة كلمة المرور الجديدة') }}">
                     </div>
                 </div>
             </div>
@@ -296,10 +296,10 @@
 
         <div class="form-actions">
             <a href="{{ route('lawyers.index') }}" class="btn-cancel">
-                <i class="fas fa-times"></i> إلغاء والتراجع
+                <i class="fas fa-times"></i> {{ __('إلغاء والتراجع') }}
             </a>
             <button type="submit" class="btn-save">
-                <i class="fas fa-save"></i> حفظ جميع التعديلات
+                <i class="fas fa-save"></i> {{ __('حفظ جميع التعديلات') }}
             </button>
         </div>
 

@@ -63,9 +63,9 @@
             <i class="fas fa-robot"></i>
         </div>
         
-        <h3 style="font-size: 1.4rem; font-weight: 800; color: var(--text-primary, #0f172a); margin-bottom: 0.75rem;">المساعد القانوني الذكي</h3>
+        <h3 style="font-size: 1.4rem; font-weight: 800; color: var(--text-primary, #0f172a); margin-bottom: 0.75rem;">{{ __('المساعد القانوني الذكي') }}</h3>
         <p style="font-size: 0.95rem; color: var(--text-secondary, #475569); line-height: 1.6; margin-bottom: 1.5rem;">
-            هذه الميزة حصرية لاشتراكات الباقة المتقدمة (Pro). قم بترقية حسابك للوصول إلى التحليل الذكي للقضايا وصياغة المذكرات الآلية.
+            {{ __('هذه الميزة حصرية لاشتراكات الباقة المتقدمة (Pro). قم بترقية حسابك للوصول إلى التحليل الذكي للقضايا وصياغة المذكرات الآلية.') }}
         </p>
         
         <button onclick="hidePremiumTeaser()" style="
@@ -74,7 +74,7 @@
             padding: 0.75rem 2rem; font-weight: 700; font-family: inherit;
             cursor: pointer; width: 100%; transition: opacity 0.2s;
         " onmouseover="this.style.opacity='0.9'" onmouseout="this.style.opacity='1'">
-            فهمت ذلك
+            {{ __('فهمت ذلك') }}
         </button>
     </div>
 </div>

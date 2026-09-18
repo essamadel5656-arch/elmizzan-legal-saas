@@ -79,11 +79,11 @@
 
     <div class="dashboard-header">
         <div class="header-info">
-            <h1><i class="fas fa-landmark" style="color: var(--gold-accent); margin-left: 8px;"></i> إضافة محكمة جديدة</h1>
-            <p>إعداد بيانات محكمة جديدة وربطها بجهة التقاضي</p>
+            <h1><i class="fas fa-landmark" style="color: var(--gold-accent); margin-left: 8px;"></i> {{ __('إضافة محكمة جديدة') }}</h1>
+            <p>{{ __('إعداد بيانات محكمة جديدة وربطها بجهة التقاضي') }}</p>
         </div>
         <a href="{{ route('courts.index') }}" class="btn-cancel">
-            <i class="fas fa-arrow-right"></i> رجوع للقائمة
+            <i class="fas fa-arrow-right"></i> {{ __('رجوع للقائمة') }}
         </a>
     </div>
 
@@ -94,8 +94,8 @@
             <div class="form-grid">
                 {{-- اسم المحكمة --}}
                 <div class="form-group full">
-                    <label for="name" class="form-label">اسم المحكمة <span style="color: var(--danger-color);">*</span></label>
-                    <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" placeholder="مثال: محكمة استئناف القاهرة" required>
+                    <label for="name" class="form-label">{{ __('اسم المحكمة') }} <span style="color: var(--danger-color);">*</span></label>
+                    <input type="text" id="name" name="name" class="form-control" value="{{ old('name') }}" placeholder="{{ __('مثال: محكمة استئناف القاهرة') }}" required>
                     @error('name')
                         <div class="error-msg"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
                     @enderror
@@ -103,9 +103,9 @@
 
                 {{-- جهة التقاضي --}}
                 <div class="form-group full">
-                    <label for="jurisdiction_id" class="form-label">جهة التقاضي <span style="color: var(--danger-color);">*</span></label>
+                    <label for="jurisdiction_id" class="form-label">{{ __('جهة التقاضي') }} <span style="color: var(--danger-color);">*</span></label>
                     <select id="jurisdiction_id" name="jurisdiction_id" class="form-control" required>
-                        <option value="" disabled selected>-- اختر جهة التقاضي --</option>
+                        <option value="" disabled selected>{{ __('-- اختر جهة التقاضي --') }}</option>
                         @foreach($jurisdictions as $jurisdiction)
                             <option value="{{ $jurisdiction->id }}" {{ old('jurisdiction_id') == $jurisdiction->id ? 'selected' : '' }}>
                                 {{ $jurisdiction->name }}
@@ -121,10 +121,10 @@
             {{-- أزرار الإجراءات --}}
             <div class="form-actions">
                 <a href="{{ route('courts.index') }}" class="btn-cancel">
-                    <i class="fas fa-times"></i> إلغاء
+                    <i class="fas fa-times"></i> {{ __('إلغاء') }}
                 </a>
                 <button type="submit" class="btn-save">
-                    <i class="fas fa-save"></i> حفظ البيانات
+                    <i class="fas fa-save"></i> {{ __('حفظ البيانات') }}
                 </button>
             </div>
 

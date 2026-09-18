@@ -76,18 +76,18 @@
     <!-- Header -->
     <div class="dashboard-header">
         <div class="header-info">
-            <h1><i class="fas fa-file-upload" style="color: var(--gold-accent); margin-left: 8px;"></i> رفع مستند جديد</h1>
-            <p>إضافة مستند أو مرفق جديد لملف القضية رقم: <strong style="color: var(--sidebar-bg);">{{ $case->case_number ?? $case->id }}</strong></p>
+            <h1><i class="fas fa-file-upload" style="color: var(--gold-accent); margin-left: 8px;"></i> {{ __('رفع مستند جديد') }}</h1>
+            <p>{{ __('إضافة مستند أو مرفق جديد لملف القضية رقم:') }} <strong style="color: var(--sidebar-bg);">{{ $case->case_number ?? $case->id }}</strong></p>
         </div>
         <!-- زر الرجوع للقضية -->
         <a href="{{ route('cases.show', $case->id) }}" class="btn-cancel">
-            <i class="fas fa-arrow-right"></i> رجوع لملف القضية
+            <i class="fas fa-arrow-right"></i> {{ __('رجوع لملف القضية') }}
         </a>
     </div>
 
     @if ($errors->any())
         <div class="error-box">
-            <strong><i class="fas fa-exclamation-triangle"></i> يرجى مراجعة الأخطاء التالية:</strong>
+            <strong><i class="fas fa-exclamation-triangle"></i> {{ __('يرجى مراجعة الأخطاء التالية:') }}</strong>
             <ul>
                 @foreach ($errors->all() as $error)
                     <li>{{ $error }}</li>
@@ -106,12 +106,12 @@
             <div class="form-grid">
                 {{-- نوع المستند --}}
                 <div class="form-group">
-                    <label class="form-label">نوع المستند <span style="color: var(--danger-color);">*</span></label>
+                    <label class="form-label">{{ __('نوع المستند') }} <span style="color: var(--danger-color);">*</span></label>
                     <select name="document_type" class="form-control" required>
-                        <option value="" disabled selected>-- اختر نوع المستند --</option>
-                        <option value="contract" {{ old('document_type') == 'contract' ? 'selected' : '' }}>عقد</option>
-                        <option value="report" {{ old('document_type') == 'report' ? 'selected' : '' }}>تقرير</option>
-                        <option value="attachment" {{ old('document_type') == 'attachment' ? 'selected' : '' }}>مرفق</option>
+                        <option value="" disabled selected>{{ __('-- اختر نوع المستند --') }}</option>
+                        <option value="contract" {{ old('document_type') == 'contract' ? 'selected' : '' }}>{{ __('عقد') }}</option>
+                        <option value="report" {{ old('document_type') == 'report' ? 'selected' : '' }}>{{ __('تقرير') }}</option>
+                        <option value="attachment" {{ old('document_type') == 'attachment' ? 'selected' : '' }}>{{ __('مرفق') }}</option>
                     </select>
                     @error('document_type')
                         <div class="error-msg"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
@@ -120,8 +120,8 @@
 
                 {{-- اسم المستند --}}
                 <div class="form-group">
-                    <label class="form-label">اسم وعنوان المستند <span style="color: var(--danger-color);">*</span></label>
-                    <input type="text" name="document_name" class="form-control" placeholder="مثال: صورة من توكيل موثق..." value="{{ old('document_name') }}" required>
+                    <label class="form-label">{{ __('اسم وعنوان المستند') }} <span style="color: var(--danger-color);">*</span></label>
+                    <input type="text" name="document_name" class="form-control" placeholder="{{ __('مثال: صورة من توكيل موثق...') }}" value="{{ old('document_name') }}" required>
                     @error('document_name')
                         <div class="error-msg"><i class="fas fa-exclamation-circle"></i> {{ $message }}</div>
                     @enderror
@@ -129,14 +129,14 @@
 
                 {{-- رفع الملف (UI Custom) --}}
                 <div class="form-group">
-                    <label class="form-label" style="margin-bottom: 0;">الملف المرفق <span style="color: var(--danger-color);">*</span></label>
+                    <label class="form-label" style="margin-bottom: 0;">{{ __('الملف المرفق') }} <span style="color: var(--danger-color);">*</span></label>
                     
                     <div class="upload-box" id="uploadBox">
                         <div id="uploadDefault">
                             <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                            <h3 style="color: var(--text-primary); font-weight: 700; margin-bottom: 0.5rem; font-size: 1.1rem;">اضغط هنا لاختيار الملف</h3>
+                            <h3 style="color: var(--text-primary); font-weight: 700; margin-bottom: 0.5rem; font-size: 1.1rem;">{{ __('اضغط هنا لاختيار الملف') }}</h3>
                             <p style="color: var(--text-secondary); font-size: 0.9rem; font-weight: 500;">
-                                أنواع الملفات المدعومة: PDF, DOC, DOCX, XLS, XLSX
+                                {{ __('أنواع الملفات المدعومة: PDF, DOC, DOCX, XLS, XLSX') }}
                             </p>
                         </div>
 
@@ -155,10 +155,10 @@
             {{-- أزرار التحكم --}}
             <div class="form-actions">
                 <a href="{{ route('cases.show', $case->id) }}" class="btn-cancel">
-                    <i class="fas fa-times"></i> إلغاء
+                    <i class="fas fa-times"></i> {{ __('إلغاء') }}
                 </a>
                 <button type="submit" class="btn-save">
-                    <i class="fas fa-upload"></i> رفع المستند وحفظه
+                    <i class="fas fa-upload"></i> {{ __('رفع المستند وحفظه') }}
                 </button>
             </div>
         </form>
@@ -203,10 +203,10 @@ document.addEventListener('DOMContentLoaded', function () {
             uploadPreview.innerHTML = `
                 <i class="fas ${fileIcon}" style="font-size: 3.5rem; color: ${iconColor};"></i>
                 <p style="color: var(--success-color); font-size: 1rem; font-weight: 700; margin: 0.5rem 0;">
-                    <i class="fas fa-check-circle"></i> تم اختيار: <span style="color: var(--text-primary);">${file.name}</span> (${fileSizeMB} MB)
+                    <i class="fas fa-check-circle"></i> {{ __('تم اختيار:') }} <span style="color: var(--text-primary);">${file.name}</span> (${fileSizeMB} MB)
                 </p>
                 <span class="remove-file-btn" style="color: var(--danger-color); cursor: pointer; font-size: 0.95rem; font-weight: 700; text-decoration: underline;">
-                    <i class="fas fa-trash-alt"></i> حذف واختيار ملف آخر
+                    <i class="fas fa-trash-alt"></i> {{ __('حذف واختيار ملف آخر') }}
                 </span>
             `;
         } else {

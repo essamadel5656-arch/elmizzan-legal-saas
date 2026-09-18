@@ -89,174 +89,174 @@
 @section('content')
 <div class="form-container" dir="rtl">
 
-    <a href="{{ route('contracts.index') }}" class="back-link no-print">← العودة للمكتبة القانونية</a>
+    <a href="{{ route('contracts.index') }}" class="back-link no-print">{{ __('← العودة للمكتبة القانونية') }}</a>
 
     <div class="form-header no-print">
-        <h1>صحة توقيع</h1>
-        <p style="color: var(--text-secondary);">أدخل البيانات ثم اضغط طباعة</p>
+        <h1>{{ __('صحة توقيع') }}</h1>
+        <p style="color: var(--text-secondary);">{{ __('أدخل البيانات ثم اضغط طباعة') }}</p>
     </div>
 
     <div class="no-print">
         <div class="form-grid">
-            <div class="section-title">بيانات المحكمة</div>
+            <div class="section-title">{{ __('بيانات المحكمة') }}</div>
             <div class="form-group">
-                <label>اسم المحكمة</label>
-                <input type="text" id="court_name" value="محكمة أسوان الجزئية">
+                <label>{{ __('اسم المحكمة') }}</label>
+                <input type="text" id="court_name" value="{{ __('محكمة أسوان الجزئية') }}">
             </div>
             <div class="form-group">
-                <label>الدائرة</label>
-                <input type="text" id="court_division" value="الرابعة">
+                <label>{{ __('الدائرة') }}</label>
+                <input type="text" id="court_division" value="{{ __('الرابعة') }}">
             </div>
             <div class="form-group">
-                <label>تاريخ الإعلان</label>
+                <label>{{ __('تاريخ الإعلان') }}</label>
                 <input type="date" id="notice_date">
             </div>
 
-            <div class="section-title">بيانات الطالب (المدعي)</div>
+            <div class="section-title">{{ __('بيانات الطالب (المدعي)') }}</div>
             <div class="form-group">
-                <label>اسم الطالب</label>
+                <label>{{ __('اسم الطالب') }}</label>
                 <input type="text" id="plaintiff_name">
             </div>
             <div class="form-group">
-                <label>الرقم القومي للطالب</label>
+                <label>{{ __('الرقم القومي للطالب') }}</label>
                 <input type="text" id="plaintiff_id">
             </div>
             <div class="form-group full">
-                <label>عنوان الطالب</label>
+                <label>{{ __('عنوان الطالب') }}</label>
                 <input type="text" id="plaintiff_address">
             </div>
 
-            <div class="section-title">بيانات المُعلن إليه (المدعى عليه)</div>
+            <div class="section-title">{{ __('بيانات المُعلن إليه (المدعى عليه)') }}</div>
             <div class="form-group">
-                <label>اسم المُعلن إليه</label>
+                <label>{{ __('اسم المُعلن إليه') }}</label>
                 <input type="text" id="defendant_name">
             </div>
             <div class="form-group">
-                <label>الرقم القومي</label>
+                <label>{{ __('الرقم القومي') }}</label>
                 <input type="text" id="defendant_id">
             </div>
             <div class="form-group full">
-                <label>عنوان المُعلن إليه</label>
+                <label>{{ __('عنوان المُعلن إليه') }}</label>
                 <input type="text" id="defendant_address">
             </div>
             <div class="form-group full">
-                <label>مخاطباً مع</label>
+                <label>{{ __('مخاطباً مع') }}</label>
                 <input type="text" id="contact_with">
             </div>
 
-            <div class="section-title">بيانات عقد البيع</div>
+            <div class="section-title">{{ __('بيانات عقد البيع') }}</div>
             <div class="form-group">
-                <label>تاريخ عقد البيع</label>
+                <label>{{ __('تاريخ عقد البيع') }}</label>
                 <input type="date" id="contract_date">
             </div>
             <div class="form-group full">
-                <label>وصف المبيع</label>
-                <textarea id="property_desc" rows="2" placeholder="مثال: شقة سكنية كائنة في..."></textarea>
+                <label>{{ __('وصف المبيع') }}</label>
+                <textarea id="property_desc" rows="2" placeholder="{{ __('مثال: شقة سكنية كائنة في...') }}"></textarea>
             </div>
             <div class="form-group full">
-                <label>حدود المبيع (اختياري)</label>
-                <textarea id="property_borders" rows="2" placeholder="الحد الشرقي: ... الحد الغربي: ..."></textarea>
+                <label>{{ __('حدود المبيع (اختياري)') }}</label>
+                <textarea id="property_borders" rows="2" placeholder="{{ __('الحد الشرقي: ... الحد الغربي: ...') }}"></textarea>
             </div>
             <div class="form-group">
-                <label>ثمن البيع (أرقام)</label>
+                <label>{{ __('ثمن البيع (أرقام)') }}</label>
                 <input type="text" id="price_number">
             </div>
             <div class="form-group">
-                <label>ثمن البيع (كتابة)</label>
+                <label>{{ __('ثمن البيع (كتابة)') }}</label>
                 <input type="text" id="price_text">
             </div>
 
-            <div class="section-title">بيانات الدعوى والجلسات</div>
+            <div class="section-title">{{ __('بيانات الدعوى والجلسات') }}</div>
             <div class="form-group">
-                <label>رقم الدعوى</label>
+                <label>{{ __('رقم الدعوى') }}</label>
                 <input type="text" id="case_number">
             </div>
             <div class="form-group">
-                <label>سنة الدعوى</label>
+                <label>{{ __('سنة الدعوى') }}</label>
                 <input type="text" id="case_year">
             </div>
             <div class="form-group">
-                <label>تاريخ الجلسة الحالية</label>
+                <label>{{ __('تاريخ الجلسة الحالية') }}</label>
                 <input type="date" id="current_session">
             </div>
             <div class="form-group">
-                <label>تاريخ الجلسة القادمة</label>
+                <label>{{ __('تاريخ الجلسة القادمة') }}</label>
                 <input type="date" id="next_session">
             </div>
             <div class="form-group">
-                <label>يوم الجلسة القادمة</label>
-                <input type="text" id="next_session_day" placeholder="مثال: الأحد">
+                <label>{{ __('يوم الجلسة القادمة') }}</label>
+                <input type="text" id="next_session_day" placeholder="{{ __('مثال: الأحد') }}">
             </div>
             <div class="form-group">
-                <label>اسم المحامي (وكيل المدعي) *</label>
-                <input type="text" id="lawyer_name" placeholder="اكتب اسم المحامي" required>
+                <label>{{ __('اسم المحامي (وكيل المدعي) *') }}</label>
+                <input type="text" id="lawyer_name" placeholder="{{ __('اكتب اسم المحامي') }}" required>
             </div>
         </div>
 
-        <button type="button" class="btn-print" onclick="printContract()">🖨️ معاينة وطباعة</button>
+        <button type="button" class="btn-print" onclick="printContract()">{{ __('🖨️ معاينة وطباعة') }}</button>
     </div>
 
     <div class="print-area" id="printArea">
         <!-- هيدر المكتب -->
         <div class="print-header">
             <h2>⚖️ {{ $appName }}</h2>
-            <p>أسوان - جمهورية مصر العربية</p>
+            <p>{{ __('أسوان - جمهورية مصر العربية') }}</p>
         </div>
 
         <div class="print-layout">
             <!-- المحتوى الرئيسي -->
             <div class="print-main">
-                <p>إنه في يوم الموافق <span id="p_notice_date"></span></p>
+                <p>{{ __('إنه في يوم الموافق') }} <span id="p_notice_date"></span></p>
 
-                <p>بناءً على طلب السيد/ <span id="p_plaintiff_name"></span> – رقم قومي <span id="p_plaintiff_id"></span> – المقيم في <span id="p_plaintiff_address"></span></p>
-                <p>ومحله المختار مكتب الأستاذ/ <span id="p_lawyer_name"></span> – المحامي بأسوان.</p>
+                <p>{{ __('بناءً على طلب السيد/') }} <span id="p_plaintiff_name"></span> {{ __('– رقم قومي') }} <span id="p_plaintiff_id"></span> {{ __('– المقيم في') }} <span id="p_plaintiff_address"></span></p>
+                <p>{{ __('ومحله المختار مكتب الأستاذ/') }} <span id="p_lawyer_name"></span> {{ __('– المحامي بأسوان.') }}</p>
 
-                <p>أنا/ محضر <span id="p_court_name"></span> قد انتقلت في تاريخه وأعلنت:</p>
+                <p>{{ __('أنا/ محضر') }} <span id="p_court_name"></span> {{ __('قد انتقلت في تاريخه وأعلنت:') }}</p>
 
-                <p>السيد/ <span id="p_defendant_name"></span> – رقم قومي <span id="p_defendant_id"></span> - المقيم في <span id="p_defendant_address"></span></p>
-                <p>مخاطباً مع/ <span id="p_contact_with"></span></p>
+                <p>{{ __('السيد/') }} <span id="p_defendant_name"></span> {{ __('– رقم قومي') }} <span id="p_defendant_id"></span> {{ __('- المقيم في') }} <span id="p_defendant_address"></span></p>
+                <p>{{ __('مخاطباً مع/') }} <span id="p_contact_with"></span></p>
 
-                <p><strong>وأعلنته بالآتي:</strong></p>
+                <p><strong>{{ __('وأعلنته بالآتي:') }}</strong></p>
 
-                <p>أقامت الطالبة الدعوى رقم <span id="p_case_number"></span> لسنة <span id="p_case_year"></span> صحة توقيع <span id="p_court_name2"></span> مدني جزئي الدائرة <span id="p_court_division"></span> ضد المعلن إليه بالطلبات الواردة بأصل الصحيفة على سند من القول:</p>
+                <p>{{ __('أقامت الطالبة الدعوى رقم') }} <span id="p_case_number"></span> {{ __('لسنة') }} <span id="p_case_year"></span> {{ __('صحة توقيع') }} <span id="p_court_name2"></span> {{ __('مدني جزئي الدائرة') }} <span id="p_court_division"></span> {{ __('ضد المعلن إليه بالطلبات الواردة بأصل الصحيفة على سند من القول:') }}</p>
 
-                <p>"بموجب عقد بيع مؤرخ <span id="p_contract_date"></span> باع وأسقط وتنازل بكافة الضمانات الفعلية والقانونية المُعلن إليه للطالبة ما هو عبارة عن <span id="p_property_desc"></span></p>
+                <p>{{ __('"بموجب عقد بيع مؤرخ') }} <span id="p_contract_date"></span> {{ __('باع وأسقط وتنازل بكافة الضمانات الفعلية والقانونية المُعلن إليه للطالبة ما هو عبارة عن') }} <span id="p_property_desc"></span></p>
 
                 <p id="p_borders_block"><span id="p_property_borders"></span></p>
 
-                <p>كما تم هذا البيع والإسقاط والتنازل بين طرفي هذا العقد مقابل ثمن إجمالي ومقداره <span id="p_price_number"></span> ريال (فقط <span id="p_price_text"></span> لاغير) عداً ونقداً بمجلس العقد.</p>
+                <p>{{ __('كما تم هذا البيع والإسقاط والتنازل بين طرفي هذا العقد مقابل ثمن إجمالي ومقداره') }} <span id="p_price_number"></span> {{ __('ريال (فقط') }} <span id="p_price_text"></span> {{ __('لاغير) عداً ونقداً بمجلس العقد.') }}</p>
 
-                <p>وحيث نصت المادة (54) من قانون الإثبات على أنه: "يجوز لمن بيده محرر غير رسمي أن يختصم من يشهد عليه ذلك المحرر ليقر بأنه بخطه أو بإمضائه أو بختمه أو ببصمة أصبعه ..." مما يحق للطالبة إقامة هذه الدعوى بطلب الحكم لها بصحة توقيع المُعلن إليه على عقد البيع المؤرخ في <span id="p_contract_date2"></span>"</p>
+                <p>{{ __('وحيث نصت المادة (54) من قانون الإثبات على أنه: "يجوز لمن بيده محرر غير رسمي أن يختصم من يشهد عليه ذلك المحرر ليقر بأنه بخطه أو بإمضائه أو بختمه أو ببصمة أصبعه ..." مما يحق للطالبة إقامة هذه الدعوى بطلب الحكم لها بصحة توقيع المُعلن إليه على عقد البيع المؤرخ في') }} <span id="p_contract_date2"></span>"</p>
 
-                <p>حيث أنه كان محدداً لنظر هذه الدعوى جلسة يوم الموافق <span id="p_current_session"></span>، وبهذه الجلسة قررت عدالة المحكمة تأجيل نظر الدعوى لجلسة يوم الموافق <span id="p_next_session"></span> لإعلان المُعلن إليه بأصل الصحيفة.</p>
+                <p>{{ __('حيث أنه كان محدداً لنظر هذه الدعوى جلسة يوم الموافق') }} <span id="p_current_session"></span>{{ __('، وبهذه الجلسة قررت عدالة المحكمة تأجيل نظر الدعوى لجلسة يوم الموافق') }} <span id="p_next_session"></span> {{ __('لإعلان المُعلن إليه بأصل الصحيفة.') }}</p>
 
-                <p>ولما كانت الحالة هذه وكان الطالب يهمه تنفيذ قرار المحكمة.</p>
+                <p>{{ __('ولما كانت الحالة هذه وكان الطالب يهمه تنفيذ قرار المحكمة.') }}</p>
 
-                <p><strong>بناءً عليه</strong></p>
+                <p><strong>{{ __('بناءً عليه') }}</strong></p>
 
-                <p>أنا المحضر سالف الذكر قد انتقلت وأعلنت المُعلن إليه بصورة من عريضة الدعوى هذه وكلفته بالحضور أمام <span id="p_court_name3"></span> الدائرة <span id="p_court_division2"></span> صحة توقيع بالجلسة التي ستنعقد بها علناً بسراي المحكمة – بمجمع محاكم أسوان – في يوم <span id="p_next_session_day"></span> الموافق <span id="p_next_session2"></span> من الساعة التاسعة صباحاً للمرافعة وسماعه الحكم:</p>
+                <p>{{ __('أنا المحضر سالف الذكر قد انتقلت وأعلنت المُعلن إليه بصورة من عريضة الدعوى هذه وكلفته بالحضور أمام') }} <span id="p_court_name3"></span> {{ __('الدائرة') }} <span id="p_court_division2"></span> {{ __('صحة توقيع بالجلسة التي ستنعقد بها علناً بسراي المحكمة – بمجمع محاكم أسوان – في يوم') }} <span id="p_next_session_day"></span> {{ __('الموافق') }} <span id="p_next_session2"></span> {{ __('من الساعة التاسعة صباحاً للمرافعة وسماعه الحكم:') }}</p>
 
-                <p>بـ"صحة توقيعه" على عقد البيع المؤرخ في <span id="p_contract_date3"></span> مع إلزامه بالمصروفات ومقابل أتعاب المحاماة، مع حفظ كافة حقوق المدعية الأخرى أياً كان نوعها.</p>
+                <p>{{ __('بـ"صحة توقيعه" على عقد البيع المؤرخ في') }} <span id="p_contract_date3"></span> {{ __('مع إلزامه بالمصروفات ومقابل أتعاب المحاماة، مع حفظ كافة حقوق المدعية الأخرى أياً كان نوعها.') }}</p>
 
-                <p><strong>ولأجل العلم/</strong></p>
+                <p><strong>{{ __('ولأجل العلم/') }}</strong></p>
 
                 <div class="signature-area">
-                    <p>وكيل المدعي</p>
-                    <p>المحامي/ <span id="p_lawyer_name2"></span></p>
+                    <p>{{ __('وكيل المدعي') }}</p>
+                    <p>{{ __('المحامي/') }} <span id="p_lawyer_name2"></span></p>
                 </div>
             </div>
 
             <!-- الشريط الجانبي -->
             <div class="print-sidebar">
-                <p><strong>الموضوع</strong></p>
-                <p>إعلان بأصل صحيفة الدعوى رقم (<span id="p_case_number2"></span>) لسنة <span id="p_case_year2"></span></p>
-                <p>مقدمة من المدعية وتحت مسئوليتها.</p>
+                <p><strong>{{ __('الموضوع') }}</strong></p>
+                <p>{{ __('إعلان بأصل صحيفة الدعوى رقم (') }}<span id="p_case_number2"></span>{{ __(') لسنة') }} <span id="p_case_year2"></span></p>
+                <p>{{ __('مقدمة من المدعية وتحت مسئوليتها.') }}</p>
                 <br>
-                <p><strong>وكيل المدعي</strong></p>
-                <p>المحامي</p>
+                <p><strong>{{ __('وكيل المدعي') }}</strong></p>
+                <p>{{ __('المحامي') }}</p>
                 <p>⚖️ {{ $appName }}</p>
                 <p><span id="p_lawyer_name3"></span></p>
-                <p>المحامي بأسوان</p>
+                <p>{{ __('المحامي بأسوان') }}</p>
             </div>
         </div>
     </div>

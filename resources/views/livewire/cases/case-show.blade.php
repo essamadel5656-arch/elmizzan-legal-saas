@@ -1,318 +1,394 @@
-<div class="p-4 md:p-8 max-w-6xl mx-auto" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
+<div class="p-4 md:p-8 max-w-7xl mx-auto" dir="{{ app()->getLocale() == 'ar' ? 'rtl' : 'ltr' }}">
 
-    {{-- Flash Messages --}}
+    @php
+        $badgeClass = match ($case->status) {
+            'مفتوحة', 'جارية', 'متداولة' => 'badge-success',
+            'مؤجلة', 'محجوزة للحكم', 'معلقة' => 'badge-warning',
+            'مغلقة', 'منتهية', 'محفوظة' => 'badge-danger',
+            default => 'badge-info'
+        };
+    @endphp
+
+    <!-- Header Actions -->
+    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+        <div class="flex items-center gap-4">
+            <a href="{{ route('cases.index') }}" wire:navigate class="btn-secondary px-4 py-2 flex items-center gap-2">
+                <svg class="w-5 h-5 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+                {{ __('رجوع للقائمة') }}
+            </a>
+            <h1 class="panel-title m-0 text-xl md:text-2xl flex items-center gap-2">
+                {{ __('ملف القضية:') }} <span dir="ltr" class="mx-1">#{{ $case->case_number }}</span>
+            </h1>
+            <span class="badge-item {{ $badgeClass }} font-bold text-sm">{{ __($case->status) }}</span>
+        </div>
+
+        <div class="flex gap-2">
+            <a href="{{ route('cases.edit', $case) }}" wire:navigate class="btn-action-edit px-4 py-2 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+                {{ __('تعديل البيانات') }}
+            </a>
+            @can('delete', $case)
+                <button type="button" wire:click="confirmDelete" class="btn-action-delete px-4 py-2 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                    {{ __('حذف القضية') }}
+                </button>
+            @endcan
+        </div>
+    </div>
+
+    <!-- Alert Success -->
     @if (session()->has('success'))
-        <div class="mb-6 p-4 flex items-center gap-3 bg-emerald-50/80 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-700 dark:text-emerald-400 rounded-xl backdrop-blur-sm">
-            <i class="fas fa-check-circle text-lg"></i>
+        <div class="panel-subtle mb-6 p-4 flex items-center gap-3 border border-green-500/20 text-green-600 rounded-xl">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
             <span class="font-bold">{{ __(session('success')) }}</span>
         </div>
     @endif
 
-    {{-- Header --}}
-    <div class="flex flex-wrap justify-between items-start gap-6 mb-8">
-        <div>
-            <div class="flex items-center gap-3 mb-2">
-                <i class="fas fa-folder-open text-2xl text-amber-500"></i>
-                <h1 class="text-2xl font-bold text-slate-900 dark:text-slate-100 m-0">{{ __('Case File') }}</h1>
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        
+        <!-- MAIN CONTENT (Left/Right depending on RTL) -->
+        <div class="lg:col-span-2 space-y-6">
+            
+            {{-- Essential Case Info --}}
+            <div class="panel p-6">
+                <div class="panel-header mb-4 pb-3 border-b">
+                    <h2 class="panel-title flex items-center gap-2">
+                        <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        {{ __('تفاصيل القضية') }}
+                    </h2>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6">
+                    <div class="flex flex-col gap-1">
+                        <span class="text-xs text-muted font-bold uppercase">{{ __('المحكمة المختصة') }}</span>
+                        <span class="text-base font-semibold">{{ __($case->court->name ?? __('غير محدد')) }}</span>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <span class="text-xs text-muted font-bold uppercase">{{ __('نوع القضية') }}</span>
+                        <span class="text-base font-semibold">{{ __($case->jurisdiction->name ?? ($case->court->jurisdiction->name ?? '-')) }}</span>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <span class="text-xs text-muted font-bold uppercase">{{ __('الدائرة') }}</span>
+                        <span class="text-base font-semibold">{{ $case->circuit ?? '-' }}</span>
+                    </div>
+                    <div class="flex flex-col gap-1">
+                        <span class="text-xs text-muted font-bold uppercase">{{ __('درجة التقاضي') }}</span>
+                        <span class="text-base font-semibold">{{ __($case->courtLevel->name ?? '-') }}</span>
+                    </div>
+                </div>
+
+                @if($case->description)
+                <div class="mt-6 pt-4 border-t">
+                    <span class="text-xs text-muted font-bold uppercase block mb-2">{{ __('وصف القضية / الوقائع') }}</span>
+                    <p class="text-sm leading-relaxed whitespace-pre-wrap">{{ $case->description }}</p>
+                </div>
+                @endif
             </div>
-            <div class="flex flex-wrap items-center gap-4">
-                <span class="text-lg font-bold text-slate-900 dark:text-amber-500 font-mono tracking-wider"># {{ $case->case_number }}</span>
+
+            {{-- People Involved (Clients & Opponent) --}}
+            <div class="panel p-0 overflow-hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 divide-x rtl:divide-x-reverse border">
+                    
+                    {{-- Clients --}}
+                    <div class="p-6">
+                        <h3 class="panel-title text-base mb-4 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                            {{ __('موكلين المكتب') }}
+                        </h3>
+                        @if($case->clients->count() > 0)
+                            <div class="space-y-3">
+                                @foreach($case->clients as $client)
+                                    <div class="flex items-center gap-3 p-3 panel-subtle border rounded-xl">
+                                        <div class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-primary/10 text-primary">
+                                            {{ mb_substr($client->name, 0, 1) }}
+                                        </div>
+                                        <div class="flex flex-col flex-1">
+                                            <a href="{{ route('clients.show', $client) }}" class="font-bold hover:underline">{{ $client->name }}</a>
+                                            <span class="text-xs text-muted" dir="ltr">{{ $client->phone ?? __('بدون رقم') }}</span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @else
+                            <p class="text-muted text-sm italic">{{ __('لا يوجد موكلين مسجلين') }}</p>
+                        @endif
+                    </div>
+
+                    {{-- Opponent --}}
+                    <div class="p-6">
+                        <h3 class="panel-title text-base mb-4 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-2.266.99-4.659.99-7.132A8 8 0 008 4.07M3 15.364c.64-1.319 1-2.8 1-4.364 0-1.457.39-2.823 1.07-4"/></svg>
+                            {{ __('الخصم') }}
+                        </h3>
+                        <div class="flex flex-col gap-3">
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs text-muted font-bold uppercase">{{ __('اسم الخصم') }}</span>
+                                <span class="text-sm font-semibold">{{ $case->rival_name ?? '-' }}</span>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs text-muted font-bold uppercase">{{ __('رقم الهاتف') }}</span>
+                                <span class="text-sm font-semibold" dir="ltr">{{ $case->rival_number ?? '-' }}</span>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs text-muted font-bold uppercase">{{ __('الرقم القومي') }}</span>
+                                <span class="text-sm font-semibold" dir="ltr">{{ $case->rival_nid ?? '-' }}</span>
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <span class="text-xs text-muted font-bold uppercase">{{ __('العنوان') }}</span>
+                                <span class="text-sm font-semibold">{{ $case->rival_address ?? '-' }}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Tabs Section (Livewire) --}}
+            <div class="panel p-0 overflow-hidden">
+                <div class="flex overflow-x-auto border-b border">
+                    <button wire:click="setTab('tasks')" class="px-6 py-4 font-bold text-sm whitespace-nowrap transition-colors {{ $activeTab === 'tasks' ? 'border-b-2' : 'text-muted' }} border">
+                        {{ __('المهام والجلسات') }}
+                    </button>
+                    <button wire:click="setTab('documents')" class="px-6 py-4 font-bold text-sm whitespace-nowrap transition-colors {{ $activeTab === 'documents' ? 'border-b-2' : 'text-muted' }} border">
+                        {{ __('المستندات والمرفقات') }}
+                    </button>
+                    <button wire:click="setTab('expenses')" class="px-6 py-4 font-bold text-sm whitespace-nowrap transition-colors {{ $activeTab === 'expenses' ? 'border-b-2' : 'text-muted' }} border">
+                        {{ __('المصروفات') }}
+                    </button>
+                </div>
+                
+                <div class="p-6">
+                    @if($activeTab === 'tasks')
+                        {{-- Replace with Livewire Task Component for this case --}}
+                        <div class="text-center py-10 text-muted">
+                            <svg class="w-12 h-12 mx-auto mb-3 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                            <p>{{ __('لا توجد جلسات مسجلة حالياً لهذه القضية') }}</p>
+                        </div>
+                    @elseif($activeTab === 'documents')
+                        @livewire('cases.document-requests', ['case' => $case])
+                    @elseif($activeTab === 'expenses')
+                        @livewire('cases.case-expenses', ['case' => $case])
+                    @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- SIDEBAR CONTENT -->
+        <div class="space-y-6">
+            
+            {{-- Lawyers & Roles --}}
+            <div class="panel p-6">
+                <h2 class="panel-title text-base mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    {{ __('فريق العمل الموكل') }}
+                </h2>
+                
+                @if($case->lawyers->count() > 0)
+                    <div class="space-y-4">
+                        @foreach($case->lawyers as $lawyer)
+                            @php
+                                $roleLabel = match($lawyer->pivot->role) {
+                                    'lead', 'محامي رئيسي' => 'محامي رئيسي',
+                                    'assistant', 'مساعد' => 'مساعد',
+                                    'consultant', 'مستشار' => 'مستشار',
+                                    default => 'محامي'
+                                };
+                            @endphp
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs bg-primary/10 text-primary">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                </div>
+                                <div class="flex flex-col flex-1">
+                                    <span class="font-bold text-sm">{{ $lawyer->name }}</span>
+                                    <span class="text-xs text-muted">{{ __($roleLabel) }}</span>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-muted text-sm italic">{{ __('لم يتم تعيين محامين') }}</p>
+                @endif
+            </div>
+
+            {{-- Progress & Decisions --}}
+            <div class="panel p-6">
+                <h2 class="panel-title text-base mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg>
+                    {{ __('الموقف القضائي') }}
+                </h2>
+                
+                <div class="space-y-4">
+                    <div class="flex flex-col gap-1">
+                        <span class="text-xs text-muted font-bold uppercase">{{ __('القرار السابق') }}</span>
+                        <p class="text-sm font-semibold p-3 panel-subtle border rounded-lg whitespace-pre-wrap">{{ $case->Previous_procedure ?? __('لا يوجد') }}</p>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <span class="text-xs text-muted font-bold uppercase">{{ __('رقم التوكيل') }}</span>
+                        <span class="text-sm font-semibold" dir="ltr">{{ $case->procuration ?? '-' }}</span>
+                    </div>
+
+                    @if($case->status == 'منتهية' || $case->status == 'مغلقة' || $case->final_decision)
+                        <div class="flex flex-col gap-1 mt-4">
+                            <span class="text-xs text-muted font-bold uppercase">{{ __('القرار النهائي (منطوق الحكم)') }}</span>
+                            <p class="text-sm font-semibold p-3 rounded-lg border whitespace-pre-wrap">{{ $case->final_decision ?? __('لم يسجل بعد') }}</p>
+                        </div>
+                    @endif
+                </div>
+            </div>
+
+            {{-- Financial Summary (Admins only) --}}
+            @if(auth()->user()->isAdmin())
+            <div class="panel p-6">
+                <h2 class="panel-title text-base mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    {{ __('الملخص المالي') }}
+                </h2>
+                
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center py-2 border-b border-opacity-10 border">
+                        <span class="text-sm text-muted">{{ __('الأتعاب المتفق عليها') }}</span>
+                        <span class="font-bold font-mono" dir="ltr">{{ number_format($case->agreed_legal_fee ?? 0, 2) }}</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 border-b border-opacity-10 border">
+                        <span class="text-sm text-muted">{{ __('إجمالي التكاليف') }}</span>
+                        <span class="font-bold font-mono text-red-500" dir="ltr">{{ number_format($case->total_costs ?? 0, 2) }}</span>
+                    </div>
+                    <div class="flex justify-between items-center py-2 border-b border-opacity-10 border">
+                        <span class="text-sm text-muted">{{ __('المدفوع مقدماً') }}</span>
+                        <span class="font-bold font-mono text-green-500" dir="ltr">{{ number_format($case->deposit ?? 0, 2) }}</span>
+                    </div>
+                    
+                    @php
+                        $remaining = max(0, ($case->total_costs ?? 0) - ($case->deposit ?? 0));
+                    @endphp
+                    <div class="flex justify-between items-center py-3 mt-2 font-bold text-lg">
+                        <span>{{ __('المتبقي:') }}</span>
+                        <span class="font-mono" dir="ltr">{{ number_format($remaining, 2) }}</span>
+                    </div>
+                </div>
+            </div>
+            @endif
+
+            {{-- Case File Attachment --}}
+            @if($case->case_file)
+            <div class="panel p-6">
+                <h2 class="panel-title text-base mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"/></svg>
+                    {{ __('الملف الأساسي للقضية') }}
+                </h2>
                 
                 @php
-                    $statusColorClasses = match ($case->status) {
-                        'مفتوحة' => 'bg-green-100 text-green-700 border-green-200 dark:bg-green-900/30 dark:text-green-400 dark:border-green-800/50',
-                        'متداولة' => 'bg-blue-100 text-blue-700 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800/50',
-                        'مؤجلة' => 'bg-amber-100 text-amber-700 border-amber-200 dark:bg-amber-900/30 dark:text-amber-400 dark:border-amber-800/50',
-                        'مغلقة', 'منتهية', 'معلقة' => 'bg-red-100 text-red-700 border-red-200 dark:bg-red-900/30 dark:text-red-400 dark:border-red-800/50',
-                        'حكم نهائي' => 'bg-indigo-100 text-indigo-700 border-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-400 dark:border-indigo-800/50',
-                        'محفوظة' => 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700',
-                        'مستأنفة' => 'bg-orange-100 text-orange-700 border-orange-200 dark:bg-orange-900/30 dark:text-orange-400 dark:border-orange-800/50',
-                        default => 'bg-slate-100 text-slate-700 border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700'
-                    };
+                    $ext = strtolower(pathinfo($case->case_file, PATHINFO_EXTENSION));
+                    $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'svg', 'webp']);
+                    $isPdf = $ext === 'pdf';
+                    $isWord = in_array($ext, ['doc', 'docx']);
                 @endphp
-                <span class="px-3 py-1 rounded-full text-xs font-bold border {{ $statusColorClasses }}">
-                    {{ __($case->status) }}
-                </span>
-                
-                @can('update', $case)
-                    <div class="flex items-center gap-2">
-                        <label class="text-xs font-bold text-slate-500 dark:text-slate-400">{{ __('Quick Status Change:') }}</label>
-                        <select class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-slate-100 rounded-full text-xs font-bold px-3 py-1 focus:ring-2 focus:ring-amber-500/40 focus:border-amber-500 transition-all cursor-pointer" wire:change="updateStatus($event.target.value)">
-                            @foreach(['مفتوحة', 'متداولة', 'مؤجلة', 'محجوزة للحكم', 'منتهية', 'مستأنفة', 'محفوظة', 'معلقة'] as $st)
-                                <option value="{{ $st }}" @selected($case->status === $st)>{{ __($st) }}</option>
-                            @endforeach
-                        </select>
+
+                <div wire:click="openMediaViewer(0)" class="cursor-pointer group flex flex-col items-center justify-center p-4 panel-subtle border border-[var(--border-color)] rounded-xl hover:border-[var(--color-gold)] transition-all">
+                    <div class="h-40 w-full mb-3 flex items-center justify-center overflow-hidden rounded-lg bg-[var(--bg-panel)]">
+                        @if($isImage)
+                            <img src="{{ asset('storage/' . $case->case_file) }}" alt="Main Case File" class="w-full h-full object-cover">
+                        @elseif($isPdf)
+                            <svg class="w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6M9 17h6M12 9V5"/></svg>
+                        @elseif($isWord)
+                            <svg class="w-16 h-16 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6M9 17h6M12 9V5"/></svg>
+                        @else
+                            <svg class="w-16 h-16 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                        @endif
                     </div>
-                @endcan
-            </div>
-        </div>
-        
-        <div class="flex items-center gap-3">
-            @can('update', $case)
-                <a href="{{ route('cases.edit', $case->id) }}" wire:navigate class="inline-flex items-center gap-2 px-5 py-2.5 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 border border-amber-200 dark:border-amber-800/50 hover:bg-amber-500 hover:text-white dark:hover:bg-amber-500 dark:hover:text-white rounded-xl font-bold transition-all shadow-sm">
-                    <i class="fas fa-edit"></i> {{ __('Edit Data') }}
-                </a>
-            @endcan
-            <a href="{{ route('cases.index') }}" wire:navigate class="inline-flex items-center gap-2 px-5 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 rounded-xl font-bold transition-all shadow-sm">
-                <i class="fas fa-arrow-right rtl:rotate-180"></i> {{ __('Back') }}
-            </a>
-        </div>
-    </div>
-
-    {{-- 1. Basic Details --}}
-    <div class="bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 shadow-sm dark:shadow-none backdrop-blur-sm rounded-2xl p-6 md:p-8 mb-6 transition-all hover:border-amber-500/50">
-        <div class="flex items-center gap-3 mb-6 pb-3 border-b-2 border-slate-100 dark:border-slate-800 text-lg font-bold text-slate-900 dark:text-amber-500">
-            <i class="fas fa-file-alt text-amber-500"></i> {{ __('Basic Details') }}
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="flex flex-col gap-1.5">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Court') }}</span>
-                <span class="text-sm font-semibold text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 flex items-center min-h-[46px]">{{ __($case->court->name ?? '—') }}</span>
-            </div>
-            <div class="flex flex-col gap-1.5">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Jurisdiction Type') }}</span>
-                <span class="text-sm font-semibold text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 flex items-center min-h-[46px]">{{ __($case->court->jurisdiction->name ?? '—') }}</span>
-            </div>
-            <div class="flex flex-col gap-1.5">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Court Level') }}</span>
-                <span class="text-sm font-semibold text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 flex items-center min-h-[46px] {{ !$case->court_level ? 'text-slate-400 dark:text-slate-500 italic' : '' }}">{{ __($case->courtLevel->name ?? 'Not Specified') }}</span>
-            </div>
-            <div class="flex flex-col gap-1.5">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Opponent Name') }}</span>
-                <span class="text-sm font-semibold text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 flex items-center min-h-[46px] {{ !$case->rival_name ? 'text-slate-400 dark:text-slate-500 italic' : '' }}">{{ $case->rival_name ?? __('Not Specified') }}</span>
-            </div>
-            <div class="col-span-1 md:col-span-2 lg:col-span-4 flex flex-col gap-1.5">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Case Description and Facts Summary') }}</span>
-                <span class="text-sm text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 min-h-[80px] whitespace-pre-wrap leading-relaxed {{ !$case->description ? 'text-slate-400 dark:text-slate-500 italic font-semibold' : '' }}">{{ $case->description ?? __('No description provided') }}</span>
-            </div>
-            <div class="col-span-1 md:col-span-2 lg:col-span-4 flex flex-col gap-1.5">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Previous Procedure') }}</span>
-                <span class="text-sm text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 min-h-[80px] whitespace-pre-wrap leading-relaxed {{ !$case->Previous_procedure ? 'text-slate-400 dark:text-slate-500 italic font-semibold' : '' }}">{{ $case->Previous_procedure ?? __('None') }}</span>
-            </div>
-            <div class="col-span-1 md:col-span-2 lg:col-span-4 flex flex-col gap-1.5">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Final Decision') }}</span>
-                <span class="text-sm text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 min-h-[80px] whitespace-pre-wrap leading-relaxed {{ !$case->final_decision ? 'text-slate-400 dark:text-slate-500 italic font-semibold' : '' }}">{{ $case->final_decision ?? __('None') }}</span>
-            </div>
-            <div class="col-span-1 md:col-span-2 lg:col-span-4 flex flex-col gap-1.5">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Administrative Notes') }}</span>
-                <span class="text-sm text-slate-800 dark:text-slate-200 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 min-h-[80px] whitespace-pre-wrap leading-relaxed {{ !$case->notes ? 'text-slate-400 dark:text-slate-500 italic font-semibold' : '' }}">{{ $case->notes ?? __('No notes') }}</span>
-            </div>
-        </div>
-    </div>
-
-    {{-- 2. Opponent Details --}}
-    <div class="bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 shadow-sm dark:shadow-none backdrop-blur-sm rounded-2xl p-6 md:p-8 mb-6 transition-all hover:border-amber-500/50">
-        <div class="flex items-center gap-3 mb-6 pb-3 border-b-2 border-slate-100 dark:border-slate-800 text-lg font-bold text-slate-900 dark:text-amber-500">
-            <i class="fas fa-user-times text-amber-500"></i> {{ __('Opponent Details') }}
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="flex flex-col gap-1.5">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Opponent Name') }}</span>
-                <span class="text-sm font-semibold text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 flex items-center min-h-[46px] {{ !$case->rival_name ? 'text-slate-400 dark:text-slate-500 italic' : '' }}">{{ $case->rival_name ?? __('—') }}</span>
-            </div>
-            <div class="flex flex-col gap-1.5">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Phone Number') }}</span>
-                <span class="text-sm font-semibold text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 flex items-center min-h-[46px] {{ !$case->rival_number ? 'text-slate-400 dark:text-slate-500 italic' : '' }}">{{ $case->rival_number ?? __('—') }}</span>
-            </div>
-            <div class="flex flex-col gap-1.5">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('National ID') }}</span>
-                <span class="text-sm font-semibold text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 flex items-center min-h-[46px] {{ !$case->rival_nid ? 'text-slate-400 dark:text-slate-500 italic' : '' }}">{{ $case->rival_nid ?? __('—') }}</span>
-            </div>
-            <div class="flex flex-col gap-1.5">
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">{{ __('Address') }}</span>
-                <span class="text-sm font-semibold text-slate-900 dark:text-slate-100 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-3 flex items-center min-h-[46px] {{ !$case->rival_address ? 'text-slate-400 dark:text-slate-500 italic' : '' }}">{{ $case->rival_address ?? __('—') }}</span>
-            </div>
-        </div>
-    </div>
-
-    {{-- 3. Financials --}}
-    @can('update', $case)
-    <div class="bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 shadow-sm dark:shadow-none backdrop-blur-sm rounded-2xl p-6 md:p-8 mb-6 transition-all hover:border-amber-500/50">
-        <div class="flex items-center gap-3 mb-6 pb-3 border-b-2 border-slate-100 dark:border-slate-800 text-lg font-bold text-slate-900 dark:text-amber-500">
-            <i class="fas fa-coins text-amber-500"></i> {{ __('Financial Accounts') }}
-        </div>
-        @php
-            $remaining = ($case->total_costs ?? 0) - ($case->deposit ?? 0);
-        @endphp
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-5 text-center transition-all hover:shadow-md">
-                <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">{{ __('Administrative Expenses') }}</div>
-                <div class="text-2xl font-black text-slate-900 dark:text-slate-100">{{ number_format($case->costs ?? 0, 2) }} <span class="text-sm font-bold">{{ __('CUR') }}</span></div>
-            </div>
-            <div class="bg-amber-50/50 dark:bg-amber-900/10 border border-amber-200 dark:border-amber-800/50 rounded-xl p-5 text-center transition-all hover:shadow-md">
-                <div class="text-xs font-bold text-amber-600 dark:text-amber-500 mb-2 uppercase tracking-wider">{{ __('Total Fees') }}</div>
-                <div class="text-2xl font-black text-amber-700 dark:text-amber-400">{{ number_format($case->total_costs ?? 0, 2) }} <span class="text-sm font-bold">{{ __('CUR') }}</span></div>
-            </div>
-            <div class="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl p-5 text-center transition-all hover:shadow-md">
-                <div class="text-xs font-bold text-slate-500 dark:text-slate-400 mb-2 uppercase tracking-wider">{{ __('Paid in Advance') }}</div>
-                <div class="text-2xl font-black text-slate-900 dark:text-slate-100">{{ number_format($case->deposit ?? 0, 2) }} <span class="text-sm font-bold">{{ __('CUR') }}</span></div>
-            </div>
-            <div class="{{ $remaining > 0 ? 'bg-red-50/50 dark:bg-red-900/10 border-red-200 dark:border-red-800/50' : 'bg-green-50/50 dark:bg-green-900/10 border-green-200 dark:border-green-800/50' }} border rounded-xl p-5 text-center transition-all hover:shadow-md">
-                <div class="text-xs font-bold {{ $remaining > 0 ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400' }} mb-2 uppercase tracking-wider">{{ __('Remaining Amount') }}</div>
-                <div class="text-2xl font-black {{ $remaining > 0 ? 'text-red-700 dark:text-red-400' : 'text-green-700 dark:text-green-400' }}">{{ number_format($remaining, 2) }} <span class="text-sm font-bold">{{ __('CUR') }}</span></div>
-            </div>
-        </div>
-    </div>
-    @endcan
-
-    {{-- 4. Clients and Lawyers --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <div class="bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 shadow-sm dark:shadow-none backdrop-blur-sm rounded-2xl p-6 md:p-8 transition-all hover:border-amber-500/50">
-            <div class="flex justify-between items-center mb-6 pb-3 border-b-2 border-slate-100 dark:border-slate-800">
-                <div class="flex items-center gap-3 text-lg font-bold text-slate-900 dark:text-amber-500">
-                    <i class="fas fa-users text-amber-500"></i> {{ __('Assigned Clients') }}
-                    <span class="text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-full">{{ $case->clients->count() }}</span>
+                    <div class="flex items-center gap-2 w-full truncate">
+                        <span class="text-sm font-semibold truncate group-hover:text-[var(--color-gold)] transition-colors text-center w-full">{{ basename($case->case_file) }}</span>
+                    </div>
                 </div>
             </div>
-            @if($case->clients->isEmpty())
-                <div class="text-center text-sm font-bold italic text-slate-400 dark:text-slate-500 py-6">{{ __('No clients linked to this case.') }}</div>
-            @else
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-                    @foreach($case->clients as $client)
-                        <div class="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-xl transition-all hover:shadow-md hover:border-slate-300 dark:hover:border-slate-600">
-                            <div class="w-12 h-12 rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 flex items-center justify-center text-lg font-bold flex-shrink-0 border border-slate-300 dark:border-slate-600">
-                                {{ mb_substr($client->name, 0, 1) }}
-                            </div>
-                            <div class="flex flex-col overflow-hidden">
-                                <span class="font-bold text-sm text-slate-900 dark:text-slate-100 truncate" title="{{ $client->name }}">{{ $client->name }}</span>
-                                <span class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1 flex items-center gap-1.5"><i class="fas fa-phone-alt text-[10px]"></i> {{ $client->phone ?? __('—') }}</span>
-                                <span class="text-xs font-medium text-slate-500 dark:text-slate-400 flex items-center gap-1.5"><i class="fas fa-id-card text-[10px]"></i> {{ $client->nid ?? __('—') }}</span>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
             @endif
-        </div>
 
-        <div class="bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 shadow-sm dark:shadow-none backdrop-blur-sm rounded-2xl p-6 md:p-8 transition-all hover:border-amber-500/50">
-            <div class="flex justify-between items-center mb-6 pb-3 border-b-2 border-slate-100 dark:border-slate-800">
-                <div class="flex items-center gap-3 text-lg font-bold text-slate-900 dark:text-amber-500">
-                    <i class="fas fa-user-tie text-amber-500"></i> {{ __('Legal Team') }}
-                    <span class="text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-full">{{ $case->lawyers->count() }}</span>
+        </div>
+    </div>
+
+    {{-- Delete Modal --}}
+    @if($confirmingDelete)
+        <div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-[3000] p-4">
+            <div class="panel max-w-md w-full text-center">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <h3 class="panel-title justify-center mb-2">{{ __('تأكيد حذف القضية') }}</h3>
+                <p class="text-muted mb-8">{{ __('هل أنت متأكد من رغبتك في حذف هذه القضية نهائياً مع جميع مرفقاتها وسجلاتها؟ لا يمكن التراجع عن هذا الإجراء.') }}</p>
+                <div class="flex gap-3 justify-center">
+                    <button type="button" wire:click="cancelDelete" class="btn-secondary px-6 py-2">{{ __('إلغاء') }}</button>
+                    <button type="button" wire:click="deleteCase" class="btn-action-delete px-6 py-2 flex items-center gap-2">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                        <span>{{ __('نعم، احذف القضية') }}</span>
+                    </button>
                 </div>
             </div>
-            @if($case->lawyers && $case->lawyers->count() > 0)
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-4">
-                    @foreach($case->lawyers as $lawyer)
-                        <div class="flex items-center gap-4 p-4 bg-amber-50/30 dark:bg-amber-900/10 border border-amber-100 dark:border-amber-800/30 rounded-xl transition-all hover:shadow-md hover:border-amber-300 dark:hover:border-amber-700">
-                            <div class="w-12 h-12 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center text-lg font-bold flex-shrink-0 border border-amber-200 dark:border-amber-800/50">
-                                {{ mb_substr($lawyer->name, 0, 1) }}
-                            </div>
-                            <div class="flex flex-col overflow-hidden items-start">
-                                <span class="font-bold text-sm text-slate-900 dark:text-slate-100 truncate w-full" title="{{ $lawyer->name }}">{{ $lawyer->name }}</span>
-                                @if(!empty($lawyer->specialization))
-                                    <span class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1">{{ $lawyer->specialization }}</span>
-                                @endif
-                                @php
-                                    $roleLabel = __('Assistant');
-                                    if(isset($lawyer->pivot->role)) {
-                                        $roleLabel = match($lawyer->pivot->role) {
-                                            'lead' => __('Lead Lawyer'),
-                                            'assistant' => __('Assistant'),
-                                            'consultant' => __('Consultant'),
-                                            default => __('Assistant')
-                                        };
-                                    }
-                                @endphp
-                                <span class="mt-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-slate-900 text-white dark:bg-amber-500 dark:text-slate-900">{{ $roleLabel }}</span>
-                            </div>
+        </div>
+    @endif
+
+    <!-- Smart Media Viewer Modal -->
+    @if($isMediaViewerOpen && count($mediaGallery) > 0)
+    <div class="fixed inset-0 z-[4000] flex items-center justify-center bg-black/90 backdrop-blur-sm p-4">
+        <div class="relative w-full max-w-5xl bg-[var(--bg-panel)] rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[90vh]">
+            
+            <!-- Header -->
+            <div class="flex items-center justify-between p-4 border-b border-[var(--border-color)] bg-[var(--bg-panel)]">
+                <div class="flex items-center gap-3">
+                    <span class="text-lg font-bold text-[var(--text-color)]">{{ $mediaGallery[$currentMediaIndex]['title'] }}</span>
+                    <span class="text-sm px-3 py-1 rounded-full bg-[var(--bg-subtle)] border border-[var(--border-color)] text-muted">
+                        {{ $currentMediaIndex + 1 }} / {{ count($mediaGallery) }}
+                    </span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <a href="{{ $mediaGallery[$currentMediaIndex]['url'] }}" download class="p-2 rounded-full hover:bg-[var(--bg-subtle)] transition-colors text-muted" title="{{ __('تحميل الملف') }}">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                    </a>
+                    <button type="button" wire:click="closeMediaViewer" class="p-2 rounded-full hover:bg-[var(--bg-subtle)] transition-colors">
+                        <svg class="w-6 h-6 text-muted" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <div class="flex-1 overflow-hidden flex items-center justify-center relative bg-[var(--bg-body)]">
+                
+                <!-- Left Nav Arrow -->
+                @if($currentMediaIndex > 0)
+                <button type="button" wire:click="prevMedia" class="absolute rtl:right-4 ltr:left-4 z-10 p-3 rounded-full bg-black/50 text-white hover:bg-[var(--color-gold)] transition-colors">
+                    <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                @endif
+
+                <!-- Media Display -->
+                <div class="w-full h-full flex items-center justify-center p-4">
+                    @php $media = $mediaGallery[$currentMediaIndex]; @endphp
+                    
+                    @if($media['type'] === 'image')
+                        <img src="{{ $media['url'] }}" alt="{{ $media['title'] }}" class="max-w-full max-h-full object-contain rounded-lg shadow-lg">
+                    @elseif($media['type'] === 'pdf')
+                        <iframe src="{{ $media['url'] }}" class="w-full h-full rounded-lg shadow-lg border-0"></iframe>
+                    @else
+                        <!-- Word / Other Files -->
+                        <div class="text-center p-8 bg-[var(--bg-panel)] rounded-2xl border border-[var(--border-color)] shadow-sm max-w-md w-full">
+                            <svg class="w-20 h-20 mx-auto text-[var(--color-gold)] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                            <h3 class="text-xl font-bold mb-2">{{ __('لا يمكن معاينة هذا الملف') }}</h3>
+                            <p class="text-muted mb-6">{{ __('صيغة الملف غير مدعومة للمعاينة المباشرة. يرجى تحميله لفتحه.') }}</p>
+                            <a href="{{ $media['url'] }}" download class="btn-primary inline-flex items-center gap-2 px-6 py-2.5">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+                                {{ __('تحميل الملف') }}
+                            </a>
                         </div>
-                    @endforeach
+                    @endif
                 </div>
-            @else
-                <div class="text-center text-sm font-bold italic text-slate-400 dark:text-slate-500 py-6">{{ __('No lawyers linked to this case.') }}</div>
-            @endif
+
+                <!-- Right Nav Arrow -->
+                @if($currentMediaIndex < count($mediaGallery) - 1)
+                <button type="button" wire:click="nextMedia" class="absolute rtl:left-4 ltr:right-4 z-10 p-3 rounded-full bg-black/50 text-white hover:bg-[var(--color-gold)] transition-colors">
+                    <svg class="w-6 h-6 rtl:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+                @endif
+            </div>
         </div>
     </div>
-
-    {{-- 5. Appointments --}}
-    <div class="bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 shadow-sm dark:shadow-none backdrop-blur-sm rounded-2xl p-6 md:p-8 mb-6 transition-all hover:border-amber-500/50">
-        <div class="flex flex-wrap justify-between items-center mb-6 pb-3 border-b-2 border-slate-100 dark:border-slate-800 gap-4">
-            <div class="flex items-center gap-3 text-lg font-bold text-slate-900 dark:text-amber-500">
-                <i class="fas fa-calendar-check text-amber-500"></i> {{ __('Hearings and Appointments') }}
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-full">{{ $case->appointments->count() }}</span>
-            </div>
-            <a href="{{ route('appointments.create', $case->id) }}" wire:navigate class="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 dark:bg-amber-600 text-white text-xs font-bold rounded-lg shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
-                <i class="fas fa-plus"></i> {{ __('Add Appointment') }}
-            </a>
-        </div>
-
-        @if($case->appointments && $case->appointments->count() > 0)
-            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
-                <table class="w-full text-sm text-start">
-                    <thead class="bg-slate-100/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-semibold border-b border-slate-200 dark:border-slate-800">
-                        <tr>
-                            <th class="px-6 py-4 rtl:text-right ltr:text-left w-[15%]">{{ __('Appointment No.') }}</th>
-                            <th class="px-6 py-4 rtl:text-right ltr:text-left w-[25%]">{{ __('Date and Time') }}</th>
-                            <th class="px-6 py-4 rtl:text-right ltr:text-left w-[60%]">{{ __('Session Details or Appointment') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800/70">
-                        @foreach($case->appointments as $appointment)
-                            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
-                                <td class="px-6 py-4 font-bold text-slate-900 dark:text-slate-100">#{{ $appointment->id }}</td>
-                                <td class="px-6 py-4 font-bold text-amber-600 dark:text-amber-400 dir-ltr text-end ltr:text-left">{{ $appointment->date }}</td>
-                                <td class="px-6 py-4 text-slate-600 dark:text-slate-400">{{ $appointment->notes ?? __('—') }}</td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @else
-            <div class="text-center text-sm font-bold italic text-slate-400 dark:text-slate-500 py-6">{{ __('No appointments or hearings recorded for this case yet.') }}</div>
-        @endif
-    </div>
-
-    {{-- 6. Documents --}}
-    <div class="bg-white dark:bg-slate-900/90 border border-slate-200/80 dark:border-slate-800 shadow-sm dark:shadow-none backdrop-blur-sm rounded-2xl p-6 md:p-8 transition-all hover:border-amber-500/50">
-        <div class="flex flex-wrap justify-between items-center mb-6 pb-3 border-b-2 border-slate-100 dark:border-slate-800 gap-4">
-            <div class="flex items-center gap-3 text-lg font-bold text-slate-900 dark:text-amber-500">
-                <i class="fas fa-paperclip text-amber-500"></i> {{ __('Documents and Attachments') }}
-                <span class="text-xs font-bold text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-full">{{ $case->documents->count() }}</span>
-            </div>
-            <a href="{{ route('document.add_documents', ['case' => $case->id]) }}" wire:navigate class="inline-flex items-center gap-2 px-4 py-2 bg-slate-900 dark:bg-amber-600 text-white text-xs font-bold rounded-lg shadow-sm hover:shadow-md transition-all hover:-translate-y-0.5">
-                <i class="fas fa-upload"></i> {{ __('Upload Document') }}
-            </a>
-        </div>
-
-        @if($case->documents && $case->documents->count() > 0)
-            <div class="overflow-x-auto rounded-xl border border-slate-200 dark:border-slate-800">
-                <table class="w-full text-sm text-start">
-                    <thead class="bg-slate-100/80 dark:bg-slate-800/80 text-slate-600 dark:text-slate-300 text-xs uppercase tracking-wider font-semibold border-b border-slate-200 dark:border-slate-800">
-                        <tr>
-                            <th class="px-6 py-4 rtl:text-right ltr:text-left w-[10%]">#</th>
-                            <th class="px-6 py-4 rtl:text-right ltr:text-left w-[40%]">{{ __('Document Name') }}</th>
-                            <th class="px-6 py-4 rtl:text-right ltr:text-left w-[20%]">{{ __('Upload Date') }}</th>
-                            <th class="px-6 py-4 text-center w-[30%]">{{ __('Actions') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-slate-100 dark:divide-slate-800/70">
-                        @foreach($case->documents as $document)
-                            <tr class="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors">
-                                <td class="px-6 py-4 font-bold text-slate-900 dark:text-slate-100">{{ $document->id }}</td>
-                                <td class="px-6 py-4 font-bold text-slate-800 dark:text-slate-200">
-                                    <i class="fas fa-file-alt text-amber-500 ms-1 rtl:ml-2"></i> {{ $document->title }}
-                                </td>
-                                <td class="px-6 py-4 text-slate-500 dark:text-slate-400 dir-ltr text-end ltr:text-left font-mono text-xs">
-                                    {{ $document->created_at ? $document->created_at->format('Y-m-d') : '-' }}
-                                </td>
-                                <td class="px-6 py-4 text-center">
-                                    @if($document->file_path)
-                                        <a href="{{ asset('storage/' . ltrim(str_replace('public/', '', $document->file_path), '/')) }}" target="_blank" class="inline-flex items-center justify-center gap-2 px-3 py-1.5 bg-amber-50 dark:bg-amber-900/20 text-amber-600 dark:text-amber-400 hover:bg-amber-500 hover:text-white dark:hover:bg-amber-500 dark:hover:text-white border border-amber-200 dark:border-amber-800/50 rounded-lg text-xs font-bold transition-colors">
-                                            <i class="fas fa-external-link-alt"></i> {{ __('View File') }}
-                                        </a>
-                                    @else
-                                        <span class="text-xs font-bold text-slate-400 dark:text-slate-500 italic">{{ __('No file') }}</span>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        @else
-            <div class="text-center text-sm font-bold italic text-slate-400 dark:text-slate-500 py-6">{{ __('No documents uploaded in this file.') }}</div>
-        @endif
-    </div>
-
+    @endif
 </div>

@@ -28,45 +28,45 @@
     <div class="voucher">
         <div class="voucher-header">
             <h1>⚖️ {{ firm_name() }}</h1>
-            <p>إيصال مصروف رسمي</p>
+            <p>{{ __('إيصال مصروف رسمي') }}</p>
             <div class="voucher-badge">{{ $expense->status === 'approved' ? '✅ معتمد' : ($expense->status === 'pending' ? '⏳ بانتظار الموافقة' : '❌ مرفوض') }}</div>
         </div>
         <div class="voucher-body">
             <div class="amount-box">
-                <div class="amount">{{ number_format($expense->amount, 2) }} ج.م.</div>
-                <div class="label">مبلغ المصروف</div>
+                <div class="amount">{{ number_format($expense->{{ __('amount, 2) }} ج.م.') }}</div>
+                <div class="label">{{ __('مبلغ المصروف') }}</div>
             </div>
 
             <div class="voucher-row">
-                <span class="voucher-label">رقم الإيصال</span>
+                <span class="voucher-label">{{ __('رقم الإيصال') }}</span>
                 <span class="voucher-value">#{{ $expense->id }}</span>
             </div>
             <div class="voucher-row">
-                <span class="voucher-label">القضية</span>
+                <span class="voucher-label">{{ __('القضية') }}</span>
                 <span class="voucher-value">{{ $expense->case?->case_number ?? '—' }}</span>
             </div>
             <div class="voucher-row">
-                <span class="voucher-label">تصنيف المصروف</span>
+                <span class="voucher-label">{{ __('تصنيف المصروف') }}</span>
                 <span class="voucher-value">{{ $expense->category }}</span>
             </div>
             <div class="voucher-row">
-                <span class="voucher-label">مقدَّم بواسطة</span>
+                <span class="voucher-label">{{ __('مقدَّم بواسطة') }}</span>
                 <span class="voucher-value">{{ $expense->submittedBy?->name ?? '—' }}</span>
             </div>
             @if($expense->approved_by)
             <div class="voucher-row">
-                <span class="voucher-label">تمت الموافقة بواسطة</span>
+                <span class="voucher-label">{{ __('تمت الموافقة بواسطة') }}</span>
                 <span class="voucher-value">{{ $expense->approvedBy?->name ?? '—' }}</span>
             </div>
             @endif
             @if($expense->notes)
             <div class="voucher-row">
-                <span class="voucher-label">ملاحظات</span>
+                <span class="voucher-label">{{ __('ملاحظات') }}</span>
                 <span class="voucher-value">{{ $expense->notes }}</span>
             </div>
             @endif
             <div class="voucher-row">
-                <span class="voucher-label">تاريخ الإصدار</span>
+                <span class="voucher-label">{{ __('تاريخ الإصدار') }}</span>
                 <span class="voucher-value">{{ $expense->created_at->format('d/m/Y H:i') }}</span>
             </div>
         </div>
@@ -75,7 +75,7 @@
         </div>
     </div>
     <div style="text-align:center;margin-top:1rem;">
-        <button class="btn-print" onclick="window.print()">🖨️ طباعة الإيصال</button>
+        <button class="btn-print" onclick="window.print()">{{ __('🖨️ طباعة الإيصال') }}</button>
     </div>
 </body>
 </html>

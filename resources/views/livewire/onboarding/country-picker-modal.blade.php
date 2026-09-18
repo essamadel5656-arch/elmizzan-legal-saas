@@ -9,7 +9,7 @@
             مرحباً بك في {{ firm_name() }}
         </h2>
         <p style="font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.8rem;">
-            يرجى تحديد دولة نشاط المكتب لتخصيص العملة، المحاكم، والمصطلحات القضائية تلقائياً. (يتم التحديد لمرة واحدة ويمكن تعديله لاحقاً من الإعدادات).
+            {{ __('يرجى تحديد دولة نشاط المكتب لتخصيص العملة، المحاكم، والمصطلحات القضائية تلقائياً. (يتم التحديد لمرة واحدة ويمكن تعديله لاحقاً من الإعدادات).') }}
         </p>
 
         {{-- 4 Primary Countries Grid --}}
@@ -20,8 +20,8 @@
                     onmouseout="this.style.borderColor='var(--border-color, #e2e8f0)'; this.style.transform='none';">
                 <x-flag-icon country="EG" size="2rem" />
                 <div>
-                    <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary);">جمهورية مصر</div>
-                    <div style="font-size: 0.78rem; color: var(--text-secondary);">الجنيه المصري (ج.م.)</div>
+                    <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary);">{{ __('جمهورية مصر') }}</div>
+                    <div style="font-size: 0.78rem; color: var(--text-secondary);">{{ __('الجنيه المصري (ج.م.)') }}</div>
                 </div>
             </button>
 
@@ -31,8 +31,8 @@
                     onmouseout="this.style.borderColor='var(--border-color, #e2e8f0)'; this.style.transform='none';">
                 <x-flag-icon country="SA" size="2rem" />
                 <div>
-                    <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary);">المملكة العربية السعودية</div>
-                    <div style="font-size: 0.78rem; color: var(--text-secondary);">الريال السعودي (ر.س.)</div>
+                    <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary);">{{ __('المملكة العربية السعودية') }}</div>
+                    <div style="font-size: 0.78rem; color: var(--text-secondary);">{{ __('الريال السعودي (ر.س.)') }}</div>
                 </div>
             </button>
 
@@ -42,8 +42,8 @@
                     onmouseout="this.style.borderColor='var(--border-color, #e2e8f0)'; this.style.transform='none';">
                 <x-flag-icon country="AE" size="2rem" />
                 <div>
-                    <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary);">الإمارات العربية المتحدة</div>
-                    <div style="font-size: 0.78rem; color: var(--text-secondary);">الدرهم الإماراتي (د.إ.)</div>
+                    <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary);">{{ __('الإمارات العربية المتحدة') }}</div>
+                    <div style="font-size: 0.78rem; color: var(--text-secondary);">{{ __('الدرهم الإماراتي (د.إ.)') }}</div>
                 </div>
             </button>
 
@@ -53,8 +53,8 @@
                     onmouseout="this.style.borderColor='var(--border-color, #e2e8f0)'; this.style.transform='none';">
                 <x-flag-icon country="OM" size="2rem" />
                 <div>
-                    <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary);">سلطنة عُمان</div>
-                    <div style="font-size: 0.78rem; color: var(--text-secondary);">الريال العُماني (ر.ع.)</div>
+                    <div style="font-weight: 800; font-size: 1rem; color: var(--text-primary);">{{ __('سلطنة عُمان') }}</div>
+                    <div style="font-size: 0.78rem; color: var(--text-secondary);">{{ __('الريال العُماني (ر.ع.)') }}</div>
                 </div>
             </button>
         </div>
@@ -62,31 +62,31 @@
         {{-- Other Countries Selector --}}
         <div style="padding-top: 1.25rem; border-top: 1px dashed var(--border-color, #e2e8f0); text-align: right;">
             <label style="display: block; font-size: 0.85rem; font-weight: 700; color: var(--text-secondary); margin-bottom: 0.5rem;">
-                أو اختر دولة أخرى:
+                {{ __('أو اختر دولة أخرى:') }}
             </label>
             <div style="display: flex; gap: 0.5rem;">
                 <select wire:model="otherCountry" style="flex: 1; padding: 0.65rem 0.85rem; border-radius: 8px; border: 1.5px solid var(--border-color, #e2e8f0); background: var(--card-bg); color: var(--text-primary); font-family: inherit; font-size: 0.9rem; outline: none;">
-                    <option value="">-- اختر الدولة --</option>
-                    <option value="KW">الكويت (د.ك.)</option>
-                    <option value="BH">البحرين (د.ب.)</option>
-                    <option value="QA">قطر (ر.ق.)</option>
-                    <option value="JO">الأردن (د.أ.)</option>
-                    <option value="MA">المغرب (د.م.)</option>
-                    <option value="LY">ليبيا (د.ل.)</option>
-                    <option value="IQ">العراق (د.ع.)</option>
-                    <option value="LB">لبنان (ل.ل.)</option>
-                    <option value="YE">اليمن (ر.ي.)</option>
-                    <option value="SY">سوريا (ل.س.)</option>
+                    <option value="">{{ __('-- اختر الدولة --') }}</option>
+                    <option value="KW">{{ __('الكويت (د.ك.)') }}</option>
+                    <option value="BH">{{ __('البحرين (د.ب.)') }}</option>
+                    <option value="QA">{{ __('قطر (ر.ق.)') }}</option>
+                    <option value="JO">{{ __('الأردن (د.أ.)') }}</option>
+                    <option value="MA">{{ __('المغرب (د.م.)') }}</option>
+                    <option value="LY">{{ __('ليبيا (د.ل.)') }}</option>
+                    <option value="IQ">{{ __('العراق (د.ع.)') }}</option>
+                    <option value="LB">{{ __('لبنان (ل.ل.)') }}</option>
+                    <option value="YE">{{ __('اليمن (ر.ي.)') }}</option>
+                    <option value="SY">{{ __('سوريا (ل.س.)') }}</option>
                 </select>
                 <button type="button" wire:click="selectOther" wire:loading.attr="disabled"
                         style="padding: 0.65rem 1.3rem; background: var(--sidebar-bg, #1e293b); color: #fff; border: none; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; font-family: inherit; transition: 0.2s;">
-                    تأكيد
+                    {{ __('تأكيد') }}
                 </button>
             </div>
         </div>
 
         <div wire:loading style="margin-top: 1rem; color: var(--gold-accent, #d4af37); font-weight: bold; font-size: 0.9rem;">
-            <i class="fas fa-spinner fa-spin"></i> جاري حفظ وتطبيق إعدادات الدولة...
+            <i class="fas fa-spinner fa-spin"></i> {{ __('جاري حفظ وتطبيق إعدادات الدولة...') }}
         </div>
 
     </div>

@@ -102,11 +102,11 @@
     <!-- Header الموحد -->
     <div class="dashboard-header no-print">
         <div class="header-info">
-            <h1><i class="fas fa-home" style="color: var(--gold-accent); margin-left: 8px;"></i> عقد بيع حصة إرث في منزل</h1>
-            <p>أدخل بيانات أطراف العقد وتفاصيل الحصة الموروثة ثم اضغط على زر المعاينة والطباعة أدناه.</p>
+            <h1><i class="fas fa-home" style="color: var(--gold-accent); margin-left: 8px;"></i> {{ __('عقد بيع حصة إرث في منزل') }}</h1>
+            <p>{{ __('أدخل بيانات أطراف العقد وتفاصيل الحصة الموروثة ثم اضغط على زر المعاينة والطباعة أدناه.') }}</p>
         </div>
         <a href="{{ route('contracts.index') }}" class="btn-cancel">
-            <i class="fas fa-arrow-right"></i> العودة للمكتبة القانونية
+            <i class="fas fa-arrow-right"></i> {{ __('العودة للمكتبة القانونية') }}
         </a>
     </div>
 
@@ -116,24 +116,24 @@
         {{-- بيانات البائع --}}
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-user-tag"></i> بيانات الطرف الأول (البائع)</div>
+                <div class="title-with-icon"><i class="fas fa-user-tag"></i> {{ __('بيانات الطرف الأول (البائع)') }}</div>
             </div>
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label" for="seller_name">اسم البائع</label>
-                    <input type="text" id="seller_name" class="form-control" placeholder="الاسم رباعياً">
+                    <label class="form-label" for="seller_name">{{ __('اسم البائع') }}</label>
+                    <input type="text" id="seller_name" class="form-control" placeholder="{{ __('الاسم رباعياً') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="seller_id">الرقم القومي للبائع</label>
-                    <input type="text" id="seller_id" class="form-control" placeholder="14 رقم" maxlength="14">
+                    <label class="form-label" for="seller_id">{{ __('الرقم القومي للبائع') }}</label>
+                    <input type="text" id="seller_id" class="form-control" placeholder="{{ __('14 رقم') }}" maxlength="14">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="seller_job">وظيفة البائع</label>
-                    <input type="text" id="seller_job" class="form-control" placeholder="مثال: موظف، مهندس...">
+                    <label class="form-label" for="seller_job">{{ __('وظيفة البائع') }}</label>
+                    <input type="text" id="seller_job" class="form-control" placeholder="{{ __('مثال: موظف، مهندس...') }}">
                 </div>
                 <div class="form-group full">
-                    <label class="form-label" for="seller_address">عنوان البائع</label>
-                    <input type="text" id="seller_address" class="form-control" placeholder="محل الإقامة بالتفصيل">
+                    <label class="form-label" for="seller_address">{{ __('عنوان البائع') }}</label>
+                    <input type="text" id="seller_address" class="form-control" placeholder="{{ __('محل الإقامة بالتفصيل') }}">
                 </div>
             </div>
         </div>
@@ -141,20 +141,20 @@
         {{-- بيانات المشتري --}}
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-user-check"></i> بيانات الطرف الثاني (المشتري)</div>
+                <div class="title-with-icon"><i class="fas fa-user-check"></i> {{ __('بيانات الطرف الثاني (المشتري)') }}</div>
             </div>
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label" for="buyer_name">اسم المشتري</label>
-                    <input type="text" id="buyer_name" class="form-control" placeholder="الاسم رباعياً">
+                    <label class="form-label" for="buyer_name">{{ __('اسم المشتري') }}</label>
+                    <input type="text" id="buyer_name" class="form-control" placeholder="{{ __('الاسم رباعياً') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="buyer_id">الرقم القومي للمشتري</label>
-                    <input type="text" id="buyer_id" class="form-control" placeholder="14 رقم" maxlength="14">
+                    <label class="form-label" for="buyer_id">{{ __('الرقم القومي للمشتري') }}</label>
+                    <input type="text" id="buyer_id" class="form-control" placeholder="{{ __('14 رقم') }}" maxlength="14">
                 </div>
                 <div class="form-group full">
-                    <label class="form-label" for="buyer_address">عنوان المشتري</label>
-                    <input type="text" id="buyer_address" class="form-control" placeholder="محل الإقامة بالتفصيل">
+                    <label class="form-label" for="buyer_address">{{ __('عنوان المشتري') }}</label>
+                    <input type="text" id="buyer_address" class="form-control" placeholder="{{ __('محل الإقامة بالتفصيل') }}">
                 </div>
             </div>
         </div>
@@ -162,28 +162,28 @@
         {{-- بيانات العقار الموروث --}}
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-building"></i> بيانات العقار والحصة الموروثة</div>
+                <div class="title-with-icon"><i class="fas fa-building"></i> {{ __('بيانات العقار والحصة الموروثة') }}</div>
             </div>
             <div class="form-grid">
                 <div class="form-group full">
-                    <label class="form-label" for="property_location">موقع المنزل</label>
-                    <input type="text" id="property_location" class="form-control" placeholder="الحي - المحافظة">
+                    <label class="form-label" for="property_location">{{ __('موقع المنزل') }}</label>
+                    <input type="text" id="property_location" class="form-control" placeholder="{{ __('الحي - المحافظة') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="property_address">رقم المنزل والشارع</label>
-                    <input type="text" id="property_address" class="form-control" placeholder="الشارع ورقم العقار">
+                    <label class="form-label" for="property_address">{{ __('رقم المنزل والشارع') }}</label>
+                    <input type="text" id="property_address" class="form-control" placeholder="{{ __('الشارع ورقم العقار') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="property_area">المساحة الكلية للعقار</label>
-                    <input type="text" id="property_area" class="form-control" placeholder="مثال: 97.27م2">
+                    <label class="form-label" for="property_area">{{ __('المساحة الكلية للعقار') }}</label>
+                    <input type="text" id="property_area" class="form-control" placeholder="{{ __('مثال: 97.27م2') }}">
                 </div>
                 <div class="form-group full">
-                    <label class="form-label" for="property_borders">الحدود (شرق - غرب - بحري - قبلي)</label>
-                    <textarea id="property_borders" class="form-control" rows="2" placeholder="الحد الشرقي: ... الحد الغربي: ... الحد البحري: ... الحد القبلي: ..."></textarea>
+                    <label class="form-label" for="property_borders">{{ __('الحدود (شرق - غرب - بحري - قبلي)') }}</label>
+                    <textarea id="property_borders" class="form-control" rows="2" placeholder="{{ __('الحد الشرقي: ... الحد الغربي: ... الحد البحري: ... الحد القبلي: ...') }}"></textarea>
                 </div>
                 <div class="form-group full">
-                    <label class="form-label" for="inheritor_name">اسم المورث (آلت بالميراث عن)</label>
-                    <input type="text" id="inheritor_name" class="form-control" placeholder="اسم صاحب الأملاك الأصلي المتوفى">
+                    <label class="form-label" for="inheritor_name">{{ __('اسم المورث (آلت بالميراث عن)') }}</label>
+                    <input type="text" id="inheritor_name" class="form-control" placeholder="{{ __('اسم صاحب الأملاك الأصلي المتوفى') }}">
                 </div>
             </div>
         </div>
@@ -191,27 +191,27 @@
         {{-- بيانات البيع --}}
         <div class="form-card">
             <div class="form-card-title">
-                <div class="title-with-icon"><i class="fas fa-handshake"></i> تفاصيل البيع والتعاقد</div>
+                <div class="title-with-icon"><i class="fas fa-handshake"></i> {{ __('تفاصيل البيع والتعاقد') }}</div>
             </div>
             <div class="form-grid">
                 <div class="form-group">
-                    <label class="form-label" for="price_number">ثمن البيع (أرقام)</label>
-                    <input type="text" id="price_number" class="form-control" placeholder="مثال: 1,200,000">
+                    <label class="form-label" for="price_number">{{ __('ثمن البيع (أرقام)') }}</label>
+                    <input type="text" id="price_number" class="form-control" placeholder="{{ __('مثال: 1,200,000') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="price_text">ثمن البيع (كتابة)</label>
-                    <input type="text" id="price_text" class="form-control" placeholder="مثال: مليون ومائتان ألف ريالاً عمانياً">
+                    <label class="form-label" for="price_text">{{ __('ثمن البيع (كتابة)') }}</label>
+                    <input type="text" id="price_text" class="form-control" placeholder="{{ __('مثال: مليون ومائتان ألف ريالاً عمانياً') }}">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="penalty_number">التعويض الجزائي (أرقام)</label>
+                    <label class="form-label" for="penalty_number">{{ __('التعويض الجزائي (أرقام)') }}</label>
                     <input type="text" id="penalty_number" class="form-control" value="100000">
                 </div>
                 <div class="form-group">
-                    <label class="form-label" for="court_name">المحكمة المختصة بالنزاعات</label>
-                    <input type="text" id="court_name" class="form-control" value="محكمة أسوان الجزئية">
+                    <label class="form-label" for="court_name">{{ __('المحكمة المختصة بالنزاعات') }}</label>
+                    <input type="text" id="court_name" class="form-control" value="{{ __('محكمة أسوان الجزئية') }}">
                 </div>
                 <div class="form-group full">
-                    <label class="form-label" for="contract_date">تاريخ العقد</label>
+                    <label class="form-label" for="contract_date">{{ __('تاريخ العقد') }}</label>
                     <input type="date" id="contract_date" class="form-control">
                 </div>
             </div>
@@ -220,7 +220,7 @@
         {{-- زر الطباعة --}}
         <div class="form-actions">
             <button class="btn-print-action" onclick="printContract()">
-                <i class="fas fa-print fa-lg"></i> معاينة وطباعة العقد الموثق
+                <i class="fas fa-print fa-lg"></i> {{ __('معاينة وطباعة العقد الموثق') }}
             </button>
         </div>
 
@@ -228,60 +228,60 @@
 
     <!-- منطقة الطباعة (تظهر في الطباعة فقط ومطابقة تماماً للأصل) -->
     <div class="print-area" id="printArea">
-        <h2>عقد بيع حصة إرث في منزل</h2>
+        <h2>{{ __('عقد بيع حصة إرث في منزل') }}</h2>
 
-        <p><strong>أولاً: السيد/</strong> <span id="p_seller_name"></span> - <span id="p_seller_job"></span> - المقيم في/ <span id="p_seller_address"></span>، ويحمل بطاقة رقم قومي (<span id="p_seller_id"></span>)</p>
-        <p><strong>طرف أول (بائع)</strong></p>
+        <p><strong>{{ __('أولاً: السيد/') }}</strong> <span id="p_seller_name"></span> - <span id="p_seller_job"></span> {{ __('- المقيم في/') }} <span id="p_seller_address"></span>{{ __('، ويحمل بطاقة رقم قومي (') }}<span id="p_seller_id"></span>)</p>
+        <p><strong>{{ __('طرف أول (بائع)') }}</strong></p>
 
-        <p><strong>ثانياً: السيد/</strong> <span id="p_buyer_name"></span> - المقيم/ <span id="p_buyer_address"></span>، ويحمل بطاقة رقم قومي (<span id="p_buyer_id"></span>)</p>
-        <p><strong>طرف ثاني (مشتري)</strong></p>
+        <p><strong>{{ __('ثانياً: السيد/') }}</strong> <span id="p_buyer_name"></span> {{ __('- المقيم/') }} <span id="p_buyer_address"></span>{{ __('، ويحمل بطاقة رقم قومي (') }}<span id="p_buyer_id"></span>)</p>
+        <p><strong>{{ __('طرف ثاني (مشتري)') }}</strong></p>
 
-        <p>بعد أن أقر الطرفان بأهليتهما القانونية للتعاقد وعلى إبرام مثل هذا التصرف اتفقا على ما يلي:</p>
+        <p>{{ __('بعد أن أقر الطرفان بأهليتهما القانونية للتعاقد وعلى إبرام مثل هذا التصرف اتفقا على ما يلي:') }}</p>
 
-        <p><strong>تمهيد</strong></p>
-        <p>يمتلك الطرف الأول حصة شائعة في منزل بناحية <span id="p_property_location"></span>، وهو عبارة عن / منزل <span id="p_property_address"></span> بمساحة كلية <span id="p_property_area"></span>، وحدوده كالآتي: <span id="p_property_borders"></span></p>
-        <p>وقد آلت الملكية بالميراث الشرعي عن المرحومة/ <span id="p_inheritor_name"></span>، وحيث أن الطرف الأول عرض هذه الحصة للبيع وتقدم الطرف الثاني لشرائها واتفقا على ما يلي:</p>
+        <p><strong>{{ __('تمهيد') }}</strong></p>
+        <p>{{ __('يمتلك الطرف الأول حصة شائعة في منزل بناحية') }} <span id="p_property_location"></span>{{ __('، وهو عبارة عن / منزل') }} <span id="p_property_address"></span> {{ __('بمساحة كلية') }} <span id="p_property_area"></span>{{ __('، وحدوده كالآتي:') }} <span id="p_property_borders"></span></p>
+        <p>{{ __('وقد آلت الملكية بالميراث الشرعي عن المرحومة/') }} <span id="p_inheritor_name"></span>{{ __('، وحيث أن الطرف الأول عرض هذه الحصة للبيع وتقدم الطرف الثاني لشرائها واتفقا على ما يلي:') }}</p>
 
-        <p><strong>البند الأول:</strong> يعتبر التمهيد السابق جزء لا يتجزأ من هذا العقد.</p>
-        <p><strong>البند الثاني:</strong> باع الطرف الأول وأسقط وتنازل بموجب هذا العقد وبكافة الضمانات الفعلية والقانونية ما هو عبارة عن حصة شائعة في منزل بناحية <span id="p_property_location2"></span>، وهو عبارة عن / منزل <span id="p_property_address2"></span> بمساحة كلية <span id="p_property_area2"></span>.</p>
-        <p><strong>البند الثالث:</strong> تم هذا البيع بمبلغ إجمالي وقدره (<span id="p_price_number"></span>) (فقط <span id="p_price_text"></span> لاغير) دفعه الطرف الثاني عداً ونقداً بأكمله للطرف الأول في مجلس هذا العقد، ويعتبر توقيع الطرف الأول على هذا العقد بمثابة مخالصة بدفع كامل الثمن.</p>
-        <p><strong>البند الرابع:</strong> للطرف الثاني منفعة الحصة المبيعة اعتباراً من تاريخ هذا العقد وتم إخطار القائم على إدارة المال الشائع بذلك.</p>
-        <p><strong>البند الخامس:</strong> يقر الطرف الأول بخلو المبيع من كافة الحقوق العينية الأصلية والتبعية ويقر بأنه لم يتصرف قبل تاريخ هذا العقد في الحصة المبيعة أو في أية جزء منها وأنه يضمن للطرف الثاني عدم التعرض القانوني الصادر منه أو من الغير.</p>
-        <p><strong>البند السادس:</strong> يقر الطرف الأول بأن باقي الملاك على الشيوع ورثة المرحومة/ <span id="p_inheritor_name2"></span>.</p>
-        <p><strong>البند السابع:</strong> يقر الطرف الثاني بأنه عاين الحصة موضوع هذا العقد المعاينة التامة النافية للجهالة شرعاً وأنه قبل شراءها بحالتها الراهنة.</p>
-        <p><strong>البند الثامن:</strong> يقر الطرفان بأن العنوان الوارد بهذا العقد هو عنوان محل الإقامة كل منهما وهو المعول عليه فيما يتعلق بالإعلانات والإخطارات التي قد يتطلبها تنفيذ هذا العقد.</p>
-        <p><strong>البند التاسع:</strong> إذا أخل أي طرف من أطراف هذا العقد بأي التزام من الالتزامات المفروضة عليه ببنود هذا العقد يلتزم بدفع تعويض وقدره (<span id="p_penalty_number"></span>) للطرف الآخر ولا يخضع هذا التعويض لتقدير القضاء فضلاً عن صحة هذا العقد ونفاذه.</p>
-        <p><strong>البند العاشر:</strong> يتعهد الطرف الأول بالمثول أمام الشهر العقاري المختص للتوقيع على العقد النهائي أو الحضور بنفسه أو بوكيل عنه للتصديق على هذا العقد ليكون الحكم الصادر في الدعوى أساساً صالحاً للتسجيل ونقل الملكية وعلى أن تكون كافة الرسوم والمصروفات طبقاً للقانون.</p>
-        <p><strong>البند الحادي عشر:</strong> تختص <span id="p_court_name"></span> بالفصل في أي نزاع ينشأ بشأن تنفيذ أو تفسير أو صحة ونفاذ هذا العقد.</p>
-        <p><strong>البند الثاني عشر:</strong> حرر هذا العقد من نسختين بيد كل طرف نسخة للعمل بموجبها عند اللزوم.</p>
+        <p><strong>{{ __('البند الأول:') }}</strong> {{ __('يعتبر التمهيد السابق جزء لا يتجزأ من هذا العقد.') }}</p>
+        <p><strong>{{ __('البند الثاني:') }}</strong> {{ __('باع الطرف الأول وأسقط وتنازل بموجب هذا العقد وبكافة الضمانات الفعلية والقانونية ما هو عبارة عن حصة شائعة في منزل بناحية') }} <span id="p_property_location2"></span>{{ __('، وهو عبارة عن / منزل') }} <span id="p_property_address2"></span> {{ __('بمساحة كلية') }} <span id="p_property_area2"></span>.</p>
+        <p><strong>{{ __('البند الثالث:') }}</strong> {{ __('تم هذا البيع بمبلغ إجمالي وقدره (') }}<span id="p_price_number"></span>{{ __(') (فقط') }} <span id="p_price_text"></span> {{ __('لاغير) دفعه الطرف الثاني عداً ونقداً بأكمله للطرف الأول في مجلس هذا العقد، ويعتبر توقيع الطرف الأول على هذا العقد بمثابة مخالصة بدفع كامل الثمن.') }}</p>
+        <p><strong>{{ __('البند الرابع:') }}</strong> {{ __('للطرف الثاني منفعة الحصة المبيعة اعتباراً من تاريخ هذا العقد وتم إخطار القائم على إدارة المال الشائع بذلك.') }}</p>
+        <p><strong>{{ __('البند الخامس:') }}</strong> {{ __('يقر الطرف الأول بخلو المبيع من كافة الحقوق العينية الأصلية والتبعية ويقر بأنه لم يتصرف قبل تاريخ هذا العقد في الحصة المبيعة أو في أية جزء منها وأنه يضمن للطرف الثاني عدم التعرض القانوني الصادر منه أو من الغير.') }}</p>
+        <p><strong>{{ __('البند السادس:') }}</strong> {{ __('يقر الطرف الأول بأن باقي الملاك على الشيوع ورثة المرحومة/') }} <span id="p_inheritor_name2"></span>.</p>
+        <p><strong>{{ __('البند السابع:') }}</strong> {{ __('يقر الطرف الثاني بأنه عاين الحصة موضوع هذا العقد المعاينة التامة النافية للجهالة شرعاً وأنه قبل شراءها بحالتها الراهنة.') }}</p>
+        <p><strong>{{ __('البند الثامن:') }}</strong> {{ __('يقر الطرفان بأن العنوان الوارد بهذا العقد هو عنوان محل الإقامة كل منهما وهو المعول عليه فيما يتعلق بالإعلانات والإخطارات التي قد يتطلبها تنفيذ هذا العقد.') }}</p>
+        <p><strong>{{ __('البند التاسع:') }}</strong> {{ __('إذا أخل أي طرف من أطراف هذا العقد بأي التزام من الالتزامات المفروضة عليه ببنود هذا العقد يلتزم بدفع تعويض وقدره (') }}<span id="p_penalty_number"></span>{{ __(') للطرف الآخر ولا يخضع هذا التعويض لتقدير القضاء فضلاً عن صحة هذا العقد ونفاذه.') }}</p>
+        <p><strong>{{ __('البند العاشر:') }}</strong> {{ __('يتعهد الطرف الأول بالمثول أمام الشهر العقاري المختص للتوقيع على العقد النهائي أو الحضور بنفسه أو بوكيل عنه للتصديق على هذا العقد ليكون الحكم الصادر في الدعوى أساساً صالحاً للتسجيل ونقل الملكية وعلى أن تكون كافة الرسوم والمصروفات طبقاً للقانون.') }}</p>
+        <p><strong>{{ __('البند الحادي عشر:') }}</strong> {{ __('تختص') }} <span id="p_court_name"></span> {{ __('بالفصل في أي نزاع ينشأ بشأن تنفيذ أو تفسير أو صحة ونفاذ هذا العقد.') }}</p>
+        <p><strong>{{ __('البند الثاني عشر:') }}</strong> {{ __('حرر هذا العقد من نسختين بيد كل طرف نسخة للعمل بموجبها عند اللزوم.') }}</p>
 
         <div class="signature-section">
             <div class="signature-box">
-                <p><strong>الطرف الأول (البائع)</strong></p>
-                <p>الاسم/ <span id="p_seller_name2"></span></p>
-                <p>رقم قومي/ <span id="p_seller_id2"></span></p>
-                <p>التوقيع/</p>
+                <p><strong>{{ __('الطرف الأول (البائع)') }}</strong></p>
+                <p>{{ __('الاسم/') }} <span id="p_seller_name2"></span></p>
+                <p>{{ __('رقم قومي/') }} <span id="p_seller_id2"></span></p>
+                <p>{{ __('التوقيع/') }}</p>
             </div>
             <div class="signature-box">
-                <p><strong>الطرف الثاني (المشتري)</strong></p>
-                <p>الاسم/ <span id="p_buyer_name2"></span></p>
-                <p>رقم قومي/ <span id="p_buyer_id2"></span></p>
-                <p>التوقيع/</p>
+                <p><strong>{{ __('الطرف الثاني (المشتري)') }}</strong></p>
+                <p>{{ __('الاسم/') }} <span id="p_buyer_name2"></span></p>
+                <p>{{ __('رقم قومي/') }} <span id="p_buyer_id2"></span></p>
+                <p>{{ __('التوقيع/') }}</p>
             </div>
         </div>
 
         <div class="signature-section" style="margin-top: 2rem;">
             <div class="signature-box">
-                <p><strong>شاهد أول</strong></p>
-                <p>الاسم/</p>
-                <p>رقم قومي/</p>
-                <p>التوقيع/</p>
+                <p><strong>{{ __('شاهد أول') }}</strong></p>
+                <p>{{ __('الاسم/') }}</p>
+                <p>{{ __('رقم قومي/') }}</p>
+                <p>{{ __('التوقيع/') }}</p>
             </div>
             <div class="signature-box">
-                <p><strong>شاهد ثاني</strong></p>
-                <p>الاسم/</p>
-                <p>رقم قومي/</p>
-                <p>التوقيع/</p>
+                <p><strong>{{ __('شاهد ثاني') }}</strong></p>
+                <p>{{ __('الاسم/') }}</p>
+                <p>{{ __('رقم قومي/') }}</p>
+                <p>{{ __('التوقيع/') }}</p>
             </div>
         </div>
     </div>

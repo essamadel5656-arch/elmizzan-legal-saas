@@ -22,7 +22,7 @@
     cursor:pointer;border:2px solid rgba(107,114,128,.35);
     z-index:999999;outline:none;transition:.25s;
     font-size:22px;
-" title="المساعد القانوني الذكي — غير مفعَّل"
+" title="{{ __('المساعد القانوني الذكي — غير مفعَّل') }}"
    onclick="document.getElementById('ai-locked-modal').style.display='flex'">
     🔒
 </button>
@@ -33,15 +33,15 @@
 ">
     <div style="background:#1e293b;border:1px solid rgba(212,175,55,.2);border-radius:20px;padding:2.5rem;max-width:420px;width:90%;text-align:center;box-shadow:0 32px 80px rgba(0,0,0,.5);">
         <div style="font-size:3rem;margin-bottom:1rem;">🔒</div>
-        <h2 style="color:#fff;font-size:1.3rem;font-weight:800;margin-bottom:.5rem;">المساعد القانوني الذكي</h2>
+        <h2 style="color:#fff;font-size:1.3rem;font-weight:800;margin-bottom:.5rem;">{{ __('المساعد القانوني الذكي') }}</h2>
         <p style="color:#94a3b8;font-size:.9rem;line-height:1.6;margin-bottom:1.5rem;">
-            ميزة الذكاء الاصطناعي القانوني غير مفعَّلة حالياً في هذا المكتب.<br>
-            تواصل مع مسؤول النظام لتفعيل هذه الميزة الاحترافية.
+            {{ __('ميزة الذكاء الاصطناعي القانوني غير مفعَّلة حالياً في هذا المكتب.') }}<br>
+            {{ __('تواصل مع مسؤول النظام لتفعيل هذه الميزة الاحترافية.') }}
         </p>
         @if(auth()->user()?->isAdmin())
-            <a href="{{ route('settings.edit') }}" wire:navigate style="display:inline-block;background:linear-gradient(135deg,#d4af37,#b8960c);color:#0f172a;padding:.75rem 1.75rem;border-radius:10px;font-weight:800;text-decoration:none;font-size:.95rem;margin-bottom:.75rem;">⚙️ تفعيل من الإعدادات</a><br>
+            <a href="{{ route('settings.edit') }}" wire:navigate style="display:inline-block;background:linear-gradient(135deg,#d4af37,#b8960c);color:#0f172a;padding:.75rem 1.75rem;border-radius:10px;font-weight:800;text-decoration:none;font-size:.95rem;margin-bottom:.75rem;">{{ __('⚙️ تفعيل من الإعدادات') }}</a><br>
         @endif
-        <button onclick="document.getElementById('ai-locked-modal').style.display='none'" style="background:none;border:1px solid rgba(255,255,255,.15);color:#94a3b8;padding:.5rem 1.25rem;border-radius:8px;cursor:pointer;font-size:.85rem;margin-top:.5rem;">إغلاق</button>
+        <button onclick="document.getElementById('ai-locked-modal').style.display='none'" style="background:none;border:1px solid rgba(255,255,255,.15);color:#94a3b8;padding:.5rem 1.25rem;border-radius:8px;cursor:pointer;font-size:.85rem;margin-top:.5rem;">{{ __('إغلاق') }}</button>
     </div>
 </div>
 @else
@@ -784,20 +784,20 @@
 <div class="lawyer-chat-container">
 
     {{-- Floating Action Button --}}
-    <button id="lawyer-chat-toggle-btn" class="lawyer-toggle-btn" aria-label="فتح المساعد القانوني" type="button">
+    <button id="lawyer-chat-toggle-btn" class="lawyer-toggle-btn" aria-label="{{ __('فتح المساعد القانوني') }}" type="button">
         <i id="lawyer-chat-toggle-icon" class="fa-solid fa-scale-balanced"></i>
     </button>
 
     {{-- Chat Widget --}}
-    <div id="lawyer-chat-widget-box" class="lawyer-chat-widget collapsed" role="dialog" aria-label="المساعد القانوني الذكي">
+    <div id="lawyer-chat-widget-box" class="lawyer-chat-widget collapsed" role="dialog" aria-label="{{ __('المساعد القانوني الذكي') }}">
 
         {{-- ── Sidebar ─────────────────────────────────────── --}}
         <div class="widget-sidebar">
             <button id="btn-new-chat" class="btn-new-chat" type="button">
-                <i class="fa-solid fa-plus"></i> محادثة جديدة
+                <i class="fa-solid fa-plus"></i> {{ __('محادثة جديدة') }}
             </button>
 
-            <div class="sidebar-label">المحادثات السابقة</div>
+            <div class="sidebar-label">{{ __('المحادثات السابقة') }}</div>
 
             <div class="sidebar-sessions-list" id="sidebar-sessions-list">
                 @php
@@ -813,15 +813,15 @@
                             <i class="fa-regular fa-comments session-icon"></i>
                             <span class="session-title">{{ $s->title ?? 'محادثة رقم ' . $s->id }}</span>
                             <button class="session-delete-btn"
-                                    data-session-id="{{ $s->id }}"
-                                    title="حذف المحادثة"
-                                    type="button">
+                                    data-session-id="{{ $s->{{ __('id }}"
+                                    title="{{ __('حذف المحادثة') }}"
+                                    type="button">') }}
                                 <i class="fa-solid fa-trash"></i>
                             </button>
                         </div>
                     @endforeach
                 @else
-                    <div class="no-sessions-msg" id="no-sessions-msg">لا توجد محادثات سابقة</div>
+                    <div class="no-sessions-msg" id="no-sessions-msg">{{ __('لا توجد محادثات سابقة') }}</div>
                 @endif
             </div>
         </div>
@@ -833,12 +833,12 @@
                             <div class="welcome-icon" style="font-size:32px;">
                                 ⚖️
                             </div>
-                            <h3>مرحباً بك في المساعد القانوني الذكي</h3>
-                            <p>أنا مساعدك القانوني الذكي — أصوغ العقود، أراجع البنود، وأدعمك في أي إجراءات قانونية حول العالم.</p>
+                            <h3>{{ __('مرحباً بك في المساعد القانوني الذكي') }}</h3>
+                            <p>{{ __('أنا مساعدك القانوني الذكي — أصوغ العقود، أراجع البنود، وأدعمك في أي إجراءات قانونية حول العالم.') }}</p>
                             <div class="welcome-suggestions">
-                                <button class="suggestion-chip" type="button" onclick="fillSuggestion('صغ لي عقد إيجار سكني وفق أحدث القوانين'); submitMessage();">📝 صياغة عقد إيجار</button>
-                                <button class="suggestion-chip" type="button" onclick="fillSuggestion('ما هي إجراءات رفع دعوى مدنية؟ حدد الاختصاص القضائي إن أمكن'); submitMessage();">⚖️ إجراءات الدعوى</button>
-                                <button class="suggestion-chip" type="button" onclick="fillSuggestion('راجع هذا البند القانوني وأبدِ رأيك القانوني المفصَّل فيه'); submitMessage();">🔍 مراجعة بند قانوني</button>
+                                <button class="suggestion-chip" type="button" onclick="fillSuggestion('صغ لي عقد إيجار سكني وفق أحدث القوانين'); submitMessage();">{{ __('📝 صياغة عقد إيجار') }}</button>
+                                <button class="suggestion-chip" type="button" onclick="fillSuggestion('ما هي إجراءات رفع دعوى مدنية؟ حدد الاختصاص القضائي إن أمكن'); submitMessage();">{{ __('⚖️ إجراءات الدعوى') }}</button>
+                                <button class="suggestion-chip" type="button" onclick="fillSuggestion('راجع هذا البند القانوني وأبدِ رأيك القانوني المفصَّل فيه'); submitMessage();">{{ __('🔍 مراجعة بند قانوني') }}</button>
                             </div>
                         </div>
                     @else
@@ -883,10 +883,10 @@
             {{-- Voice Recording Bar --}}
             <div id="voice-recording-bar" class="voice-recording-bar" aria-live="polite">
                 <div class="rec-dot" aria-hidden="true"></div>
-                <span class="rec-label">● تسجيل</span>
+                <span class="rec-label">{{ __('● تسجيل') }}</span>
                 <canvas id="lawyer-chat-waveform" aria-hidden="true"></canvas>
                 <span class="rec-timer" id="rec-timer">0:00</span>
-                <button id="stop-rec-btn" class="stop-rec-btn" type="button" title="إيقاف التسجيل">
+                <button id="stop-rec-btn" class="stop-rec-btn" type="button" title="{{ __('إيقاف التسجيل') }}">
                     <i class="fa-solid fa-stop"></i>
                 </button>
             </div>
@@ -895,12 +895,12 @@
             <div id="voice-controls-bar" class="voice-controls-bar">
                 <div class="voice-preview-info">
                     <i class="fa-solid fa-waveform-lines"></i>
-                    <span>تسجيل صوتي جاهز للإرسال</span>
+                    <span>{{ __('تسجيل صوتي جاهز للإرسال') }}</span>
                 </div>
                 <div class="voice-actions">
-                    <button id="lawyer-chat-voice-send-btn"   class="voice-ctrl-btn vcb-send"   type="button"><i class="fa-solid fa-paper-plane"></i> إرسال</button>
-                    <button id="lawyer-chat-voice-retry-btn"  class="voice-ctrl-btn vcb-retry"  type="button"><i class="fa-solid fa-rotate-right"></i> إعادة</button>
-                    <button id="lawyer-chat-voice-delete-btn" class="voice-ctrl-btn vcb-delete" type="button"><i class="fa-solid fa-trash"></i> حذف</button>
+                    <button id="lawyer-chat-voice-send-btn"   class="voice-ctrl-btn vcb-send"   type="button"><i class="fa-solid fa-paper-plane"></i> {{ __('إرسال') }}</button>
+                    <button id="lawyer-chat-voice-retry-btn"  class="voice-ctrl-btn vcb-retry"  type="button"><i class="fa-solid fa-rotate-right"></i> {{ __('إعادة') }}</button>
+                    <button id="lawyer-chat-voice-delete-btn" class="voice-ctrl-btn vcb-delete" type="button"><i class="fa-solid fa-trash"></i> {{ __('حذف') }}</button>
                 </div>
             </div>
 
@@ -908,9 +908,9 @@
             <div class="preview-container" id="preview-container">
                 <div class="preview-file-info">
                     <i id="lawyer-chat-preview-icon" class="fa-solid fa-file"></i>
-                    <span id="lawyer-chat-preview-filename">اسم الملف.pdf</span>
+                    <span id="lawyer-chat-preview-filename">{{ __('اسم الملف.pdf') }}</span>
                 </div>
-                <button type="button" class="preview-remove-btn" id="preview-remove-btn" title="إزالة المرفق">
+                <button type="button" class="preview-remove-btn" id="preview-remove-btn" title="{{ __('إزالة المرفق') }}">
                     <i class="fa-solid fa-trash-can"></i>
                 </button>
             </div>
@@ -921,21 +921,21 @@
                     <input type="hidden" id="lawyer-chat-session-id"
                         value="{{ isset($id) ? $id : (isset($session) ? $session->id : '') }}">
 
-                    <button type="button" id="lawyer-chat-file-btn" class="widget-action-btn" title="إرفاق ملف أو مستند">
+                    <button type="button" id="lawyer-chat-file-btn" class="widget-action-btn" title="{{ __('إرفاق ملف أو مستند') }}">
                         <i class="fa-solid fa-paperclip"></i>
                     </button>
                     <input type="file" id="lawyer-chat-file-input" style="display:none"
                         accept=".pdf,.doc,.docx,.txt,image/*">
 
-                    <button type="button" id="lawyer-chat-voice-btn" class="widget-action-btn" title="تسجيل رسالة صوتية">
+                    <button type="button" id="lawyer-chat-voice-btn" class="widget-action-btn" title="{{ __('تسجيل رسالة صوتية') }}">
                         <i class="fa-solid fa-microphone" id="lawyer-chat-voice-icon"></i>
                     </button>
 
                     <input type="text" id="lawyer-chat-message-input" autocomplete="off"
-                        placeholder="اكتب سؤالك القانوني هنا..." class="widget-input"
-                        aria-label="رسالتك">
+                        placeholder="{{ __('اكتب سؤالك القانوني هنا...') }}" class="widget-input"
+                        aria-label="{{ __('رسالتك') }}">
 
-                    <button type="button" id="lawyer-chat-submit-btn" class="widget-send-btn" title="إرسال">
+                    <button type="button" id="lawyer-chat-submit-btn" class="widget-send-btn" title="{{ __('إرسال') }}">
                         <i class="fa-solid fa-paper-plane" style="transform:rotate(180deg)"></i>
                     </button>
                 </div>
@@ -1106,12 +1106,12 @@ function createWelcomeCard() {
     div.className = 'welcome-card';
     div.innerHTML = `
         <div class="welcome-icon" style="font-size:32px;">⚖️</div>
-        <h3>مرحباً بك في المساعد القانوني الذكي</h3>
-        <p>أنا مساعدك القانوني الذكي — أصوغ العقود، أراجع البنود، وأدعمك في أي إجراءات قانونية حول العالم.</p>
+        <h3>{{ __('مرحباً بك في المساعد القانوني الذكي') }}</h3>
+        <p>{{ __('أنا مساعدك القانوني الذكي — أصوغ العقود، أراجع البنود، وأدعمك في أي إجراءات قانونية حول العالم.') }}</p>
         <div class="welcome-suggestions">
-            <button class="suggestion-chip" type="button" onclick="fillSuggestion('صغ لي عقد إيجار سكني وفق أحدث القوانين'); submitMessage();">📝 صياغة عقد إيجار</button>
-            <button class="suggestion-chip" type="button" onclick="fillSuggestion('ما هي إجراءات رفع دعوى مدنية؟ حدد الاختصاص القضائي إن أمكن'); submitMessage();">⚖️ إجراءات الدعوى</button>
-            <button class="suggestion-chip" type="button" onclick="fillSuggestion('راجع هذا البند القانوني وأبدِ رأيك القانوني المفصَّل فيه'); submitMessage();">🔍 مراجعة بند قانوني</button>
+            <button class="suggestion-chip" type="button" onclick="fillSuggestion('صغ لي عقد إيجار سكني وفق أحدث القوانين'); submitMessage();">{{ __('📝 صياغة عقد إيجار') }}</button>
+            <button class="suggestion-chip" type="button" onclick="fillSuggestion('ما هي إجراءات رفع دعوى مدنية؟ حدد الاختصاص القضائي إن أمكن'); submitMessage();">{{ __('⚖️ إجراءات الدعوى') }}</button>
+            <button class="suggestion-chip" type="button" onclick="fillSuggestion('راجع هذا البند القانوني وأبدِ رأيك القانوني المفصَّل فيه'); submitMessage();">{{ __('🔍 مراجعة بند قانوني') }}</button>
         </div>`;
     return div;
 }
@@ -1180,27 +1180,27 @@ function createBotMessageEl(msg) {
    ================================================================ */
 function refreshEditButton() {
     // Remove any existing edit buttons
-    document.querySelectorAll('.msg-edit-btn').forEach(b => b.remove());
+    document.querySelectorAll('.msg-edit-btn').forEach(b => {{ __('b.remove());
 
-    const wrappers = messagesWrapper.querySelectorAll('.msg-user-wrapper');
+    const wrappers = messagesWrapper.querySelectorAll(\'.msg-user-wrapper\');
     if (!wrappers.length) return;
 
     const last = wrappers[wrappers.length - 1];
-    const btn  = document.createElement('button');
-    btn.className = 'msg-edit-btn';
-    btn.type      = 'button';
-    btn.title     = 'تعديل الرسالة';
-    btn.innerHTML = '<i class="fa-solid fa-pen-to-square"></i> تعديل';
+    const btn  = document.createElement(\'button\');
+    btn.className = \'msg-edit-btn\';
+    btn.type      = \'button\';
+    btn.title     = \'تعديل الرسالة\';
+    btn.innerHTML = \'') }}<i class="fa-solid fa-pen-to-square"></i> {{ __('تعديل\';
 
-    btn.addEventListener('click', () => {
+    btn.addEventListener(\'click\', () => {
         // Restore text to input
-        const textEl = last.querySelector('.msg-text-content');
+        const textEl = last.querySelector(\'.msg-text-content\');
         if (textEl) messageInput.value = textEl.textContent;
 
         // Remove the last user wrapper + everything after it up to loading-skeleton
         const children = Array.from(messagesWrapper.children);
         const idx      = children.indexOf(last);
-        for (let i = idx; i < children.length; i++) {
+        for (let i = idx; i') }} < children.length; i++) {
             if (children[i] === loadingSkeleton) break;
             children[i].remove();
         }
@@ -1236,7 +1236,7 @@ function addSessionToSidebar(sessionId, title) {
     item.innerHTML = `
         <i class="fa-regular fa-comments session-icon"></i>
         <span class="session-title">${escapeHtml(title)}</span>
-        <button class="session-delete-btn" data-session-id="${sessionId}" title="حذف المحادثة" type="button">
+        <button class="session-delete-btn" data-session-id="${sessionId}" title="{{ __('حذف المحادثة') }}" type="button">
             <i class="fa-solid fa-trash"></i>
         </button>`;
 
@@ -1278,7 +1278,7 @@ async function loadSessionMessages(sessionId) {
     const placeholder = document.createElement('div');
     placeholder.className = 'session-load-state';
     placeholder.id        = 'session-load-placeholder';
-    placeholder.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>جاري تحميل المحادثة...</span>';
+    placeholder.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>{{ __('جاري تحميل المحادثة...') }}</span>';
     messagesWrapper.insertBefore(placeholder, loadingSkeleton);
 
     try {
@@ -1307,7 +1307,7 @@ async function loadSessionMessages(sessionId) {
         clearMessages();
         const errDiv = document.createElement('div');
         errDiv.className = 'session-load-state';
-        errDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#ef4444"></i><span style="color:#ef4444">خطأ في تحميل المحادثة</span>';
+        errDiv.innerHTML = '<i class="fa-solid fa-triangle-exclamation" style="color:#ef4444"></i><span style="color:#ef4444">{{ __('خطأ في تحميل المحادثة') }}</span>';
         messagesWrapper.insertBefore(errDiv, loadingSkeleton);
     }
 }
@@ -1332,7 +1332,7 @@ async function deleteSession(sessionId, itemEl) {
             setTimeout(() => {
                 itemEl.remove();
                 if (!document.querySelector('.sidebar-session-item')) {
-                    sessionsList.innerHTML = '<div class="no-sessions-msg" id="no-sessions-msg">لا توجد محادثات سابقة</div>';
+                    sessionsList.innerHTML = '<div class="no-sessions-msg" id="no-sessions-msg">{{ __('لا توجد محادثات سابقة') }}</div>';
                 }
             }, 200);
         }
@@ -1701,7 +1701,7 @@ async function performMessageSend(isRetry = false) {
         if (voiceToSend) {
             const vb = document.createElement('div');
             vb.className = 'msg-file-box';
-            vb.innerHTML = `<i class="fa-solid fa-file-audio"></i><div class="msg-file-info"><span class="msg-file-name">رسالة صوتية مسجلة 🎙️</span></div>`;
+            vb.innerHTML = `<i class="fa-solid fa-file-audio"></i><div class="msg-file-info"><span class="msg-file-name">{{ __('رسالة صوتية مسجلة 🎙️') }}</span></div>`;
             bubble.appendChild(vb);
         }
         if (messageText) {
@@ -1873,7 +1873,7 @@ async function performMessageSend(isRetry = false) {
                 <span>فشل الإرسال${errDetail ? ' — ' + errDetail : ''}</span>
                 <button type="button" style="background:none;border:none;color:#b45309;text-decoration:underline;font-size:10px;font-weight:700;cursor:pointer;padding:0;margin-right:4px;font-family:inherit;"
                     onclick="this.closest('.msg-error-inline').remove();performMessageSend(true)">
-                    إعادة المحاولة
+                    {{ __('إعادة المحاولة') }}
                 </button>`;
             lastMsgWrapper.appendChild(eb);
         }

@@ -99,8 +99,8 @@
     {{-- ===== الترويسة ===== --}}
     <div class="dashboard-header">
         <div>
-            <h1 class="welcome-title">إدارة المواعيد والجلسات</h1>
-            <p class="date-text">عرض وتتبع جميع المواعيد المسجلة في النظام</p>
+            <h1 class="welcome-title">{{ __('إدارة المواعيد والجلسات') }}</h1>
+            <p class="date-text">{{ __('عرض وتتبع جميع المواعيد المسجلة في النظام') }}</p>
         </div>
     </div>
 
@@ -112,10 +112,10 @@
             <div style="flex: 1; min-width: 250px;">
                 <label for="search" 
                        style="display: block; margin-bottom: 0.5rem; color: var(--text-primary); font-weight: 600; font-size: 0.95rem;">
-                    البحث برقم القضية
+                    {{ __('البحث برقم القضية') }}
                 </label>
                 <input type="text" id="search" name="search"
-                    placeholder="ادخل رقم القضية..."
+                    placeholder="{{ __('ادخل رقم القضية...') }}"
                     value="{{ request('search') }}"
                     style="width: 100%; padding: 0.7rem 1rem; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.95rem; color: var(--text-primary); background-color: #ffffff; transition: all 0.3s ease;"
                     onfocus="this.style.borderColor='var(--sidebar-bg)'; this.style.boxShadow='0 0 0 3px rgba(30,41,59,0.1)';"
@@ -127,14 +127,14 @@
                 onmouseover="this.style.backgroundColor='#1a2a47'; this.style.transform='translateY(-2px)';"
                 onmouseout="this.style.backgroundColor='var(--sidebar-bg)'; this.style.transform='translateY(0)';">
                 <i class="fas fa-search"></i>
-                <span>بحث</span>
+                <span>{{ __('بحث') }}</span>
             </button>
 
             @if(request('search'))
                 <a href="{{ route('appointments.index') }}"
                     style="padding: 0.7rem 1.5rem; background-color: rgba(107,114,128,0.1); color: var(--text-primary); border: 1px solid rgba(107,114,128,0.3); border-radius: 8px; font-weight: 600; font-size: 0.95rem; text-decoration: none; display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;">
                     <i class="fas fa-times"></i>
-                    <span>مسح البحث</span>
+                    <span>{{ __('مسح البحث') }}</span>
                 </a>
             @endif
 
@@ -143,7 +143,7 @@
         @if(request('search'))
             <div style="margin-top: 1rem; padding: 0.75rem 1rem; background-color: rgba(59,130,246,0.1); border-right: 3px solid #3b82f6; border-radius: 4px; color: var(--text-primary); font-size: 0.95rem;">
                 <i class="fas fa-info-circle" style="margin-right: 0.5rem; color: #3b82f6;"></i>
-                نتائج البحث عن: <strong>{{ request('search') }}</strong>
+                {{ __('نتائج البحث عن:') }} <strong>{{ request('search') }}</strong>
             </div>
         @endif
     </div>
@@ -159,7 +159,7 @@
                         <i class="fas fa-search"></i>
                     </div>
                     <h3 style="color: var(--text-primary); font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 800;">
-                        لم يتم العثور على نتائج
+                        {{ __('لم يتم العثور على نتائج') }}
                     </h3>
                     <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 1.5rem;">
                         لا توجد مواعيد مطابقة لرقم القضية "{{ request('search') }}".
@@ -167,7 +167,7 @@
                     <a href="{{ route('appointments.index') }}"
                         style="display: inline-flex; align-items: center; gap: 0.5rem; background-color: rgba(107,114,128,0.1); color: var(--text-primary); padding: 0.7rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">
                         <i class="fas fa-arrow-right"></i>
-                        <span>عرض جميع المواعيد</span>
+                        <span>{{ __('عرض جميع المواعيد') }}</span>
                     </a>
                 </div>
             @else
@@ -177,10 +177,10 @@
                         <i class="fas fa-calendar-times"></i>
                     </div>
                     <h3 style="color: var(--text-primary); font-size: 1.4rem; margin-bottom: 0.5rem; font-weight: 800;">
-                        لا توجد مواعيد مسجلة
+                        {{ __('لا توجد مواعيد مسجلة') }}
                     </h3>
                     <p style="color: var(--text-secondary); font-size: 1rem; margin-bottom: 0;">
-                        يمكنك إضافة موعد جديد من داخل صفحة القضية الخاصة بها.
+                        {{ __('يمكنك إضافة موعد جديد من داخل صفحة القضية الخاصة بها.') }}
                     </p>
                 </div>
             @endif
@@ -192,10 +192,10 @@
                     <thead>
                         <tr>
                             <th style="width: 5%;">#</th>
-                            <th style="width: 15%;">رقم القضية</th>
-                            <th style="width: 20%;">التاريخ والوقت</th>
-                            <th style="width: 25%;">ملاحظات</th>
-                            <th style="width: 10%; text-align: center;">إجراءات</th>
+                            <th style="width: 15%;">{{ __('رقم القضية') }}</th>
+                            <th style="width: 20%;">{{ __('التاريخ والوقت') }}</th>
+                            <th style="width: 25%;">{{ __('ملاحظات') }}</th>
+                            <th style="width: 10%; text-align: center;">{{ __('إجراءات') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -234,7 +234,7 @@
                                 <form action="{{ route('appointments.destroy', $appointment->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-action-delete" title="حذف الموعد"
+                                    <button type="submit" class="btn-action-delete" title="{{ __('حذف الموعد') }}"
                                         onclick="return confirm('هل أنت متأكد من حذف هذا الموعد نهائياً؟')">
                                         <i class="fas fa-trash-alt" style="font-size: 1rem;"></i>
                                     </button>

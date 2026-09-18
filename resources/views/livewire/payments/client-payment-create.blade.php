@@ -55,7 +55,7 @@
 
         <div class="payment-header">
             <h1>{{ __('💳 تسجيل دفعة') }}</h1>
-            <p>القضية رقم: <strong>{{ $case->case_number }}</strong></p>
+            <p>{{ __('القضية رقم:') }} <strong>{{ $case->case_number }}</strong></p>
         </div>
 
         {{-- Mode Switcher --}}
@@ -92,7 +92,7 @@
                             @error('payment_date') <span style="color:#dc2626;font-size:.8rem;">{{ $message }}</span> @enderror
                         </div>
                         <div style="background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.2);border-radius:8px;padding:.85rem 1rem;font-size:.85rem;color:#2563eb;">
-                            ℹ️ سيتم إنشاء موعد تلقائياً في تقويم المكتب وإشعار المحامي المسؤول عنك.
+                            {{ __('ℹ️ سيتم إنشاء موعد تلقائياً في تقويم المكتب وإشعار المحامي المسؤول عنك.') }}
                         </div>
                     </div>
 
@@ -161,7 +161,7 @@
 
         <div style="text-align:center;margin-top:1rem;">
             <a href="{{ route('client-portal.dashboard') }}" wire:navigate style="color:var(--text-secondary);font-size:.85rem;text-decoration:none;">
-                ← العودة للبوابة
+                {{ __('← العودة للبوابة') }}
             </a>
         </div>
     </div>

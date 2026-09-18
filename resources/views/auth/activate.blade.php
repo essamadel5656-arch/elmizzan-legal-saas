@@ -22,7 +22,7 @@
 <body>
     <div class="card">
         <h1>⚖️ {{ firm_name() }}</h1>
-        <p class="subtitle">مرحباً {{ $user->name }} — تفعيل بوابة الموكل</p>
+        <p class="subtitle">مرحباً {{ $user->{{ __('name }} — تفعيل بوابة الموكل') }}</p>
 
         @if($errors->any())
             <div class="error">
@@ -32,13 +32,13 @@
 
         <form method="POST" action="{{ route('activate.set-password', $token) }}">
             @csrf
-            <label for="password">كلمة المرور الجديدة</label>
-            <input type="password" id="password" name="password" required minlength="8" placeholder="8 أحرف على الأقل">
+            <label for="password">{{ __('كلمة المرور الجديدة') }}</label>
+            <input type="password" id="password" name="password" required minlength="8" placeholder="{{ __('8 أحرف على الأقل') }}">
 
-            <label for="password_confirmation">تأكيد كلمة المرور</label>
-            <input type="password" id="password_confirmation" name="password_confirmation" required placeholder="أعد إدخال كلمة المرور">
+            <label for="password_confirmation">{{ __('تأكيد كلمة المرور') }}</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" required placeholder="{{ __('أعد إدخال كلمة المرور') }}">
 
-            <button type="submit">🔑 تفعيل الحساب والدخول</button>
+            <button type="submit">{{ __('🔑 تفعيل الحساب والدخول') }}</button>
         </form>
     </div>
 </body>
